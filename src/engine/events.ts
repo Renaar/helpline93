@@ -1,4 +1,6 @@
+import type { LineId } from './config.ts';
 import type { AnyBusEvent } from './eventBus.ts';
+import type { CallRecord, CallType } from './phone.ts';
 
 /**
  * Timestamped events sent by the engine to the UI (GDD 8.2).
@@ -6,6 +8,15 @@ import type { AnyBusEvent } from './eventBus.ts';
  */
 export interface EngineEventMap {
   'engine.started': { seed: number };
+  'shift.started': { operatorName: string; minute: number };
+  /** Emitted once per game minute while the shift runs. */
+  'shift.minute': { minute: number };
+  'call.incoming': { callId: string; line: LineId; number: string; callType: CallType };
+  /** `held` = line automatically put on hold to take this call. */
+  'call.answered': { callId: string; line: LineId; held: LineId | null };
+  'call.held': { callId: string; line: LineId };
+  'call.resumed': { callId: string; line: LineId; held: LineId | null };
+  'call.ended': { record: CallRecord };
   'debug.pong': { requestId: number; requestedAt: number };
 }
 
