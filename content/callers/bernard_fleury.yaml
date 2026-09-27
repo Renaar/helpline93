@@ -1,0 +1,22 @@
+id: c.bernard_fleury
+name: Bernard Fleury
+phone: '7075550142'
+mood_start: 1 # de -2 (paniqué, furieux) à +2 (détendu)
+typing_speed: 0.9 # multiplicateur du rythme de frappe (1 = normal)
+fallback:
+  irrelevant: # action sans réponse prévue dans la mission
+    - Euh… je ne vois pas le rapport.
+    - Je ne sais pas, moi, je ne suis pas informaticien.
+    - Pardon ? Je ne suis pas sûr de comprendre.
+  repeat: # même action une seconde fois
+    - Je crois que je vous ai déjà répondu, non ?
+    - On l'a déjà fait, il me semble.
+  hold: # mis en attente
+    - D'accord… j'attends.
+  manage: # réactions aux options GÉRER
+    g.calm:
+      - Oh, je suis calme, ne vous en faites pas. C'est juste que j'en ai besoin demain.
+    g.reformulate:
+      - Oui, c'est bien ça.
+    g.wait:
+      - Prenez votre temps, je ne bouge pas.

@@ -1,0 +1,30 @@
+# Options toujours disponibles pendant un appel (GDD 4.2.1).
+# Les pages du manuel ajoutent leurs propres questions et instructions quand on les consulte.
+id: base
+
+questions:
+  - id: q.base.describe
+    text: Pouvez-vous me décrire le problème ?
+  - id: q.base.serial
+    text: Pouvez-vous me lire le numéro de série de l'appareil ?
+  - id: q.base.model
+    text: De quel modèle s'agit-il ?
+  - id: q.base.since
+    text: Depuis quand le problème se produit-il ?
+  - id: q.base.tried
+    text: Qu'avez-vous déjà essayé ?
+
+instructions:
+  - id: i.base.restart
+    text: Éteignez l'ordinateur, attendez dix secondes, puis rallumez-le.
+
+# GÉRER : agit sur le rythme et la relation. `then` = effet par défaut,
+# qu'une mission peut remplacer en prévoyant sa propre réponse.
+manage:
+  - id: g.calm
+    text: Pas d'inquiétude, nous allons trouver ensemble.
+    then: { mood: 1 }
+  - id: g.reformulate
+    text: Je récapitule, pour être sûr d'avoir bien compris.
+  - id: g.wait
+    text: Un instant, je consulte la documentation.

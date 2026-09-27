@@ -16,4 +16,10 @@ content/
 └── codes/      # Codes de résolution
 ```
 
-Validation : `npm run content:check` (analyse YAML + identifiants uniques en J0 ; schémas complets en J2).
+Validation : `npm run content:check` — syntaxe YAML, schémas, identifiants uniques, références cassées, balises de capture, paramètres des instructions, codes de résolution. Les avertissements (capture jamais balisée, question locale jamais débloquée…) n'empêchent pas de jouer.
+
+## Pièges d'écriture YAML
+
+- Une réplique qui **commence** par une balise de capture doit être entre guillemets : `- '[[HX-486-0412|cap.serial]].'` (sinon YAML croit lire une liste).
+- Même chose pour une réplique qui commence par `{`, `*`, `&`, `!`, `%`, `@` ou `` ` ``.
+- Dans une liste sur une ligne (`[a, b]`), pas de balise de capture : écrire la liste en colonne (`- …`).

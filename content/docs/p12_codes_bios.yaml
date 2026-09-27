@@ -1,4 +1,4 @@
-# Page provisoire (J1), reprise de l'exemple du GDD (7.5).
+# Reprise de l'exemple du GDD (7.5). Sert à la mission « Trois bips ».
 id: p.12
 tab: Démarrage
 title: Codes sonores BIOS
@@ -19,3 +19,17 @@ body: |
 
   - Barrette en cause trouvée : code **R-07**.
   - Aucun changement après tous les retraits : orienter vers l'atelier.
+
+questions: # ajoutées au menu DEMANDER quand la page est consultée
+  - id: q.bios.bip_type
+    text: Les bips sont-ils longs ou courts ?
+  - id: q.bios.bip_count
+    text: Combien de bips exactement ?
+
+instructions: # ajoutées au menu INSTRUIRE quand la page est consultée
+  - id: i.case.open
+    text: Éteignez l'ordinateur et ouvrez le boîtier.
+  - id: i.ram.remove_slot
+    text: Retirez la barrette de mémoire en position {slot}.
+    params:
+      slot: { type: choice, options: [1, 2, 3, 4] }

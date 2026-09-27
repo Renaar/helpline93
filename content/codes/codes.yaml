@@ -1,0 +1,14 @@
+# Codes de résolution (GDD 7.8). `label` = sens officiel, affiché dans HelpDesk.
+# Le sens caché (`hidden`) arrivera avec les actes II et III.
+id: codes
+codes:
+  - { id: R-01, label: Résolu par téléphone — conseil d'utilisation }
+  - { id: R-02, label: Résolu — redémarrage ou réinitialisation }
+  - { id: R-03, label: Réglage de la configuration }
+  - { id: R-05, label: Pilote ou logiciel réinstallé }
+  - { id: R-07, label: Mémoire vive retirée ou remplacée }
+  - { id: R-09, label: Retour atelier }
+  - { id: R-11, label: Périphérique défectueux }
+  - { id: R-12, label: Hors garantie — orienté vers le service payant }
+  - { id: R-14, label: Remplacement de l'alimentation }
+  - { id: R-18, label: Appel sans suite }

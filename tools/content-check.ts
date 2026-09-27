@@ -1,17 +1,15 @@
 /**
- * Validates the YAML content in content/ (GDD 7.10).
- * Every file parses, every top-level `id` is unique across all content, and documentation
- * pages match their schema. Missions, references and capture tags arrive with J2.
+ * Validates the YAML content in content/ (GDD 7.10): YAML syntax, schemas, unique ids,
+ * broken references, capture tags, instruction parameters, resolution codes.
+ * Warnings (unused captures, questions never unlocked…) do not fail the check.
  * Usage: npm run content:check
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { dirname, join, relative } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseDocument } from 'yaml';
-import { docPageSchema, manualSchema } from '../src/content/schemas.ts';
+import { buildBundle } from '../src/content/bundle.ts';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const CONTENT_DIR = join(ROOT, 'content');
+const CONTENT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'content');
 
 function listYamlFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -21,36 +19,24 @@ function listYamlFiles(dir: string): string[] {
   });
 }
 
-const errors: string[] = [];
-const idOwners = new Map<string, string>();
-const files = listYamlFiles(CONTENT_DIR);
+const files = Object.fromEntries(
+  listYamlFiles(CONTENT_DIR).map((path) => [
+    relative(CONTENT_DIR, path).split(sep).join('/'),
+    readFileSync(path, 'utf8'),
+  ]),
+);
+const { bundle, issues } = buildBundle(files);
+const errors = issues.filter((issue) => issue.level === 'error');
+const warnings = issues.filter((issue) => issue.level === 'warning');
 
-for (const file of files) {
-  const name = relative(ROOT, file);
-  const document = parseDocument(readFileSync(file, 'utf8'));
-  for (const error of document.errors) errors.push(`${name}: ${error.message}`);
-  if (document.errors.length > 0) continue;
-
-  const data: unknown = document.toJS();
-  if (typeof data !== 'object' || data === null || !('id' in data)) continue;
-  const id = String(data.id);
-  if (relative(CONTENT_DIR, file).startsWith('docs')) {
-    const schema = id === 'manual' ? manualSchema : docPageSchema;
-    const result = schema.safeParse(data);
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        errors.push(`${name}: ${issue.path.join('.') || '(root)'} — ${issue.message}`);
-      }
-    }
-  }
-  const owner = idOwners.get(id);
-  if (owner !== undefined) errors.push(`${name}: duplicate id "${id}" (already used in ${owner})`);
-  else idOwners.set(id, name);
-}
-
-if (errors.length > 0) {
+for (const warning of warnings) console.warn(`  ⚠ content/${warning.file}: ${warning.message}`);
+if (errors.length > 0 || !bundle) {
   console.error(`content:check failed with ${errors.length} error(s):`);
-  for (const error of errors) console.error(`  - ${error}`);
+  for (const error of errors) console.error(`  ✖ content/${error.file}: ${error.message}`);
   process.exit(1);
 }
-console.log(`content:check ok — ${files.length} file(s), ${idOwners.size} id(s).`);
+console.log(
+  `content:check ok — ${Object.keys(files).length} file(s): ${bundle.pages.length} page(s), ` +
+    `${Object.keys(bundle.missions).length} mission(s), ${Object.keys(bundle.callers).length} caller(s), ` +
+    `${bundle.codes.length} code(s), ${warnings.length} warning(s).`,
+);
