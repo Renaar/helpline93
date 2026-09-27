@@ -2,7 +2,7 @@
 
 ## Jalon en cours
 
-**J0 — Fondations** : retours de Loïc intégrés (révision 1), **en attente du choix de palette**.
+**J0 — Fondations** : révision 2 prête, **en attente du choix du niveau de sombres (A1, A2 ou A3)** pour clôturer le jalon.
 Prochain jalon après validation : **J1 — Interface HelplineOS**.
 
 ## J0 — Fait
@@ -100,12 +100,35 @@ Validé tel quel : **boutons** et **icônes** (rendu et comportement).
 | Accent vif       | Fenêtres                   | 2,82:1  | indicatif (jamais pour du texte) |
 | Texte désactivé  | Fenêtres                   | 1,63:1  | indicatif (exempté par WCAG)     |
 
+## J0 — Révision 2 (retours de Loïc)
+
+Validé, ne plus toucher : sons, comportement des primitives, icônes (pour le moment), direction de la palette A.
+
+- [x] Trois niveaux de sombres pour la palette A, sélectionnables en direct dans le bac à sable (avec la palette A actuelle comme référence). La palette B (ambre/violet) est retirée.
+- [x] Tons clairs et moyens inchangés : cuivres, crème, sable, cuivre clair, alerte, bordures, texte désactivé.
+- [x] Tons sombres (fond, fenêtres, reliefs, séparateurs) assombris en OKLCH : même teinte, luminosité réduite, écarts réguliers entre fond, fenêtres et reliefs.
+- [x] Test automatique des contrastes pour chaque niveau.
+
+| Rôle                    | A (actuelle) | A1        | A2        | A3        |
+| ----------------------- | ------------ | --------- | --------- | --------- |
+| Fond du bureau          | `#143642`    | `#0B2B35` | `#031D26` | `#001017` |
+| Fenêtres, panneaux      | `#263C41`    | `#1E3337` | `#14262A` | `#09191C` |
+| Séparateurs             | `#38413F`    | `#323A38` | `#262D2C` | `#19201E` |
+| Relief clair            | `#4A473E`    | `#45423A` | `#38352D` | `#2A2821` |
+| Relief sombre, contours | `#0B232B`    | `#041920` | `#010D13` | `#000407` |
+
+| Contraste                     | A      | A1      | A2      | A3      |
+| ----------------------------- | ------ | ------- | ------- | ------- |
+| Texte sur fenêtres            | 8,89:1 | 10,13:1 | 11,97:1 | 13,74:1 |
+| Texte sur fond du bureau      | 9,80:1 | 11,37:1 | 13,28:1 | 14,76:1 |
+| Texte secondaire sur fenêtres | 5,07:1 | 5,77:1  | 6,82:1  | 7,83:1  |
+| Info importante sur fenêtres  | 5,44:1 | 6,20:1  | 7,32:1  | 8,41:1  |
+| Alerte sur fenêtres           | 3,34:1 | 3,80:1  | 4,49:1  | 5,16:1  |
+
 ## Points à valider par Loïc
 
-1. **Choix de palette** : A (cuivre/pétrole) ou B. Après validation, je mets à jour le GDD (6.2 et pilier 4 en 1.2) et `CLAUDE.md`, puis je retire la palette non retenue.
-2. **Texte désactivé** `#6F523B` : conforme à ta répartition, mais très peu lisible (1,63:1). Proposition : `#8A7358` (2,59:1), toujours discret mais déchiffrable.
-3. **Ajouts à la palette** : crème, sable, cuivre clair, rouge sourd, et un pétrole très sombre pour les reliefs et contours. Aucune couleur de ta palette de base n'est plus sombre que le fond des fenêtres, donc ce dernier ajout était nécessaire pour des reliefs nets.
-4. **Relâchement** : adouci de ma propre initiative, pour rester cohérent avec le nouvel appui. À confirmer à l'oreille.
+1. **Niveau de sombres** : A1, A2 ou A3. Ensuite : palette unique, suppression du sélecteur, mise à jour du GDD (6.2, pilier 4), de `CLAUDE.md` et de ce fichier, puis préparation de la pull request vers `main`.
+2. **Texte désactivé** `#6F523B` (question de la révision 1, toujours ouverte) : très peu lisible, et encore moins sur les fonds sombres. Proposition : `#8A7358`.
 
 ## À faire ensuite (J1, après validation)
 

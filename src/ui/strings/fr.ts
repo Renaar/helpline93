@@ -109,8 +109,10 @@ export const fr = {
 
     paletteSelector: {
       label: 'Palette :',
-      copper: 'A · Cuivre / pétrole',
-      classic: 'B · Ambre / violet (J0)',
+      copper: 'A · actuelle',
+      copper1: 'A1 · plus profond',
+      copper2: 'A2 · nettement plus profond',
+      copper3: 'A3 · proche du noir',
     },
 
     palette: {

@@ -8,10 +8,26 @@
   --cursor-wait: url('../../../assets/cursors/copper/wait.svg') 16 16, wait;
 }
 
-:root[data-palette='classic'] {
-  --cursor-arrow: url('../../../assets/cursors/classic/arrow.svg') 2 2, default;
-  --cursor-denied: url('../../../assets/cursors/classic/denied.svg') 2 2, not-allowed;
-  --cursor-hand: url('../../../assets/cursors/classic/hand.svg') 11 2, pointer;
-  --cursor-text: url('../../../assets/cursors/classic/text.svg') 16 16, text;
-  --cursor-wait: url('../../../assets/cursors/classic/wait.svg') 16 16, wait;
+:root[data-palette='copper1'] {
+  --cursor-arrow: url('../../../assets/cursors/copper1/arrow.svg') 2 2, default;
+  --cursor-denied: url('../../../assets/cursors/copper1/denied.svg') 2 2, not-allowed;
+  --cursor-hand: url('../../../assets/cursors/copper1/hand.svg') 11 2, pointer;
+  --cursor-text: url('../../../assets/cursors/copper1/text.svg') 16 16, text;
+  --cursor-wait: url('../../../assets/cursors/copper1/wait.svg') 16 16, wait;
+}
+
+:root[data-palette='copper2'] {
+  --cursor-arrow: url('../../../assets/cursors/copper2/arrow.svg') 2 2, default;
+  --cursor-denied: url('../../../assets/cursors/copper2/denied.svg') 2 2, not-allowed;
+  --cursor-hand: url('../../../assets/cursors/copper2/hand.svg') 11 2, pointer;
+  --cursor-text: url('../../../assets/cursors/copper2/text.svg') 16 16, text;
+  --cursor-wait: url('../../../assets/cursors/copper2/wait.svg') 16 16, wait;
+}
+
+:root[data-palette='copper3'] {
+  --cursor-arrow: url('../../../assets/cursors/copper3/arrow.svg') 2 2, default;
+  --cursor-denied: url('../../../assets/cursors/copper3/denied.svg') 2 2, not-allowed;
+  --cursor-hand: url('../../../assets/cursors/copper3/hand.svg') 11 2, pointer;
+  --cursor-text: url('../../../assets/cursors/copper3/text.svg') 16 16, text;
+  --cursor-wait: url('../../../assets/cursors/copper3/wait.svg') 16 16, wait;
 }
