@@ -25,7 +25,7 @@ export const appInfo: Record<AppId, AppInfo> = {
   phone: {
     icon: 'phone',
     title: 'apps.phone.title',
-    defaultRect: { x: 1330, y: 56, width: 540, height: 600 },
+    defaultRect: { x: 1110, y: 56, width: 780, height: 600 },
   },
   chat: {
     icon: 'chat',
@@ -35,7 +35,7 @@ export const appInfo: Record<AppId, AppInfo> = {
   viewer: {
     icon: 'viewer',
     title: 'apps.viewer.title',
-    defaultRect: { x: 560, y: 40, width: 1000, height: 900 },
+    defaultRect: { x: 520, y: 40, width: 1080, height: 900 },
   },
   helpdesk: {
     icon: 'helpdesk',
@@ -64,10 +64,10 @@ export const appInfo: Record<AppId, AppInfo> = {
  * right, ticket reduced at the bottom. The phone keeps a compact place bottom right.
  */
 export const callLayout: Partial<Record<AppId, Rect>> = {
-  chat: { x: 24, y: 24, width: 900, height: 660 },
-  helpdesk: { x: 24, y: 708, width: 900, height: 312 },
-  viewer: { x: 948, y: 24, width: 948, height: 660 },
-  phone: { x: 948, y: 708, width: 948, height: 312 },
+  chat: { x: 24, y: 24, width: 900, height: 600 },
+  helpdesk: { x: 24, y: 648, width: 900, height: 372 },
+  viewer: { x: 948, y: 24, width: 948, height: 600 },
+  phone: { x: 948, y: 648, width: 948, height: 372 },
 };
 
 /** Applications opened automatically when a call is answered. */

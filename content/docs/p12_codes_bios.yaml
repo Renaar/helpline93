@@ -1,0 +1,21 @@
+# Page provisoire (J1), reprise de l'exemple du GDD (7.5).
+id: p.12
+tab: Démarrage
+title: Codes sonores BIOS
+keywords: [bips, bip, bios, démarrage, écran noir, mémoire]
+revision: { night: 1 }
+body: |
+  ## Tableau des codes
+  Au démarrage, le BIOS signale les pannes matérielles par une série de bips.
+
+  | Bips | Signification | Procédure |
+  | 1 court | Démarrage normal | — |
+  | 1 long | Carte graphique | 14-A |
+  | 3 courts | Mémoire vive | 12-C |
+  | 1 long, 2 courts | Clavier | 16-B |
+
+  ## 12-C — Mémoire vive défectueuse
+  Faites éteindre l'ordinateur et ouvrir le boîtier. Retirez les barrettes **une par une**, en redémarrant après chaque retrait, jusqu'à ce que les bips cessent.
+
+  - Barrette en cause trouvée : code **R-07**.
+  - Aucun changement après tous les retraits : orienter vers l'atelier.

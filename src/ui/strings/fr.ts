@@ -8,14 +8,6 @@ export const fr = {
     title: 'HELPLINE93',
   },
 
-  home: {
-    os: 'HelplineOS',
-    milestone: 'Jalon J0 — fondations',
-    notice:
-      'Le poste sera allumable au jalon J1. En attendant, le bac à sable présente le kit « feel ».',
-    openSandbox: 'Ouvrir le bac à sable',
-  },
-
   format: {
     /** US phone numbers (the setting stays American, GDD 1.4). */
     phoneNumber: '({area}) {exchange}-{line}',
@@ -196,6 +188,7 @@ export const fr = {
     error: 'Erreur',
     warning: 'Avertissement',
     info: 'Information',
+    power: 'Marche / arrêt',
   },
 
   sandbox: {
@@ -242,6 +235,7 @@ export const fr = {
       menuOpen: 'Menu',
       dragPick: 'Prise',
       dragDrop: 'Pose',
+      pageTurn: 'Page',
       key: 'Touche',
       phoneRing: 'Sonnerie',
       phonePickup: 'Décrocher',
@@ -311,6 +305,29 @@ export const fr = {
       required: 'min. {minimum}:1',
       informative: 'indicatif',
       sample: 'Aa',
+    },
+
+    inputs: {
+      title: 'TextField · TypedText',
+      hint: 'Chaque touche donne un son de clavier feutré. Le champ refuse au-delà de 12 caractères.',
+      fieldLabel: 'Champ de démonstration',
+      placeholder: 'Tapez quelque chose…',
+      typed: 'Liaison établie. En attente de la transcription de l’appel…',
+      replay: 'Rejouer',
+    },
+
+    lamps: {
+      title: 'Voyants',
+      hint: 'Éteint, allumé, sonnerie, attente, urgence.',
+    },
+
+    window: {
+      title: 'Window95',
+      hint: 'Déplacer par la barre de titre (inertie légère au lâcher), réduire, fermer.',
+      open: 'Ouvrir',
+      restore: 'Restaurer',
+      windowTitle: 'Fenêtre de démonstration',
+      body: 'Contenu de la fenêtre.',
     },
 
     settings: {

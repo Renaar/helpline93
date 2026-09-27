@@ -6,12 +6,15 @@ import { ContrastDemo } from './ContrastDemo.tsx';
 import { CursorsDemo } from './CursorsDemo.tsx';
 import { EngineDemo } from './EngineDemo.tsx';
 import { FeedbackDemo } from './FeedbackDemo.tsx';
+import { InputsDemo } from './InputsDemo.tsx';
+import { LampsDemo } from './LampsDemo.tsx';
 import { PaletteDemo } from './PaletteDemo.tsx';
 import { PressableDemo } from './PressableDemo.tsx';
 import styles from './Sandbox.module.css';
 import { SettingsDemo } from './SettingsDemo.tsx';
 import { SoundsDemo } from './SoundsDemo.tsx';
 import { TypographyDemo } from './TypographyDemo.tsx';
+import { WindowDemo } from './WindowDemo.tsx';
 
 /** `?sandbox` — every feel-kit primitive, to test the game feel in isolation (GDD 10.5). */
 export function Sandbox() {
@@ -34,12 +37,15 @@ export function Sandbox() {
         <div className={styles.column}>
           <ButtonsDemo />
           <FeedbackDemo />
+          <InputsDemo />
           <SoundsDemo />
           <SettingsDemo />
         </div>
         <div className={styles.column}>
           <PressableDemo />
+          <WindowDemo />
           <EngineDemo />
+          <LampsDemo />
         </div>
         <div className={styles.column}>
           <TypographyDemo />

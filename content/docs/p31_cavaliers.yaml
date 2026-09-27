@@ -1,0 +1,19 @@
+# Page provisoire (J1) : sert à tester la Visionneuse. Contenu définitif : J3.
+id: p.31
+tab: Cartes mères
+title: Cavaliers de la carte HX-486
+keywords: [cavalier, jumper, carte mère, hx-486, processeur, fréquence, jp]
+revision: { night: 1 }
+body: |
+  ## 31-A — Repérer les cavaliers
+  Les cavaliers **JP1** à **JP6** se trouvent entre le processeur et les emplacements mémoire. Chaque cavalier relie deux broches sur trois.
+
+  | Cavalier | Rôle | Position usine |
+  | JP1 | Fréquence du bus | 1-2 |
+  | JP3 | Effacement CMOS | 1-2 |
+  | JP5 | Tension processeur | 2-3 |
+
+  ## 31-B — Effacer la configuration (CMOS)
+  Ordinateur éteint, placez **JP3** en position 2-3 pendant dix secondes, puis remettez-le en 1-2.
+
+  > Ne jamais modifier JP5 à distance.

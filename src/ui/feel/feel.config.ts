@@ -34,6 +34,7 @@ export const feelConfig = {
       'menu.open': 0.08,
       'drag.pick': 0.08,
       'drag.drop': 0.1,
+      'page.turn': 0.14,
       'key.press': 0.12,
       'phone.ring': 0.22,
       'phone.pickup': 0.3,
@@ -72,10 +73,15 @@ export const feelConfig = {
   },
 
   lamp: {
-    /** Indicator lamp used in the sandbox engine demo. */
+    /** Indicator lamps (phone lines, notification area). */
     onMs: 90,
     offMs: 600,
+    /** Sandbox engine demo: how long the lamp stays lit. */
     holdMs: 900,
+    /** Full blink cycles: ringing, urgent, and the slow pulse of a line on hold. */
+    blinkSlowMs: 1000,
+    blinkFastMs: 360,
+    pulseMs: 2200,
   },
 
   window: {
@@ -144,6 +150,9 @@ export function feelCssVariables(config: FeelConfig = feelConfig): Record<string
     '--feel-lamp-on': `${config.lamp.onMs}ms`,
     '--feel-lamp-off': `${config.lamp.offMs}ms`,
     '--feel-caret-blink': `${config.typing.caretBlinkMs}ms`,
+    '--feel-blink-slow': `${config.lamp.blinkSlowMs}ms`,
+    '--feel-blink-fast': `${config.lamp.blinkFastMs}ms`,
+    '--feel-pulse': `${config.lamp.pulseMs}ms`,
     '--feel-boot-fade': `${config.boot.loginFadeMs}ms`,
   };
 }

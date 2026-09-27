@@ -1,0 +1,19 @@
+.spacer {
+  flex: 1;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--field-min-width), 1fr));
+  gap: var(--space-3) var(--space-5);
+  align-content: start;
+}
+
+.field dt {
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+.field dd {
+  margin: 0;
+}

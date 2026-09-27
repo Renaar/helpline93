@@ -1,0 +1,64 @@
+.menu {
+  position: absolute;
+  bottom: var(--taskbar-height);
+  left: var(--space-1);
+  z-index: var(--z-menu);
+  display: flex;
+  min-width: var(--start-menu-width);
+  padding: var(--bevel-width);
+  border-radius: var(--radius-sm);
+  background: var(--color-panel);
+  box-shadow: var(--outline-default), var(--bevel-raised), var(--shadow-window);
+}
+
+/* Vertical brand stripe, in the spirit of 1993 start menus. */
+.brand {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: var(--start-menu-brand-width);
+  padding-bottom: var(--space-3);
+  background: linear-gradient(0deg, var(--color-accent-deep), var(--color-accent));
+}
+
+.brandText {
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.items {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: var(--space-1) 0;
+}
+
+.item {
+  justify-content: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  height: var(--menu-item-height);
+  padding: 0 var(--space-5) 0 var(--space-3);
+  border-radius: 0;
+  font-size: var(--text-md);
+}
+
+.item:hover:not([aria-disabled='true']) {
+  background: var(--color-selection);
+}
+
+.item[data-pressed] {
+  background: var(--color-selection);
+}
+
+.separator {
+  width: calc(100% - 2 * var(--space-2));
+  margin: var(--space-1) var(--space-2);
+  border: 0;
+  border-top: var(--bevel-width) solid var(--color-bevel-dark);
+  border-bottom: var(--bevel-width) solid var(--color-bevel-light);
+}

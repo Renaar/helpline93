@@ -1,0 +1,23 @@
+.button {
+  width: var(--button-height);
+  height: var(--button-height);
+  background: var(--color-panel);
+  box-shadow: var(--bevel-raised);
+  color: var(--color-text);
+}
+
+.button[data-pressed] {
+  box-shadow: var(--bevel-sunken);
+}
+
+.button[data-pressed] svg {
+  transform: translate(var(--press-offset), var(--press-offset));
+}
+
+.button[aria-disabled='true'] {
+  color: var(--color-text-disabled);
+}
+
+.button:focus-visible {
+  box-shadow: var(--bevel-raised), var(--focus-halo);
+}

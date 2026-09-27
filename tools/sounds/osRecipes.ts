@@ -57,7 +57,27 @@ function sweep(seed: number, from: number, to: number, length: number): Recipe {
   };
 }
 
+/** Paper page turning: a soft, band-limited rustle that swells and fades. */
+function pageTurn(seed: number, length: number): Recipe {
+  return {
+    seed,
+    render: (rng) => {
+      const s = buffer(length);
+      let y = 0;
+      for (let i = 0; i < s.length; i++) {
+        const p = i / s.length;
+        const swell = Math.sin(Math.PI * p) ** 1.5;
+        y += 0.35 * (rng() * 2 - 1 - y);
+        s[i] = y * swell * (0.7 + 0.3 * Math.sin(p * 40));
+      }
+      return normalize(highpass(s, 0.06), 0.4);
+    },
+  };
+}
+
 export const osRecipes: Record<string, Recipe> = {
+  'page-turn-1': pageTurn(622, 0.22),
+  'page-turn-2': pageTurn(623, 0.26),
   // Power switch: a soft, low clack.
   'os-power-1': {
     seed: 601,

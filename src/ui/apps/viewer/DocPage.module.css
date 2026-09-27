@@ -1,0 +1,131 @@
+/* A printed page: cream paper, petrol ink, serif body. Sizes follow the Viewer zoom. */
+.page {
+  position: relative;
+  width: calc(var(--doc-page-width) * var(--doc-zoom));
+  margin: 0 auto;
+  padding: calc(var(--doc-page-padding) * var(--doc-zoom));
+  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: calc(var(--doc-font-size) * var(--doc-zoom));
+  line-height: var(--line-height-body);
+  user-select: text;
+  cursor: var(--cursor-text);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: calc(var(--space-1) * var(--doc-zoom));
+  border-bottom: var(--bevel-width) solid var(--color-ink-soft);
+  font-family: var(--font-sans);
+  font-size: 0.72em;
+  color: var(--color-ink-soft);
+}
+
+.service {
+  margin: calc(var(--space-1) * var(--doc-zoom)) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.66em;
+  color: var(--color-ink-soft);
+  letter-spacing: 0.04em;
+}
+
+/* Revision stamp, slightly askew like a rubber stamp. */
+.stamp {
+  position: absolute;
+  top: calc(var(--doc-page-padding) * var(--doc-zoom) * 1.4);
+  right: calc(var(--doc-page-padding) * var(--doc-zoom));
+  padding: 0.1em 0.5em;
+  border: calc(var(--bevel-width) * 2) solid var(--color-stamp);
+  border-radius: var(--radius-sm);
+  color: var(--color-stamp);
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  opacity: 0.85;
+}
+
+.chapter {
+  margin: 1.6em 0 0;
+  font-family: var(--font-sans);
+  font-size: 0.75em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-stamp);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0.1em 0 0.8em;
+  font-size: 1.7em;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.h2 {
+  margin: 1.4em 0 0.4em;
+  font-size: 1.15em;
+  font-weight: var(--font-weight-bold);
+}
+
+.h3 {
+  margin: 1.2em 0 0.3em;
+  font-size: 1em;
+  font-weight: var(--font-weight-semibold);
+}
+
+.paragraph {
+  margin: 0 0 0.7em;
+}
+
+.list {
+  margin: 0 0 0.7em;
+  padding-left: 1.4em;
+}
+
+.table {
+  width: 100%;
+  margin: 0.4em 0 1em;
+  border-collapse: collapse;
+  font-size: 0.92em;
+}
+
+.table th,
+.table td {
+  padding: 0.3em 0.6em;
+  border: var(--bevel-width) solid var(--color-ink-soft);
+  text-align: left;
+}
+
+.table th {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+}
+
+.note {
+  margin: 1em 0;
+  padding: 0.5em 0.8em;
+  border-left: calc(var(--bevel-width) * 3) solid var(--color-stamp);
+  font-style: italic;
+}
+
+.footer {
+  margin-top: 2em;
+  font-family: var(--font-sans);
+  font-size: 0.72em;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+.page mark {
+  border-radius: var(--radius-sm);
+  background: var(--color-mark);
+  color: inherit;
+}

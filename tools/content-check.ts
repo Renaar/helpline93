@@ -1,13 +1,14 @@
 /**
  * Validates the YAML content in content/ (GDD 7.10).
- * J0 scope: every file parses, and every top-level `id` is unique across all content.
- * Zod schemas, broken references and capture tags arrive with J2.
+ * Every file parses, every top-level `id` is unique across all content, and documentation
+ * pages match their schema. Missions, references and capture tags arrive with J2.
  * Usage: npm run content:check
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseDocument } from 'yaml';
+import { docPageSchema, manualSchema } from '../src/content/schemas.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT_DIR = join(ROOT, 'content');
@@ -33,6 +34,15 @@ for (const file of files) {
   const data: unknown = document.toJS();
   if (typeof data !== 'object' || data === null || !('id' in data)) continue;
   const id = String(data.id);
+  if (relative(CONTENT_DIR, file).startsWith('docs')) {
+    const schema = id === 'manual' ? manualSchema : docPageSchema;
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        errors.push(`${name}: ${issue.path.join('.') || '(root)'} — ${issue.message}`);
+      }
+    }
+  }
   const owner = idOwners.get(id);
   if (owner !== undefined) errors.push(`${name}: duplicate id "${id}" (already used in ${owner})`);
   else idOwners.set(id, name);

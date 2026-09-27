@@ -17,6 +17,12 @@
   --color-hover-overlay: color-mix(in srgb, var(--color-highlight) 7%, transparent);
   --color-press-overlay: color-mix(in srgb, var(--color-bevel-dark) 18%, transparent);
   /* Text sits on the left, on the deep accent (contrast), fading to the vivid accent. */
+  /* Printed documents (Viewer): cream paper, petrol ink, copper stamps. */
+  --color-paper: var(--color-text);
+  --color-ink: var(--color-bevel-dark);
+  --color-ink-soft: color-mix(in srgb, var(--color-bevel-dark) 65%, var(--color-text));
+  --color-stamp: var(--color-accent-deep);
+  --color-mark: color-mix(in srgb, var(--color-highlight) 55%, transparent);
   --gradient-titlebar-active: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent));
 
   /* Fonts (GDD 6.3) */
@@ -64,6 +70,7 @@
   --shadow-window: 0 10px 28px color-mix(in srgb, var(--color-bevel-dark) 55%, transparent);
   --press-offset: 1px;
   --opacity-disabled: 0.4;
+  --opacity-muted: 0.55;
 
   /* Component sizes */
   --titlebar-height: 36px;
@@ -81,4 +88,32 @@
   --swatch-size: 72px;
   --lamp-size: 18px;
   --sandbox-column: 880px;
+  --taskbar-button-height: 40px;
+  --taskbar-task-width: 220px;
+  --tray-icon-size: 36px;
+  --start-menu-width: 360px;
+  --start-menu-brand-width: 40px;
+  --menu-item-height: 48px;
+  --toast-width: 420px;
+  --desktop-icon-width: 120px;
+  --tab-height: 36px;
+  --phone-line-height: 56px;
+  --phone-line-name-width: 96px;
+  --phone-status-width: 150px;
+  --phone-button-width: 112px;
+  --empty-hint-width: 420px;
+  --field-min-width: 220px;
+  --doc-page-width: 600px;
+  --doc-page-padding: 40px;
+  --doc-font-size: 16px;
+  --viewer-sidebar-width: 300px;
+  --viewer-label-width: 112px;
+  --login-width: 640px;
+  --sandbox-window-area: 300px;
+
+  /* Stacking (windows use 1…n) */
+  --z-toast: 900;
+  --z-taskbar: 1000;
+  --z-menu: 1001;
+  --z-debug: 2000;
 }

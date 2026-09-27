@@ -28,6 +28,7 @@ export const soundDefinitions = {
   'menu.open': { category: 'ui', variants: ['menu-open-1'] },
   'drag.pick': { category: 'ui', variants: ['drag-pick-1'] },
   'drag.drop': { category: 'ui', variants: ['drag-drop-1'] },
+  'page.turn': { category: 'ui', variants: ['page-turn-1', 'page-turn-2'] },
   'key.press': { category: 'ui', variants: ['key-1', 'key-2', 'key-3', 'key-4'] },
   'phone.ring': { category: 'phone', variants: ['phone-ring-1'] },
   'phone.pickup': { category: 'phone', variants: ['phone-pickup-1'] },

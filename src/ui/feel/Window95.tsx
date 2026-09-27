@@ -6,6 +6,7 @@ import type { IconName } from '../icons/iconArt.ts';
 import { PixelIcon } from '../icons/PixelIcon.tsx';
 import { useSettings } from '../settings/settingsStore.ts';
 import { DESKTOP_AREA, TITLEBAR_HEIGHT, WINDOW_KEEP_VISIBLE, type Rect } from '../theme/layout.ts';
+import { audio } from './audio.ts';
 import { feelConfig, ms } from './feel.config.ts';
 import { Pressable } from './Pressable.tsx';
 import { useDrag } from './useDrag.ts';
@@ -127,6 +128,7 @@ export function Window95({
     const first = !mounted.current;
     mounted.current = true;
     if (phase === 'open') {
+      audio.play(first ? 'window.open' : 'window.restore');
       if (first)
         setPose(
           valuesRef.current,
@@ -138,9 +140,11 @@ export function Window95({
         setPose(valuesRef.current, poseOver(rect, minimizeTo, 0));
       animateTo(openPose, feelConfig.window.openSpring);
     } else if (phase === 'minimized') {
+      audio.play('window.minimize');
       const target = minimizeTo ?? { ...rect, y: DESKTOP_AREA.height, height: rect.height / 4 };
       animateTo(poseOver(rect, target, 0), feelConfig.window.minimizeSpring);
     } else {
+      audio.play('window.close');
       const transition = {
         duration: reducedMotion ? 0 : ms(feelConfig.window.closeMs),
         ease: 'easeIn' as const,
