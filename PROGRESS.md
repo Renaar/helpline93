@@ -2,9 +2,16 @@
 
 ## Jalon en cours
 
-**J1 — Interface HelplineOS** : révision 3 livrée, **à retester par Loïc avant validation**.
-Prochain jalon après validation : **J2 — Système de communication**.
-Branche : `claude/j1-interface-helplineos` (partie de J0, PR J0 : https://github.com/Renaar/helpline93/pull/1).
+**J2 — Système de communication** : à démarrer, sur une nouvelle branche `j2` créée depuis `main` à jour (règle « Branches et fusions » de `CLAUDE.md`).
+
+## Jalons terminés
+
+| Jalon                         | État                                                      | Fusion dans `main`     | Tag         |
+| ----------------------------- | --------------------------------------------------------- | ---------------------- | ----------- |
+| **J0 — Fondations**           | ✅ terminé, validé par Loïc, fusionné                     | merge commit `2ae1fbb` | `j0-valide` |
+| **J1 — Interface HelplineOS** | ✅ terminé, validé par Loïc (effet VHS compris), fusionné | merge commit `7e02b48` | `j1-valide` |
+
+Branches d'origine conservées : `claude/loving-johnson-w3ytfi` (J0), `claude/j1-interface-helplineos` (J1).
 
 ---
 
@@ -118,9 +125,9 @@ Validé, ne plus toucher : comportement des fenêtres (ouverture, déplacement, 
 - **Arrêter le poste** revient à l'écran éteint ; la session (heure, appels, fenêtres) est conservée si on rallume.
 - Pas de redimensionnement des fenêtres ni de déplacement des icônes du bureau (absents du GDD) : à ajouter si le test le demande.
 
-### Point à valider par Loïc
+### Validation
 
-1. **Retest de la révision 3** (redimensionnement, « ▶▶ » centré, ouverture silencieuse), puis validation du J1.
+J1 validé par Loïc après la révision 3, puis fusionné dans `main` (tag `j1-valide`).
 
 ---
 
