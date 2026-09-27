@@ -1,20 +1,19 @@
 /**
  * Writes the generated theme files:
- *  - src/ui/theme/palettes.css — one CSS variable per palette role, for every palette;
- *  - assets/cursors/<palette>/*.svg — pixel-art cursors in each palette's colours;
- *  - src/ui/theme/cursors.css — one CSS variable per cursor (hotspot included), per palette.
+ *  - src/ui/theme/palette.css — one CSS variable per palette role;
+ *  - assets/cursors/*.svg — pixel-art cursors in the palette colours;
+ *  - src/ui/theme/cursors.css — one CSS variable per cursor (hotspot included).
  * Usage: npm run theme:generate (after editing palette.ts or cursorArt.ts).
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { paletteNames } from '../src/ui/theme/palette.ts';
 import {
   cursorFile,
   cursorNames,
   renderCursorSvg,
   renderCursorsCss,
-  renderPalettesCss,
+  renderPaletteCss,
 } from './themeCss.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -27,10 +26,8 @@ function write(path: string, content: string): void {
   console.log(`wrote ${path}`);
 }
 
-write(join(THEME_DIR, 'palettes.css'), renderPalettesCss());
+write(join(THEME_DIR, 'palette.css'), renderPaletteCss());
 write(join(THEME_DIR, 'cursors.css'), renderCursorsCss());
-for (const palette of paletteNames) {
-  for (const cursor of cursorNames) {
-    write(join(CURSOR_DIR, cursorFile(palette, cursor)), renderCursorSvg(palette, cursor));
-  }
+for (const cursor of cursorNames) {
+  write(join(CURSOR_DIR, cursorFile(cursor)), renderCursorSvg(cursor));
 }

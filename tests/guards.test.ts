@@ -10,13 +10,12 @@ import { soundDefinitions } from '../src/audio/soundDefinitions.ts';
 import { cursorArt } from '../src/ui/icons/cursorArt.ts';
 import { iconArt } from '../src/ui/icons/iconArt.ts';
 import { validatePixelArt } from '../src/ui/icons/pixelArt.ts';
-import { paletteNames } from '../src/ui/theme/palette.ts';
 import {
   cursorFile,
   cursorNames,
   renderCursorSvg,
   renderCursorsCss,
-  renderPalettesCss,
+  renderPaletteCss,
 } from '../tools/themeCss.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -47,13 +46,11 @@ const cssFiles = listFiles(SRC, /\.css$/).filter(outsideTheme);
 
 describe('theme', () => {
   it('has generated files up to date with palette.ts and cursorArt.ts (npm run theme:generate)', () => {
-    expect(readFileSync(join(THEME, 'palettes.css'), 'utf8')).toBe(renderPalettesCss());
+    expect(readFileSync(join(THEME, 'palette.css'), 'utf8')).toBe(renderPaletteCss());
     expect(readFileSync(join(THEME, 'cursors.css'), 'utf8')).toBe(renderCursorsCss());
-    for (const palette of paletteNames) {
-      for (const cursor of cursorNames) {
-        const file = join(ROOT, 'assets', 'cursors', cursorFile(palette, cursor));
-        expect(readFileSync(file, 'utf8'), file).toBe(renderCursorSvg(palette, cursor));
-      }
+    for (const cursor of cursorNames) {
+      const file = join(ROOT, 'assets', 'cursors', cursorFile(cursor));
+      expect(readFileSync(file, 'utf8'), file).toBe(renderCursorSvg(cursor));
     }
   });
 

@@ -1,11 +1,9 @@
-import { useSettings } from '../../ui/settings/settingsStore.ts';
 import { t } from '../../ui/strings/i18n.ts';
-import { paletteCssVar, paletteRoles, palettes } from '../../ui/theme/palette.ts';
+import { paletteCssVar, palette, paletteRoles } from '../../ui/theme/palette.ts';
 import styles from './Sandbox.module.css';
 import { Section } from './Section.tsx';
 
 export function PaletteDemo() {
-  const palette = palettes[useSettings((state) => state.palette)];
   return (
     <Section title={t('sandbox.palette.title')}>
       <div className={styles.swatches}>

@@ -16,7 +16,7 @@ Chaque asset du jeu est listé ici avec sa licence (GDD 8.8 et 9.4). Aucune lice
 
 ## Images
 
-| Asset                               | Fichiers                                                       | Auteur                       | Licence             |
-| ----------------------------------- | -------------------------------------------------------------- | ---------------------------- | ------------------- |
-| Icônes provisoires (grille 32 × 32) | `src/ui/icons/iconArt.ts`                                      | Création originale du projet | Propriété du projet |
-| Curseurs (un jeu par palette)       | `src/ui/icons/cursorArt.ts` → `assets/cursors/<palette>/*.svg` | Création originale du projet | Propriété du projet |
+| Asset                               | Fichiers                                             | Auteur                       | Licence             |
+| ----------------------------------- | ---------------------------------------------------- | ---------------------------- | ------------------- |
+| Icônes provisoires (grille 32 × 32) | `src/ui/icons/iconArt.ts`                            | Création originale du projet | Propriété du projet |
+| Curseurs                            | `src/ui/icons/cursorArt.ts` → `assets/cursors/*.svg` | Création originale du projet | Propriété du projet |

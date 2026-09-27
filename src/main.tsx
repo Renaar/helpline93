@@ -4,13 +4,11 @@ import { App } from './App.tsx';
 import { audio } from './ui/feel/audio.ts';
 import { feelCssVariables } from './ui/feel/feel.config.ts';
 import { t } from './ui/strings/i18n.ts';
-import { syncPaletteWithSettings } from './ui/theme/applyPalette.ts';
 import './ui/theme/global.css';
 
 for (const [name, value] of Object.entries(feelCssVariables())) {
   document.documentElement.style.setProperty(name, value);
 }
-syncPaletteWithSettings();
 document.title = t('app.title');
 audio.startOnFirstGesture();
 

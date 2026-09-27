@@ -1,8 +1,7 @@
 import { PixelIcon } from '../../ui/icons/PixelIcon.tsx';
-import { useSettings } from '../../ui/settings/settingsStore.ts';
 import { formatNumber, t } from '../../ui/strings/i18n.ts';
 import { contrastRatio } from '../../ui/theme/contrast.ts';
-import { contrastPairs, paletteCssVar, palettes } from '../../ui/theme/palette.ts';
+import { contrastPairs, palette, paletteCssVar } from '../../ui/theme/palette.ts';
 import styles from './Sandbox.module.css';
 import { Section } from './Section.tsx';
 
@@ -15,7 +14,6 @@ const twoDecimals: Intl.NumberFormatOptions = {
 
 /** Live WCAG contrast of the active palette's text/background pairs. */
 export function ContrastDemo() {
-  const palette = palettes[useSettings((state) => state.palette)];
   return (
     <Section
       title={t('sandbox.contrast.title')}

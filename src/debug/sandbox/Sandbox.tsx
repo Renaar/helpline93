@@ -7,7 +7,6 @@ import { CursorsDemo } from './CursorsDemo.tsx';
 import { EngineDemo } from './EngineDemo.tsx';
 import { FeedbackDemo } from './FeedbackDemo.tsx';
 import { PaletteDemo } from './PaletteDemo.tsx';
-import { PaletteSelector } from './PaletteSelector.tsx';
 import { PressableDemo } from './PressableDemo.tsx';
 import styles from './Sandbox.module.css';
 import { SettingsDemo } from './SettingsDemo.tsx';
@@ -23,7 +22,6 @@ export function Sandbox() {
           <h1 className={styles.title}>{t('sandbox.title')}</h1>
           <p className={styles.intro}>{t('sandbox.intro')}</p>
         </div>
-        <PaletteSelector />
         <Button95
           onPress={() => {
             navigateTo('game');

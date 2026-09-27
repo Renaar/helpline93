@@ -193,11 +193,6 @@
   color: var(--color-text-dim);
 }
 
-.selectorLabel {
-  font-size: var(--text-md);
-  color: var(--color-text-dim);
-}
-
 .contrastList {
   display: flex;
   flex-direction: column;

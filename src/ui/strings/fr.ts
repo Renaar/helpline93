@@ -107,16 +107,8 @@ export const fr = {
       serifBold: '12-C — Mémoire vive défectueuse',
     },
 
-    paletteSelector: {
-      label: 'Palette :',
-      copper: 'A · actuelle',
-      copper1: 'A1 · plus profond',
-      copper2: 'A2 · nettement plus profond',
-      copper3: 'A3 · proche du noir',
-    },
-
     palette: {
-      title: 'Palette active — rôles',
+      title: 'Palette — rôles',
       roles: {
         desktop: 'Fond du bureau',
         surface: 'Fenêtres, panneaux',

@@ -1,13 +1,13 @@
 /*
  * HelplineOS design tokens (GDD 6 and 8.4).
- * With palettes.css (generated), the only place where colours, sizes and fonts are written.
+ * With palette.css (generated), the only place where colours, sizes and fonts are written.
  * Components use these variables.
  * Durations and curves live in src/ui/feel/feel.config.ts (exposed as --feel-* variables).
  */
 :root {
   /*
    * Colours: the raw palette roles (--color-desktop, --color-text, --color-accent…) come from
-   * palettes.css, generated from palette.ts. Below: roles derived from them.
+   * palette.css, generated from palette.ts. Below: roles derived from them.
    */
   --color-letterbox: var(--color-desktop);
   --color-panel: var(--color-surface);

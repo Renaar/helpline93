@@ -1,6 +1,6 @@
 # HELPLINE93 — Game Design Document
 
-> Version 1.2 — prête pour le démarrage du développement
+> Version 1.3 — palette cuivre / pétrole et sons feutrés (validés au J0)
 > Destinataire final : Claude Code (implémentation de l'interface et des systèmes)
 
 ---
@@ -22,7 +22,7 @@ Peu à peu, tu comprends que la hotline sert de **relais à un réseau clandesti
 | 1 | **La procédure comme gameplay** | Le plaisir vient de bien faire : chercher, régler, valider, attendre le résultat. |
 | 2 | **La double lecture** | Chaque document, code ou appel a un sens banal ET un sens caché. |
 | 3 | **Tension sans game over** | Les erreurs ne font jamais recommencer : elles changent l'histoire. |
-| 4 | **Néo-rétro** | Structure 1993, finition 2026 : l'ossature d'un OS façon Win95 (HelplineOS) rendue avec la netteté, la typographie et la fluidité d'une interface moderne. Palette ambre / bleu nuit / violet. **Aucun filtre CRT.** Voir section 6. |
+| 4 | **Néo-rétro** | Structure 1993, finition 2026 : l'ossature d'un OS façon Win95 (HelplineOS) rendue avec la netteté, la typographie et la fluidité d'une interface moderne. Palette cuivre / pétrole : sombres pétrole profonds, texte crème, accents cuivrés. **Aucun filtre CRT.** Voir section 6. |
 | 5 | **L'interface EST le jeu** | **Tout se passe dans HelplineOS**, en plein écran : pas de décor autour, pas de bureau physique. Aucun autre moyen d'agir : chaque clic, glissement, frappe doit être ultra satisfaisant à voir, entendre et manipuler. Priorité n°1 de l'implémentation. |
 
 ### 1.3 Références
@@ -134,7 +134,7 @@ Peu à peu, tu comprends que la hotline sert de **relais à un réseau clandesti
 
 | Type | Signal | Règle |
 |------|--------|-------|
-| **Libre** | Sonnerie normale, voyant ambre | Pas de limite de temps. L'appelant attend patiemment. |
+| **Libre** | Sonnerie normale, voyant cuivré | Pas de limite de temps. L'appelant attend patiemment. |
 | **Urgent** | Sonnerie stridente, voyant rouge rapide | Jauge de situation dynamique (voir 4.10). Situation perdue = conséquence narrative (l'appelant raccroche, panique, agit seul). |
 
 - Tout minuteur est **diégétique** : jamais de compte à rebours en HUD. Il se lit dans l'interface (voyant de ligne qui accélère dans l'app Téléphone, icône qui clignote dans la barre des tâches, appelant qui écrit en fragments, sons qui montent).
@@ -273,12 +273,12 @@ L'interface est l'unique moyen d'agir. **Rien ne doit être mort, plat ou instan
 **Détails attendus côté écran :**
 - Boutons Win95 qui s'enfoncent (inversion du relief biseauté, décalage de 1 px du texte).
 - Fenêtres qui s'ouvrent avec l'effet de rectangle qui « explose » depuis l'icône.
-- Curseurs d'époque en ambre (flèche, sablier, main, texte).
+- Curseurs d'époque crème à contour pétrole (flèche, sablier, main, texte).
 - Frappe clavier : son de clavier mécanique à chaque touche, caret clignotant.
 
 **Style visuel de l'écran (pas de filtre CRT) :**
 - Interface old school nette : pixels francs, reliefs biseautés, pas de flou ni de lignes de balayage.
-- Palette **ambre / bleu nuit / violet** (voir section 6).
+- Palette **cuivre / pétrole** (voir section 6).
 - Allumage du poste : bref « clac » d'interrupteur + ronronnement du disque dur, puis séquence BIOS.
 
 ### 5.2 Une seule vue : HelplineOS en plein écran
@@ -341,7 +341,7 @@ HelplineOS reprend **l'ossature** d'un OS de bureau du début des années 90 (fe
 | Reliefs biseautés 1 px clair / 1 px sombre | Reliefs fins et nets, jamais baveux |
 | Icônes sur grille de pixels | Icônes vectorielles (SVG) sur grille : pixels parfaitement nets à toute taille |
 | Barre des tâches, menu Démarrer, zone de notification | Transitions animées, survols subtils, micro-interactions |
-| Couleurs franches, peu de nuances | Dégradés discrets (ex. barre de titre active violet → violet sombre), halo ambre léger sur l'élément ciblé |
+| Couleurs franches, peu de nuances | Dégradés discrets (ex. barre de titre active cuivre profond → cuivre), halo cuivré léger sur l'élément ciblé |
 | Polices système bitmap | Famille **IBM Plex**, anti-aliasée, hiérarchie typographique claire |
 | Boîtes de dialogue, sabliers, sons système | Rythme maîtrisé : latences mises en scène, jamais pénibles |
 
@@ -349,19 +349,39 @@ HelplineOS reprend **l'ossature** d'un OS de bureau du début des années 90 (fe
 
 ### 6.2 Palette
 
-| Rôle | Couleur | Hex proposé | Usage |
-|------|---------|-------------|-------|
-| Fond | Bleu nuit profond | `#0B1026` | Fond du bureau HelplineOS |
-| Surfaces | Bleu nuit | `#1A2248` | Fenêtres, barre des tâches, panneaux |
-| Reliefs | Bleu nuit clair / sombre | `#2E3A6E` / `#060914` | Biseaux des boutons et fenêtres |
-| Texte / accent principal | Ambre | `#FFB000` | Texte, icônes, curseurs, infos importantes |
-| Ambre atténué | Ambre sombre | `#B37A00` | Texte secondaire, éléments désactivés |
-| Sélection / accent secondaire | Violet | `#7B5BD6` | Barre de titre active, sélection, survol, focus |
-| Violet sombre | Violet profond | `#3D2A73` | Barre de titre inactive |
-| Alerte | Rouge ambré | `#FF5A36` | Appels urgents, erreurs (usage rare) |
+**Cuivre → pétrole**, validée au J0 : des sombres pétrole/brun profonds, un texte crème chaud, des accents cuivrés. Une palette sobre et reposante pour de longues sessions de nuit.
 
-- Contraste texte/fond conforme à la lisibilité (ambre sur bleu nuit ≈ 10:1).
-- Le violet sert d'accent secondaire et de « signature » moderne ; l'ambre reste la couleur de l'information.
+Les couleurs sont définies **par rôle** dans `src/ui/theme/palette.ts` (source unique) ; `npm run theme:generate` en produit les variables CSS et les curseurs.
+
+| Rôle | Couleur | Hex | Usage |
+|------|---------|-----|-------|
+| Fond du bureau | Pétrole profond | `#0B2B35` | Fond de HelplineOS, zones en creux, bandes autour de l'écran |
+| Surfaces | Pétrole grisé | `#1E3337` | Fenêtres, barre des tâches, panneaux |
+| Relief clair | Brun-gris | `#45423A` | Arête claire des biseaux |
+| Relief sombre, contours | Pétrole très sombre | `#041920` | Arête sombre des biseaux, contours des icônes et curseurs |
+| Séparateurs | Gris-vert | `#323A38` | Lignes de séparation |
+| Bordures | Brun neutre | `#5C4D3C` | Bordures, barres de défilement |
+| Texte désactivé | Brun clair | `#8A7358` | Éléments désactivés |
+| Texte | Crème chaud | `#EFDFC6` | Texte courant, icônes (aplat clair) |
+| Texte secondaire | Sable | `#BDA88C` | Aides, légendes, texte secondaire |
+| Info importante | Cuivre clair | `#E9A263` | Infos importantes et capturables, halo de focus, survol |
+| Accent vif | Cuivre | `#B76935` | Icônes, dégradés (jamais comme fond de texte) |
+| Accent profond | Cuivre profond | `#815839` | Sélection, barre de titre active (fond portant du texte) |
+| Alerte | Rouge sourd | `#D9656B` | Appels urgents, erreurs (voyants, icônes ; usage rare) |
+
+**Contrastes (WCAG 2)**, vérifiés par un test automatique : minimum **4,5:1** pour tout texte courant, 3:1 pour les signaux.
+
+| Texte | Fond | Contraste |
+|-------|------|-----------|
+| Texte | Surfaces / fond du bureau | 10,13:1 / 11,37:1 |
+| Texte | Accent profond (sélection) | 4,73:1 |
+| Texte secondaire | Surfaces / fond du bureau | 5,77:1 / 6,48:1 |
+| Info importante | Surfaces / fond du bureau | 6,20:1 / 6,95:1 |
+| Alerte (signal) | Surfaces | 3,80:1 |
+| Texte désactivé (indicatif) | Surfaces | 2,95:1 |
+
+- Le crème est la couleur du texte ; le cuivre clair signale l'information importante ; le cuivre porte les accents.
+- Hiérarchie des sombres : relief sombre < fond du bureau < surfaces < séparateurs < relief clair. Ces tons ne doivent jamais se confondre.
 
 ### 6.3 Typographie : famille IBM Plex
 
@@ -381,11 +401,11 @@ Licence **SIL Open Font License** (usage commercial libre). Polices **auto-hébe
 ### 6.4 Icônes
 
 - **Style néo-rétro original** : dessinées sur une **grille de 32 × 32 pixels**, affichées à 48 px (facteur 1,5) ou 64 px, en **SVG** pour rester nettes.
-- **Palette restreinte** : ambre, ambre sombre, violet, violet sombre, bleu nuit clair, + une teinte d'alerte. Contour de 1 pixel, pas de photoréalisme, pas de dégradé complexe (1 aplat de lumière maximum).
+- **Palette restreinte** (rôles de la palette 6.2) : crème, sable, cuivre, cuivre profond, relief clair, surface, + l'alerte. Contour de 1 pixel, pas de photoréalisme, pas de dégradé complexe (1 aplat de lumière maximum).
 - **Formes simples et lisibles** : une icône = un objet reconnaissable (combiné téléphonique, enveloppe, document, fiche, carnet, dossier, disquette, loupe, engrenage).
 - **Création originale uniquement** : ne pas reproduire d'icônes Microsoft ou d'autres jeux.
 - **Icônes nécessaires au MVP :** Téléphone, Chat Opérateur, Visionneuse, HelpDesk, Carnet, Messagerie, Base Clients, menu Démarrer, Corbeille, dossier, document, e-mail non lu, appel entrant, sablier, états (ok, erreur, avertissement, information).
-- Curseurs (flèche, main, texte, sablier) dans le même style, en ambre avec contour bleu nuit.
+- Curseurs (flèche, main, texte, sablier) dans le même style, en crème avec contour pétrole très sombre.
 
 ### 6.5 Audio — *à définir*
 
@@ -699,7 +719,7 @@ Tous les réglages (durées, courbes de ressort, volumes) sont dans **un seul fi
 
 ### 8.4 Rendu de l'écran
 
-**Résolution logique :** HelplineOS est dessiné en **1920 × 1080 (16:9)**, puis mis à l'échelle pour remplir la fenêtre du navigateur (bandes bleu nuit si le format diffère). Pas de cadre de moniteur, pas de décor : l'OS est tout l'écran.
+**Résolution logique :** HelplineOS est dessiné en **1920 × 1080 (16:9)**, puis mis à l'échelle pour remplir la fenêtre du navigateur (bandes pétrole profond si le format diffère). Pas de cadre de moniteur, pas de décor : l'OS est tout l'écran.
 
 **Lisibilité :** à cette résolution, des éléments Win95 à leur taille d'origine seraient minuscules. Les tailles de base sont donc **agrandies** (texte courant ≈ 18-20 px logiques, barres de titre ≈ 36 px, icônes 48 px) pour rester lisibles quand l'écran est réduit (ex. portable 1366 × 768 → facteur ≈ 0,71). Toutes ces tailles sont des variables du thème.
 

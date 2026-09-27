@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { contrastRatio } from './contrast.ts';
-import { contrastPairs, paletteNames, palettes } from './palette.ts';
+import { contrastPairs, palette } from './palette.ts';
 
 describe('contrastRatio', () => {
   it('matches the WCAG reference values', () => {
@@ -10,12 +10,11 @@ describe('contrastRatio', () => {
   });
 });
 
-describe.each(paletteNames)('palette %s', (name) => {
+describe('palette', () => {
   it.each(contrastPairs.filter((pair) => pair.minimum > 0))(
     '$text on $background reaches $minimum:1',
     ({ text, background, minimum }) => {
-      const ratio = contrastRatio(palettes[name][text], palettes[name][background]);
-      expect(ratio).toBeGreaterThanOrEqual(minimum);
+      expect(contrastRatio(palette[text], palette[background])).toBeGreaterThanOrEqual(minimum);
     },
   );
 });
