@@ -262,6 +262,7 @@ L'interface est l'unique moyen d'agir. **Rien ne doit être mort, plat ou instan
 3. un **retour temporel** : anticipation → action → suite (un bouton s'enfonce, se relâche, l'effet suit).
 
 **Principes :**
+- **Sons doux et feutrés, jamais agressifs.** L'interface doit rester reposante sur une longue session de nuit.
 - **Aucun clic mort** : tout ce qui semble cliquable réagit, même pour dire « non » (son sourd, petit tremblement).
 - **Latence d'époque, mise en scène** : ouvrir une application = sablier + grattement de disque dur + fenêtre qui se dessine. C'est court (0,3 à 1,5 s) et satisfaisant, jamais pénible.
 - **Poids et matière** : les fenêtres se déplacent avec une légère inertie, les pages de la Visionneuse défilent avec élan, une fiche capturée « colle » en arrivant dans le ticket.
@@ -388,6 +389,7 @@ Licence **SIL Open Font License** (usage commercial libre). Polices **auto-hébe
 
 ### 6.5 Audio — *à définir*
 
+- **Sons doux et feutrés, jamais agressifs.** L'interface doit rester reposante sur une longue session de nuit.
 - Principes déjà posés en 5.1 et 8.5 : chaque interaction a son son, variations aléatoires, ambiance de bureau de nuit.
 - Direction musicale et liste des sons à préciser pendant J1.
 
@@ -708,7 +710,7 @@ Tous les réglages (durées, courbes de ressort, volumes) sont dans **un seul fi
 ### 8.5 Audio
 
 - **Catégories** : interface, téléphone, ambiance, musique. Un volume par catégorie (Panneau de configuration).
-- **Variations** : chaque son joué avec ±5 % de hauteur et ±10 % de volume pour éviter l'effet mitraillette.
+- **Variations** : chaque son joué avec de très légères variations (±1,5 % de hauteur, ±4 % de volume) pour éviter l'effet mitraillette, sans que la différence s'entende nettement.
 - **Procédural** (Web Audio) : ronronnement du PC et du disque dur, tic-tac.
 - **Déblocage audio** : les navigateurs bloquent le son avant le premier clic. L'écran titre demande un clic (« Allumer le poste »), qui lance la séquence de boot : contrainte transformée en moment d'immersion.
 
