@@ -7,9 +7,14 @@ import { Pressable } from '../feel/Pressable.tsx';
 import { useDrag } from '../feel/useDrag.ts';
 import { formatClock } from '../strings/format.ts';
 import { t } from '../strings/i18n.ts';
+import { DebugDialogueState } from './DebugDialogueState.tsx';
 import styles from './DebugPanel.module.css';
 
 const SCHEDULE_DELAYS = [15, 45];
+
+/** `?mission=m.n01_03`: that mission rings as soon as the shift starts (GDD 7.10). */
+const missionParam = new URLSearchParams(window.location.search).get('mission');
+let missionLaunched = false;
 
 /**
  * Out-of-fiction tools for testing, never shown to players (development server or `?debug`).
@@ -18,7 +23,8 @@ const SCHEDULE_DELAYS = [15, 45];
 export function DebugPanel() {
   const minute = useEngineState((state) => state.shift.minute);
   const next = useEngineState(nextEventMinute);
-  const [open, setOpen] = useState(false);
+  const started = useEngineState((state) => state.shift.startedAt !== null);
+  const [open, setOpen] = useState(missionParam !== null);
   const [hidden, setHidden] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const dragStart = useRef(offset);
@@ -30,6 +36,16 @@ export function DebugPanel() {
       setOffset({ x: dragStart.current.x + dx, y: dragStart.current.y + dy });
     },
   });
+
+  useEffect(() => {
+    if (!started || missionLaunched || missionParam === null) return;
+    missionLaunched = true;
+    if (missionParam in engine.content.missions) {
+      engine.dispatch({ type: 'DEBUG_INCOMING_CALL', missionId: missionParam });
+    } else {
+      console.warn(`?mission=${missionParam}: unknown mission`);
+    }
+  }, [started]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -68,6 +84,17 @@ export function DebugPanel() {
       </header>
       {open && (
         <div className={styles.body}>
+          <DebugDialogueState />
+          {Object.values(engine.content.missions).map((mission) => (
+            <Button95
+              key={mission.id}
+              onPress={() => {
+                engine.dispatch({ type: 'DEBUG_INCOMING_CALL', missionId: mission.id });
+              }}
+            >
+              {t('debug.missionCall', { title: mission.title })}
+            </Button95>
+          ))}
           <Button95
             onPress={() => {
               engine.dispatch({ type: 'DEBUG_INCOMING_CALL' });

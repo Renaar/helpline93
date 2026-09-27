@@ -23,6 +23,9 @@
   --color-ink-soft: color-mix(in srgb, var(--color-bevel-dark) 65%, var(--color-text));
   --color-stamp: var(--color-accent-deep);
   --color-mark: color-mix(in srgb, var(--color-highlight) 55%, transparent);
+  /* Felt marker on screen text (chat): deep copper, cream text stays readable (≥ 4.5:1). */
+  --color-capture-mark: var(--color-accent-deep);
+  --color-fresh-glow: color-mix(in srgb, var(--color-highlight) 22%, transparent);
   /* VHS fast-forward effect (time jump only) */
   --color-vhs-band: color-mix(in srgb, var(--color-text) 14%, transparent);
   --color-vhs-band-dark: color-mix(in srgb, var(--color-bevel-dark) 40%, transparent);
@@ -103,12 +106,19 @@
   --toast-width: 420px;
   --desktop-icon-width: 120px;
   --tab-height: 36px;
+  --badge-size: 8px;
+  --chat-reply-height: 46%;
+  --chat-choice-min-width: 44px;
+  --chat-param-width: 160px;
   --phone-line-height: 56px;
   --phone-line-name-width: 96px;
   --phone-status-width: 150px;
   --phone-button-width: 112px;
   --empty-hint-width: 420px;
   --field-min-width: 220px;
+  --flight-chip-width: 520px;
+  --debug-state-width: 520px;
+  --debug-label-width: 150px;
   --doc-page-width: 600px;
   --doc-page-padding: 40px;
   --doc-font-size: 16px;
@@ -121,6 +131,7 @@
   --vhs-band-dark: 18px;
   --vhs-indicator-size: 72px;
   --z-vhs: 1500;
+  --z-flight: 1200;
 
   /* Stacking (windows use 1…n) */
   --z-toast: 900;

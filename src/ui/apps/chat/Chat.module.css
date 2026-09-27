@@ -1,0 +1,280 @@
+/* Operator Chat: transcript on top, reply zone below (GDD 4.2). */
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.transcript {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 0;
+  margin: var(--space-2) var(--space-2) 0;
+  padding: var(--space-4);
+  overflow: auto;
+  background: var(--color-panel-sunken);
+  box-shadow: var(--bevel-sunken);
+  scrollbar-color: var(--color-border) var(--color-panel-sunken);
+}
+
+.line {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+.verb {
+  color: var(--color-highlight);
+  font-family: var(--font-condensed);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.time {
+  font-family: var(--font-mono);
+}
+
+.text {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: var(--line-height-body);
+  user-select: text;
+}
+
+.line[data-from='operator'] {
+  padding-left: var(--space-3);
+  box-shadow: inset calc(var(--bevel-width) * 2) 0 0 var(--color-accent-deep);
+}
+
+.line[data-from='operator'] .text {
+  color: var(--color-text-dim);
+}
+
+.system {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-1) 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.system::before,
+.system::after {
+  content: '';
+  flex: 1;
+  border-top: var(--bevel-width) dashed var(--color-separator);
+}
+
+.typing {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  margin: 0;
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-text-dim);
+}
+
+.dots {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.dots span {
+  width: var(--space-1);
+  height: var(--space-1);
+  border-radius: 50%;
+  background: var(--color-text-dim);
+  animation: dot var(--feel-typing-dots) ease-in-out infinite;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: calc(var(--feel-typing-dots) / 6);
+}
+
+.dots span:nth-child(3) {
+  animation-delay: calc(var(--feel-typing-dots) / 3);
+}
+
+@keyframes dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+  }
+
+  30% {
+    opacity: 1;
+  }
+}
+
+/* Reply zone */
+
+.reply {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  height: var(--chat-reply-height);
+  min-height: 0;
+}
+
+.options {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 0 var(--space-2) var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  overflow: auto;
+  background: var(--color-panel);
+  box-shadow: var(--bevel-raised);
+  scrollbar-color: var(--color-border) var(--color-panel);
+}
+
+.status {
+  margin: 0 var(--space-3) var(--space-2);
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-highlight);
+}
+
+.hint {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}
+
+.group + .group {
+  margin-top: var(--space-2);
+}
+
+.groupTitle {
+  margin: var(--space-2) 0 var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.option {
+  position: relative;
+}
+
+/* New options glow for a moment after landing (opacity only). */
+.option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-fresh-glow);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.option[data-fresh]::before {
+  animation: glow var(--feel-fresh-glow) ease-out;
+}
+
+@keyframes glow {
+  0%,
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.optionButton {
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--menu-item-height);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+}
+
+.optionButton[aria-pressed='true'] {
+  background: var(--color-selection);
+}
+
+.optionButton[aria-disabled='true'] .optionText {
+  color: var(--color-text-disabled);
+}
+
+.optionText {
+  flex: 1;
+  font-size: var(--text-md);
+}
+
+.said {
+  flex: none;
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  margin-bottom: var(--space-2);
+  background: var(--color-panel-sunken);
+  box-shadow: var(--bevel-sunken);
+}
+
+.editorText {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-md);
+}
+
+.editorActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.choices {
+  display: inline-flex;
+  gap: var(--bevel-width);
+}
+
+.choice {
+  min-width: var(--chat-choice-min-width);
+  height: var(--button-height);
+  padding: 0 var(--space-3);
+  background: var(--color-panel);
+  box-shadow: var(--bevel-raised);
+  font-family: var(--font-mono);
+}
+
+.choice[aria-pressed='true'] {
+  background: var(--color-selection);
+  box-shadow: var(--bevel-sunken);
+  color: var(--color-text);
+}
+
+.paramField {
+  width: var(--chat-param-width);
+}

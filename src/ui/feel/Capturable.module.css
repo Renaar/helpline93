@@ -1,0 +1,56 @@
+.anchor {
+  display: inline;
+}
+
+/* Inline in running text: no padding, no hover veil (the underline does the job). */
+.capturable {
+  display: inline-flex;
+  padding: 0 var(--space-1);
+  margin: 0 calc(-1 * var(--space-1));
+  vertical-align: baseline;
+  isolation: isolate;
+}
+
+.capturable::after {
+  display: none;
+}
+
+.text {
+  position: relative;
+  text-decoration: underline dotted var(--color-border);
+  text-decoration-thickness: var(--bevel-width);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--feel-hover-out) ease-out;
+}
+
+.capturable:hover .text {
+  text-decoration-color: var(--color-highlight);
+  transition-duration: var(--feel-hover-in);
+}
+
+/* Felt marker: a band that sweeps from the left when the piece is captured. */
+.mark {
+  position: absolute;
+  inset: 0.15em 0;
+  z-index: -1;
+  border-radius: var(--radius-sm);
+  background: var(--color-capture-mark);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--feel-capture-mark) ease-out;
+}
+
+.captured .mark {
+  transform: scaleX(1);
+}
+
+.captured .text {
+  color: var(--color-text);
+  text-decoration-style: solid;
+  text-decoration-color: transparent;
+}
+
+.capturable[data-pressed] .mark {
+  transform: scaleX(1);
+  opacity: var(--opacity-muted);
+}

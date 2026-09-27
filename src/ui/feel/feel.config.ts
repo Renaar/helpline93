@@ -45,6 +45,12 @@ export const feelConfig = {
       'phone.pickup': 0.3,
       'phone.hangup': 0.3,
       'phone.hold': 0.2,
+      'chat.receive': 0.12,
+      'chat.send': 0.09,
+      'capture.mark': 0.16,
+      'option.unlock': 0.12,
+      'ticket.stamp': 0.26,
+      'pen.write': 0.1,
     } satisfies Record<SoundId, number>,
     /** Minimum gap between two plays of the same sound, to avoid stacking on fast hovers. */
     minGapMs: 30,
@@ -173,6 +179,47 @@ export const feelConfig = {
     reducedFadeOpacity: 0.16,
   },
 
+  chat: {
+    /** A new transcript line slides in. */
+    entrySpring: { stiffness: 520, damping: 38, mass: 0.8 },
+    entryOffsetPx: 10,
+    /** One cycle of the three typing dots. */
+    typingDotsMs: 1100,
+    /** New options glow in the reply zone for this long. */
+    freshGlowMs: 2400,
+  },
+
+  capture: {
+    /** Felt-marker sweep over a captured piece of text (GDD 4.2.3). */
+    markMs: 280,
+  },
+
+  /** Things flying across the desktop: options Viewer → chat, captures chat → ticket / Notebook. */
+  flight: {
+    durationMs: 720,
+    /** Between two options unlocked by the same page. */
+    staggerMs: 130,
+    /** Height of the arc above the straight line, in logical pixels. */
+    arcPx: 90,
+    landScale: 0.55,
+    /** "Reduced animations": a quick fade in place instead. */
+    reducedMs: 200,
+  },
+
+  viewer: {
+    /** A page counts as consulted once it stays in view this long (GDD 4.2.2). */
+    consultDwellMs: 1200,
+  },
+
+  ticket: {
+    /** A field that just received a capture glows for this long. */
+    flashMs: 1400,
+    /** "Closed" stamp landing on the ticket. */
+    stampSpring: { stiffness: 900, damping: 26, mass: 0.9 },
+    stampFromScale: 1.8,
+    stampAngleDeg: -8,
+  },
+
   debug: {
     /** Delay of the engine round-trip demo in the sandbox. */
     pingDelayMs: 1500,
@@ -193,6 +240,10 @@ export function feelCssVariables(config: FeelConfig = feelConfig): Record<string
     '--feel-blink-fast': `${config.lamp.blinkFastMs}ms`,
     '--feel-pulse': `${config.lamp.pulseMs}ms`,
     '--feel-boot-fade': `${config.boot.loginFadeMs}ms`,
+    '--feel-capture-mark': `${config.capture.markMs}ms`,
+    '--feel-typing-dots': `${config.chat.typingDotsMs}ms`,
+    '--feel-fresh-glow': `${config.chat.freshGlowMs}ms`,
+    '--feel-ticket-flash': `${config.ticket.flashMs}ms`,
   };
 }
 

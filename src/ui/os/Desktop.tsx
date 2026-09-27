@@ -2,10 +2,12 @@ import { animate, motion, useMotionValue } from 'motion/react';
 import { useEffect } from 'react';
 import { useEngineEvent } from '../engine/hooks.ts';
 import { feelConfig, ms } from '../feel/feel.config.ts';
+import { FlightLayer } from '../feel/flight/FlightLayer.tsx';
 import { useSettings } from '../settings/settingsStore.ts';
 import { CallStaging } from './CallStaging.tsx';
 import { ClockDirector } from './ClockDirector.tsx';
 import { DebugPanel } from './DebugPanel.tsx';
+import { DialogueStaging } from './DialogueStaging.tsx';
 import styles from './Desktop.module.css';
 import { DesktopIcons } from './DesktopIcons.tsx';
 import { FastForwardOverlay } from './FastForwardOverlay.tsx';
@@ -16,8 +18,9 @@ import { Taskbar } from './Taskbar.tsx';
 import { WindowLayer } from './WindowLayer.tsx';
 import { useWindows } from './windowStore.ts';
 
-/** Debug tools: always available on the development server, and with `?debug` elsewhere. */
-const debug = import.meta.env.DEV || new URLSearchParams(window.location.search).has('debug');
+/** Debug tools: always on the development server, and with `?debug` or `?mission=` elsewhere. */
+const params = new URLSearchParams(window.location.search);
+const debug = import.meta.env.DEV || params.has('debug') || params.has('mission');
 
 /** The HelplineOS desktop: icons, windows, incoming calls, start menu and taskbar. */
 export function Desktop() {
@@ -58,8 +61,10 @@ export function Desktop() {
       <IncomingCall />
       <StartMenu />
       <Taskbar />
+      <FlightLayer />
       <FastForwardOverlay />
       <CallStaging />
+      <DialogueStaging />
       <ClockDirector />
       {debug && <DebugPanel />}
     </motion.main>

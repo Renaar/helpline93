@@ -1,0 +1,159 @@
+.ticket {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.status {
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.status[data-status='awaiting_closure'] {
+  color: var(--color-highlight);
+}
+
+.scroll {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--field-min-width), 1fr));
+  gap: var(--space-3) var(--space-5);
+  align-content: start;
+  margin: 0;
+}
+
+.field {
+  position: relative;
+}
+
+.field dt {
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+.field dd {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* A field that just received a capture glows (opacity only). */
+.field::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-1));
+  border-radius: var(--radius-sm);
+  background: var(--color-fresh-glow);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.field[data-flash]::before {
+  animation: flash var(--feel-ticket-flash) ease-out;
+}
+
+@keyframes flash {
+  0%,
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}
+
+.closure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--bevel-width) solid var(--color-separator);
+}
+
+.codes {
+  display: flex;
+  flex-direction: column;
+}
+
+.code {
+  justify-content: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-sm);
+  text-align: left;
+}
+
+.code[aria-pressed='true'] {
+  background: var(--color-selection);
+}
+
+.code[aria-disabled='true'] {
+  color: var(--color-text-disabled);
+}
+
+.closeRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* "Closed" rubber stamp. */
+.stamp {
+  align-self: flex-start;
+  margin: var(--space-3) 0 0 var(--space-5);
+  padding: var(--space-1) var(--space-4);
+  border: calc(var(--bevel-width) * 3) solid var(--color-highlight);
+  border-radius: var(--radius-sm);
+  color: var(--color-highlight);
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+}
+
+.historyHead,
+.historyRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  text-align: left;
+}
+
+.historyHead {
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+.historyRow {
+  width: 100%;
+  justify-content: stretch;
+}

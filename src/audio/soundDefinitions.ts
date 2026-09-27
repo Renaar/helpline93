@@ -45,6 +45,12 @@ export const soundDefinitions = {
   'phone.pickup': { category: 'phone', variants: ['phone-pickup-1'] },
   'phone.hangup': { category: 'phone', variants: ['phone-hangup-1'] },
   'phone.hold': { category: 'phone', variants: ['phone-hold-1'] },
+  'chat.receive': { category: 'ui', variants: ['chat-receive-1', 'chat-receive-2'] },
+  'chat.send': { category: 'ui', variants: ['chat-send-1'] },
+  'capture.mark': { category: 'ui', variants: ['capture-mark-1', 'capture-mark-2'] },
+  'option.unlock': { category: 'ui', variants: ['option-unlock-1'] },
+  'ticket.stamp': { category: 'ui', variants: ['ticket-stamp-1'] },
+  'pen.write': { category: 'ui', variants: ['pen-write-1'] },
 } as const satisfies Record<string, SoundDefinition>;
 
 export type SoundId = keyof typeof soundDefinitions;

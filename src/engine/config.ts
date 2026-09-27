@@ -27,9 +27,9 @@ export const TYPING = {
   /** Between two messages of the same reply. */
   messageGapMs: 500,
   baseMs: 500,
-  perCharacterMs: 38,
+  perCharacterMs: 30,
   minMs: 700,
-  maxMs: 4200,
+  maxMs: 3600,
   /** By mood, from -2 (panicked: short, hurried bursts) to +2 (relaxed). */
   moodFactor: { '-2': 0.7, '-1': 0.85, '0': 1, '1': 1.05, '2': 1.15 },
   /** Silence after the last message before the line goes dead (end_call). */

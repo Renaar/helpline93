@@ -129,3 +129,31 @@
   background: var(--color-mark);
   color: inherit;
 }
+
+/* Diagnostic checklist and intervention steps: they feed the chat menu (GDD 4.2.2). */
+.options {
+  margin-top: 1.2em;
+  padding-top: 0.2em;
+  border-top: var(--bevel-width) dashed var(--color-ink-soft);
+}
+
+.checklist {
+  margin: 0 0 0.7em;
+  padding-left: 0;
+  list-style: none;
+}
+
+.checklist li::before {
+  content: '';
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.5em;
+  border: var(--bevel-width) solid var(--color-ink);
+  vertical-align: -0.05em;
+}
+
+.steps {
+  margin: 0 0 0.7em;
+  padding-left: 1.6em;
+}

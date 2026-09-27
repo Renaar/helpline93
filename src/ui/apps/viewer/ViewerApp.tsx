@@ -8,6 +8,7 @@ import { formatNumber, t } from '../../strings/i18n.ts';
 import styles from './Viewer.module.css';
 import { DocPageView } from './DocPageView.tsx';
 import { ViewerSidebar } from './ViewerSidebar.tsx';
+import { usePageConsultation } from './usePageConsultation.ts';
 import { useViewer, ZOOM_STEPS } from './viewerStore.ts';
 
 const { pages, manual } = docs;
@@ -20,6 +21,7 @@ export function ViewerApp() {
   const { pageId, target, zoomIndex, bookmarks, query, goTo, setPage, zoomBy, toggleBookmark } =
     useViewer();
   const zoom = ZOOM_STEPS[zoomIndex] ?? 1;
+  usePageConsultation(pageId);
   const index = Math.max(
     0,
     pages.findIndex((p) => p.id === pageId),
@@ -114,6 +116,7 @@ export function ViewerApp() {
         <div
           ref={scroller}
           className={styles.document}
+          data-flight-target="viewer-page"
           style={{ '--doc-zoom': zoom } as CSSProperties}
           onScroll={onScroll}
         >

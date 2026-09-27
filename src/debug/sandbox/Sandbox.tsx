@@ -2,6 +2,7 @@ import { navigateTo } from '../../platform/routing.ts';
 import { Button95 } from '../../ui/feel/Button95.tsx';
 import { t } from '../../ui/strings/i18n.ts';
 import { ButtonsDemo } from './ButtonsDemo.tsx';
+import { CapturableDemo } from './CapturableDemo.tsx';
 import { ContrastDemo } from './ContrastDemo.tsx';
 import { CursorsDemo } from './CursorsDemo.tsx';
 import { EngineDemo } from './EngineDemo.tsx';
@@ -39,6 +40,7 @@ export function Sandbox() {
           <ButtonsDemo />
           <FeedbackDemo />
           <InputsDemo />
+          <CapturableDemo />
           <SoundsDemo />
           <SettingsDemo />
         </div>
