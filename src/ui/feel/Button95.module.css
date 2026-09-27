@@ -40,7 +40,7 @@
 
 /* Disabled: dimmed, engraved label (a nod to 1993 desktops). */
 .button[aria-disabled='true'] {
-  color: var(--color-text-dim);
+  color: var(--color-text-disabled);
 }
 
 .button[aria-disabled='true'] .label {

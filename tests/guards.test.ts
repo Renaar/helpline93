@@ -10,7 +10,14 @@ import { soundDefinitions } from '../src/audio/soundDefinitions.ts';
 import { cursorArt } from '../src/ui/icons/cursorArt.ts';
 import { iconArt } from '../src/ui/icons/iconArt.ts';
 import { validatePixelArt } from '../src/ui/icons/pixelArt.ts';
-import { palette, paletteCssVar, type PaletteColor } from '../src/ui/theme/palette.ts';
+import { paletteNames } from '../src/ui/theme/palette.ts';
+import {
+  cursorFile,
+  cursorNames,
+  renderCursorSvg,
+  renderCursorsCss,
+  renderPalettesCss,
+} from '../tools/themeCss.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'src');
@@ -39,10 +46,14 @@ const codeFiles = listFiles(SRC, /\.(tsx?|css)$/).filter(outsideTheme);
 const cssFiles = listFiles(SRC, /\.css$/).filter(outsideTheme);
 
 describe('theme', () => {
-  it('declares every palette colour in tokens.css with the same value', () => {
-    const tokens = readFileSync(join(THEME, 'tokens.css'), 'utf8').toLowerCase();
-    for (const color of Object.keys(palette) as PaletteColor[]) {
-      expect(tokens).toContain(`${paletteCssVar(color)}: ${palette[color].toLowerCase()};`);
+  it('has generated files up to date with palette.ts and cursorArt.ts (npm run theme:generate)', () => {
+    expect(readFileSync(join(THEME, 'palettes.css'), 'utf8')).toBe(renderPalettesCss());
+    expect(readFileSync(join(THEME, 'cursors.css'), 'utf8')).toBe(renderCursorsCss());
+    for (const palette of paletteNames) {
+      for (const cursor of cursorNames) {
+        const file = join(ROOT, 'assets', 'cursors', cursorFile(palette, cursor));
+        expect(readFileSync(file, 'utf8'), file).toBe(renderCursorSvg(palette, cursor));
+      }
     }
   });
 
@@ -82,14 +93,6 @@ describe('assets', () => {
       expect(validatePixelArt(art), name).toEqual([]);
     for (const [name, cursor] of Object.entries(cursorArt)) {
       expect(validatePixelArt(cursor.rows), name).toEqual([]);
-    }
-  });
-
-  it('has a generated SVG and CSS variable for every cursor', () => {
-    const css = readFileSync(join(THEME, 'cursors.css'), 'utf8');
-    for (const name of Object.keys(cursorArt)) {
-      expect(existsSync(join(ROOT, 'assets', 'cursors', `${name}.svg`)), name).toBe(true);
-      expect(css).toContain(`--cursor-${name}:`);
     }
   });
 });

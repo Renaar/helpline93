@@ -64,7 +64,7 @@ export const fr = {
 
     sounds: {
       title: 'Sons',
-      hint: 'Cliquer plusieurs fois : hauteur (±5 %) et volume (±10 %) varient à chaque lecture.',
+      hint: 'Cliquer plusieurs fois : hauteur (±{pitch} %) et volume (±{volume} %) varient très légèrement à chaque lecture.',
       hover: 'Survol',
       press: 'Appui',
       release: 'Relâchement',
@@ -107,17 +107,39 @@ export const fr = {
       serifBold: '12-C — Mémoire vive défectueuse',
     },
 
+    paletteSelector: {
+      label: 'Palette :',
+      copper: 'A · Cuivre / pétrole',
+      classic: 'B · Ambre / violet (J0)',
+    },
+
     palette: {
-      title: 'Palette',
-      night: 'Bleu nuit profond',
-      surface: 'Bleu nuit',
-      bevelLight: 'Relief clair',
-      bevelDark: 'Relief sombre',
-      amber: 'Ambre',
-      amberDim: 'Ambre sombre',
-      violet: 'Violet',
-      violetDeep: 'Violet profond',
-      alert: 'Rouge ambré',
+      title: 'Palette active — rôles',
+      roles: {
+        desktop: 'Fond du bureau',
+        surface: 'Fenêtres, panneaux',
+        bevelLight: 'Relief clair',
+        bevelDark: 'Relief sombre, contours',
+        separator: 'Séparateurs',
+        border: 'Bordures',
+        text: 'Texte',
+        textDim: 'Texte secondaire',
+        textDisabled: 'Texte désactivé',
+        highlight: 'Info importante',
+        accent: 'Accent vif',
+        accentDeep: 'Accent profond',
+        alert: 'Alerte',
+      },
+    },
+
+    contrast: {
+      title: 'Contrastes (WCAG 2)',
+      hint: 'Minimum {text}:1 pour le texte courant, {graphic}:1 pour les signaux. Les autres valeurs sont indicatives.',
+      pair: '{text} sur {background}',
+      ratio: '{ratio}:1',
+      required: 'min. {minimum}:1',
+      informative: 'indicatif',
+      sample: 'Aa',
     },
 
     settings: {

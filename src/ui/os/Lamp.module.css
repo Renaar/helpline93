@@ -17,8 +17,8 @@
   transition: opacity var(--feel-lamp-off) ease-out;
 }
 
-.amber::after {
-  background: var(--color-amber);
+.highlight::after {
+  background: var(--color-highlight);
 }
 
 .alert::after {

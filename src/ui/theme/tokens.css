@@ -1,32 +1,23 @@
 /*
  * HelplineOS design tokens (GDD 6 and 8.4).
- * The only place where colours, sizes and fonts are written. Components use these variables.
+ * With palettes.css (generated), the only place where colours, sizes and fonts are written.
+ * Components use these variables.
  * Durations and curves live in src/ui/feel/feel.config.ts (exposed as --feel-* variables).
  */
 :root {
-  /* Palette — keep in sync with palette.ts (a test checks it). */
-  --color-night: #0b1026;
-  --color-surface: #1a2248;
-  --color-bevel-light: #2e3a6e;
-  --color-bevel-dark: #060914;
-  --color-amber: #ffb000;
-  --color-amber-dim: #b37a00;
-  --color-violet: #7b5bd6;
-  --color-violet-deep: #3d2a73;
-  --color-alert: #ff5a36;
-
-  /* Roles */
-  --color-desktop: var(--color-night);
-  --color-letterbox: var(--color-night);
-  --color-text: var(--color-amber);
-  --color-text-dim: var(--color-amber-dim);
-  --color-text-on-accent: var(--color-amber);
-  --color-selection: var(--color-violet);
+  /*
+   * Colours: the raw palette roles (--color-desktop, --color-text, --color-accent…) come from
+   * palettes.css, generated from palette.ts. Below: roles derived from them.
+   */
+  --color-letterbox: var(--color-desktop);
   --color-panel: var(--color-surface);
-  --color-panel-sunken: var(--color-night);
-  --color-hover-overlay: rgb(255 176 0 / 0.07);
-  --color-press-overlay: rgb(6 9 20 / 0.18);
-  --gradient-titlebar-active: linear-gradient(90deg, var(--color-violet), var(--color-violet-deep));
+  --color-panel-sunken: var(--color-desktop);
+  --color-text-on-accent: var(--color-text);
+  --color-selection: var(--color-accent-deep);
+  --color-hover-overlay: color-mix(in srgb, var(--color-highlight) 7%, transparent);
+  --color-press-overlay: color-mix(in srgb, var(--color-bevel-dark) 18%, transparent);
+  /* Text sits on the left, on the deep accent (contrast), fading to the vivid accent. */
+  --gradient-titlebar-active: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent));
 
   /* Fonts (GDD 6.3) */
   --font-sans: 'IBM Plex Sans', sans-serif;
@@ -68,8 +59,8 @@
     inset var(--bevel-width) var(--bevel-width) 0 var(--color-bevel-dark),
     inset calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 var(--color-bevel-light);
   --outline-default: 0 0 0 var(--bevel-width) var(--color-bevel-dark);
-  --focus-halo: 0 0 0 2px rgb(255 176 0 / 0.35);
-  --shadow-soft: 0 6px 18px rgb(6 9 20 / 0.45);
+  --focus-halo: 0 0 0 2px color-mix(in srgb, var(--color-highlight) 35%, transparent);
+  --shadow-soft: 0 6px 18px color-mix(in srgb, var(--color-bevel-dark) 45%, transparent);
   --press-offset: 1px;
   --opacity-disabled: 0.4;
 

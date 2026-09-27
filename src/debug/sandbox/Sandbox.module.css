@@ -2,7 +2,7 @@
   height: 100%;
   overflow-y: auto;
   padding: var(--space-7);
-  scrollbar-color: var(--color-amber-dim) var(--color-panel);
+  scrollbar-color: var(--color-border) var(--color-panel);
 }
 
 .header {
@@ -190,5 +190,48 @@
 .swatchCode {
   display: block;
   font-family: var(--font-mono);
+  color: var(--color-text-dim);
+}
+
+.selectorLabel {
+  font-size: var(--text-md);
+  color: var(--color-text-dim);
+}
+
+.contrastList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contrastRow {
+  display: grid;
+  grid-template-columns: var(--icon-md) minmax(0, 1fr) auto auto var(--icon-sm);
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.contrastSample {
+  display: grid;
+  place-items: center;
+  height: var(--icon-sm);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--bevel-sunken);
+  font-weight: var(--font-weight-semibold);
+}
+
+.contrastPair {
+  min-width: 0;
+}
+
+.contrastRatio {
+  font-family: var(--font-mono);
+}
+
+.contrastRequired {
   color: var(--color-text-dim);
 }

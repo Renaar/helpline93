@@ -1,5 +1,5 @@
 // Amber cursors on the 32 × 32 grid (GDD 6.4). Compiled to SVG files by
-// `npm run cursors:generate`, because CSS cursors must be image files.
+// `npm run theme:generate` (one set per palette), because CSS cursors must be image files.
 import type { PixelArt } from './pixelArt.ts';
 
 export interface CursorArt {

@@ -2,10 +2,12 @@ import { navigateTo } from '../../platform/routing.ts';
 import { Button95 } from '../../ui/feel/Button95.tsx';
 import { t } from '../../ui/strings/i18n.ts';
 import { ButtonsDemo } from './ButtonsDemo.tsx';
+import { ContrastDemo } from './ContrastDemo.tsx';
 import { CursorsDemo } from './CursorsDemo.tsx';
 import { EngineDemo } from './EngineDemo.tsx';
 import { FeedbackDemo } from './FeedbackDemo.tsx';
 import { PaletteDemo } from './PaletteDemo.tsx';
+import { PaletteSelector } from './PaletteSelector.tsx';
 import { PressableDemo } from './PressableDemo.tsx';
 import styles from './Sandbox.module.css';
 import { SettingsDemo } from './SettingsDemo.tsx';
@@ -21,6 +23,7 @@ export function Sandbox() {
           <h1 className={styles.title}>{t('sandbox.title')}</h1>
           <p className={styles.intro}>{t('sandbox.intro')}</p>
         </div>
+        <PaletteSelector />
         <Button95
           onPress={() => {
             navigateTo('game');
@@ -44,6 +47,7 @@ export function Sandbox() {
           <TypographyDemo />
           <CursorsDemo />
           <PaletteDemo />
+          <ContrastDemo />
         </div>
       </div>
     </main>
