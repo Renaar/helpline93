@@ -1,0 +1,97 @@
+import { Howl, Howler } from 'howler';
+import type { SoundCategory, SoundId } from './soundDefinitions.ts';
+import { soundDefinitions } from './soundDefinitions.ts';
+import { pickVariant, varyPlayback } from './variation.ts';
+
+export interface AudioConfig {
+  master: number;
+  pitchVariation: number;
+  volumeVariation: number;
+  categories: Readonly<Record<SoundCategory, number>>;
+  volumes: Readonly<Record<SoundId, number>>;
+  minGapMs: number;
+}
+
+export interface AudioManagerOptions {
+  urls: Readonly<Record<SoundId, readonly string[]>>;
+  config: AudioConfig;
+  random?: () => number;
+  now?: () => number;
+}
+
+/**
+ * Plays short samples through Howler (Web Audio), each with a slight random
+ * pitch/volume change and a random variant (GDD 8.5).
+ */
+export class AudioManager {
+  readonly #urls: Readonly<Record<SoundId, readonly string[]>>;
+  readonly #config: AudioConfig;
+  readonly #random: () => number;
+  readonly #now: () => number;
+  readonly #howls = new Map<string, Howl>();
+  readonly #lastVariant = new Map<SoundId, number>();
+  readonly #lastPlayedAt = new Map<SoundId, number>();
+  readonly #categoryVolumes: Record<SoundCategory, number>;
+
+  constructor({
+    urls,
+    config,
+    random = Math.random,
+    now = () => performance.now(),
+  }: AudioManagerOptions) {
+    this.#urls = urls;
+    this.#config = config;
+    this.#random = random;
+    this.#now = now;
+    this.#categoryVolumes = { ...config.categories };
+    Howler.volume(config.master);
+  }
+
+  /** Loads every sample now, so the first play of each sound has no delay. */
+  preloadAll(): void {
+    for (const urls of Object.values(this.#urls)) for (const url of urls) this.#howl(url);
+  }
+
+  play(id: SoundId): void {
+    const now = this.#now();
+    const last = this.#lastPlayedAt.get(id);
+    if (last !== undefined && now - last < this.#config.minGapMs) return;
+
+    const urls = this.#urls[id];
+    const index = pickVariant(urls.length, this.#random, this.#lastVariant.get(id));
+    const url = urls[index];
+    if (url === undefined) return;
+
+    const category = soundDefinitions[id].category;
+    const base = this.#config.volumes[id] * this.#categoryVolumes[category];
+    const { rate, volume } = varyPlayback(
+      base,
+      this.#config.pitchVariation,
+      this.#config.volumeVariation,
+      this.#random,
+    );
+    const howl = this.#howl(url);
+    const playId = howl.play();
+    howl.rate(rate, playId);
+    howl.volume(volume, playId);
+    this.#lastVariant.set(id, index);
+    this.#lastPlayedAt.set(id, now);
+  }
+
+  setMuted(muted: boolean): void {
+    Howler.mute(muted);
+  }
+
+  setCategoryVolume(category: SoundCategory, volume: number): void {
+    this.#categoryVolumes[category] = Math.min(1, Math.max(0, volume));
+  }
+
+  #howl(url: string): Howl {
+    let howl = this.#howls.get(url);
+    if (!howl) {
+      howl = new Howl({ src: [url], preload: true });
+      this.#howls.set(url, howl);
+    }
+    return howl;
+  }
+}
