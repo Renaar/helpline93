@@ -23,6 +23,10 @@
   --color-ink-soft: color-mix(in srgb, var(--color-bevel-dark) 65%, var(--color-text));
   --color-stamp: var(--color-accent-deep);
   --color-mark: color-mix(in srgb, var(--color-highlight) 55%, transparent);
+  /* VHS fast-forward effect (time jump only) */
+  --color-vhs-band: color-mix(in srgb, var(--color-text) 14%, transparent);
+  --color-vhs-band-dark: color-mix(in srgb, var(--color-bevel-dark) 40%, transparent);
+  --color-vhs-veil: var(--color-text);
   --gradient-titlebar-active: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent));
 
   /* Fonts (GDD 6.3) */
@@ -110,6 +114,10 @@
   --viewer-label-width: 112px;
   --login-width: 640px;
   --sandbox-window-area: 300px;
+  --vhs-band-thin: 6px;
+  --vhs-band-wide: 44px;
+  --vhs-band-dark: 18px;
+  --z-vhs: 1500;
 
   /* Stacking (windows use 1…n) */
   --z-toast: 900;

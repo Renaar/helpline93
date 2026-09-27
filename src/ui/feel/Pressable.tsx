@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import {
   useCallback,
   useEffect,
@@ -50,7 +51,7 @@ export function Pressable({
   className,
   label,
 }: PressableProps) {
-  const { scope, play, sink, deny } = useFeedback<HTMLButtonElement>();
+  const { motionStyle, play, sink, deny } = useFeedback();
   const [pressed, setPressed] = useState(false);
   const armed = useRef(false);
   const keyHeld = useRef<string | null>(null);
@@ -141,8 +142,8 @@ export function Pressable({
   };
 
   return (
-    <button
-      ref={scope}
+    <motion.button
+      style={motionStyle}
       type="button"
       className={cx(styles.pressable, className)}
       data-pressed={pressed || undefined}
@@ -158,6 +159,6 @@ export function Pressable({
       onBlur={handleBlur}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }

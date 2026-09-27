@@ -49,12 +49,14 @@ export const fr = {
       clock: 'Heure du service',
     },
     brand: 'HelplineOS',
+    /** Tape-deck fast-forward indicator shown during a time jump. */
+    fastForward: '▶▶',
   },
 
   apps: {
     phone: {
       title: 'Téléphone',
-      switchboard: 'Standard · Service Nightline',
+      switchboard: 'Standard · Service de nuit',
       line: 'Ligne {line}',
       lineCode: 'NL-0{line}',
       status: {
@@ -166,6 +168,7 @@ export const fr = {
   debug: {
     title: 'Débogage',
     toggle: 'Afficher ou masquer le débogage',
+    shortcut: 'F9 : masquer',
     incomingCall: 'Simuler un appel',
     urgentCall: 'Simuler un appel urgent',
     scheduleCall: 'Programmer un appel (+{minutes} min)',
@@ -321,6 +324,12 @@ export const fr = {
       placeholder: 'Tapez quelque chose…',
       typed: 'Liaison établie. En attente de la transcription de l’appel…',
       replay: 'Rejouer',
+    },
+
+    vhs: {
+      title: 'Avance rapide VHS',
+      hint: 'L’effet du saut dans le temps (2,5 s). Avec « Animations réduites » : un simple fondu.',
+      play: 'Lancer l’effet',
     },
 
     lamps: {

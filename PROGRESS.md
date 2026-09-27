@@ -2,8 +2,39 @@
 
 ## Jalon en cours
 
-**J1 — Interface HelplineOS** : révision 1 livrée (sons, horloge du shift), **en attente de validation par Loïc**.
+**J1 — Interface HelplineOS** : ✅ **validé par Loïc, sous réserve de l'effet VHS** du saut dans le temps (révision 2, à valider).
+Prochain jalon après validation : **J2 — Système de communication**.
 Branche : `claude/j1-interface-helplineos` (partie de J0, PR J0 : https://github.com/Renaar/helpline93/pull/1).
+
+---
+
+## J1 — Révision 2 (retours de Loïc)
+
+Validé, ne plus toucher : durée du saut (2,5 s), son du saut, délai de 60 s avant le saut automatique ; comportement des fenêtres ; séquence de boot ; feeling général. Nuit de démonstration : pas nécessaire.
+
+- [x] **Effet « avance rapide VHS » pendant le saut dans le temps** (2,5 s, synchronisé avec l'horloge et le son) : bandes horizontales nettes qui défilent, léger tremblement / décalage horizontal de l'écran, luminosité légèrement modulée, indicateur « ▶▶ » discret en haut au centre, puis retour net à l'image normale. Avec « Animations réduites » : simple fondu discret. Réglages : `vhs` dans `feel.config.ts`. Aperçu dans `?sandbox`.
+- [x] GDD : exception unique à « aucun effet CRT » inscrite en 6.1 (avec renvois en 2.2, 5.1, 8.4 et 10.6), et rappelée dans `CLAUDE.md`.
+- [x] GDD : **glossaire** en tête (Helpline93, HelplineOS, Heltron Computer Corp., Nightline / NL, San Aurelio). Version 1.5.
+- [x] **Règle « Nightline »** appliquée (voir le bilan ci-dessous).
+- [x] Console propre même quand l'ordinateur est réglé en « animations réduites » : les retours de refus, l'enfoncement et le tremblement VHS animent maintenant des valeurs de mouvement (la bibliothèque Motion affichait un avertissement sinon).
+- [x] Changements trouvés dans la copie de travail en début de session, conservés et intégrés : panneau de débogage toujours disponible sur le serveur de développement, **F9** pour le masquer ou l'afficher.
+
+### Bilan « Nightline »
+
+| Endroit                                        | Texte                                             | Décision                                                                                    |
+| ---------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| En-tête du manuel (`content/docs/manual.yaml`) | « Service de nuit « Nightline » — usage interne » | Gardé (demandé)                                                                             |
+| En-tête de l'app Téléphone                     | « Standard · Service Nightline »                  | **Retiré** (visible en permanence dans une app principale) → « Standard · Service de nuit » |
+| Mots-clés de la page p.01                      | `nightline`                                       | **Retiré** (une recherche « nightline » y menait directement)                               |
+| Poste NL-04, lignes NL-01 à NL-03              | « NL »                                            | Gardé (demandé)                                                                             |
+
+Aucune occurrence dans l'écran de boot, le logo, les noms d'applications, les titres de fenêtres ou la barre des tâches.
+
+### Comment tester la révision 2
+
+1. `npm run dev`, ouvrir `/?boot=skip`.
+2. Ouvrir le Téléphone, déplier **Débogage** (en bas au centre), **Programmer un appel (+15 min)**, puis **Attendre le prochain appel** : regarder l'effet VHS pendant le saut.
+3. Dans `?sandbox`, section « Avance rapide VHS » : **Lancer l'effet** ; activer « Animations réduites » et relancer pour voir le fondu.
 
 ---
 
@@ -64,15 +95,13 @@ Validé, ne plus toucher : comportement des fenêtres (ouverture, déplacement, 
 
 - **Fenêtre « Appel entrant »** : elle ne s'affiche pas quand l'app Téléphone est ouverte à l'écran (elle en couvrait les boutons). Le voyant de ligne, la sonnerie et l'icône de la barre des tâches prennent le relais.
 - **Pages de manuel provisoires** dans `content/docs/` (format GDD 7.5) pour tester la Visionneuse, avec un schéma Zod minimal vérifié par `content:check`. Le schéma complet (questions, instructions) arrive en J2.
-- **Touches narratives discrètes** (à valider) : « Poste NL-04 · Service de nuit » à la connexion, « Standard · Service Nightline » et codes de ligne NL-01 à NL-03 dans le Téléphone, « Service de nuit « Nightline » — usage interne » en tête du manuel (GDD 1.4).
+- **Touches narratives discrètes** (validées, règle précisée en révision 2) : « Poste NL-04 » à la connexion, codes de ligne NL-01 à NL-03, « Service de nuit « Nightline » — usage interne » en tête du manuel (GDD 1.4 et glossaire).
 - **Arrêter le poste** revient à l'écran éteint ; la session (heure, appels, fenêtres) est conservée si on rallume.
 - Pas de redimensionnement des fenêtres ni de déplacement des icônes du bureau (absents du GDD) : à ajouter si le test le demande.
 
-### Points à valider par Loïc
+### Point à valider par Loïc
 
-1. **Sons répétitifs** (révision 1) : clavier, pages, sommaire assez discrets maintenant ?
-2. **Saut dans le temps** : durée (2,5 s), son, et délai du saut automatique (60 s).
-3. **Touches « Nightline »** : on garde ? (question du premier jet, toujours ouverte)
+1. **Effet VHS** du saut dans le temps (révision 2) : lisibilité, intensité des bandes et du tremblement.
 
 ---
 

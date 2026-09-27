@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { useRef } from 'react';
 import { feelConfig } from '../feel/feel.config.ts';
 import { Pressable } from '../feel/Pressable.tsx';
@@ -22,7 +23,7 @@ export function DesktopIcon({ id, icon, label }: DesktopIconProps) {
   const lastPress = useRef(0);
   const geometry = useStageGeometry();
   const selected = useShell((state) => state.selectedIcon === id);
-  const { scope, deny } = useFeedback<HTMLDivElement>();
+  const { motionStyle, deny } = useFeedback();
 
   const onPress = () => {
     const now = performance.now();
@@ -41,14 +42,14 @@ export function DesktopIcon({ id, icon, label }: DesktopIconProps) {
 
   return (
     <div ref={slot} className={styles.iconSlot} data-desktop-icon>
-      <div ref={scope}>
+      <motion.div style={motionStyle}>
         <Pressable className={styles.icon} onPress={onPress} label={label}>
           <PixelIcon name={icon} size="lg" />
           <span className={styles.iconLabel} data-selected={selected || undefined}>
             {label}
           </span>
         </Pressable>
-      </div>
+      </motion.div>
     </div>
   );
 }

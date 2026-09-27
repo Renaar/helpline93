@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { type ChangeEvent, type KeyboardEvent } from 'react';
 import { cx } from '../cx.ts';
 import styles from './TextField.module.css';
@@ -37,7 +38,7 @@ export function TextField({
   autoFocus = false,
   className,
 }: TextFieldProps) {
-  const { scope, play, deny } = useFeedback<HTMLSpanElement>();
+  const { motionStyle, play, deny } = useFeedback();
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (SILENT_KEYS.has(event.key) || event.ctrlKey || event.metaKey) return;
@@ -75,11 +76,11 @@ export function TextField({
   };
 
   return (
-    <span
-      ref={scope}
+    <motion.span
+      style={motionStyle}
       className={cx(styles.wrapper, multiline && styles.wrapperMultiline, className)}
     >
       {multiline ? <textarea {...shared} /> : <input {...shared} type="text" />}
-    </span>
+    </motion.span>
   );
 }

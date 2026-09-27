@@ -28,7 +28,7 @@ TypeScript strict · Vite · React · Motion · Zustand · Zod + YAML · Howler.
 - Animations sur `transform` / `opacity` uniquement. 60 fps.
 - Aucune couleur/taille/police en dur (thème) ; aucune durée/volume en dur (`feel.config.ts`).
 - Aucun texte joueur dans le code : `content/` ou `src/ui/strings/fr.ts`.
-- Aucun HUD hors fiction. Aucun effet CRT. Aucun décor hors de l'OS.
+- Aucun HUD hors fiction. Aucun effet CRT (seule exception : l'avance rapide VHS du saut dans le temps, GDD 6.1). Aucun décor hors de l'OS.
 - Aucun nom/logo/police Microsoft ni marque réelle. Assets sous licence commerciale, tracés dans `assets/CREDITS.md`.
 
 ## Langues

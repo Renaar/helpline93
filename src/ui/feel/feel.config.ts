@@ -150,6 +150,29 @@ export const feelConfig = {
     idleCheckMs: 1000,
   },
 
+  /**
+   * VHS fast-forward effect during a time jump (GDD 6.1: the only CRT-like exception, brief and
+   * never permanent). It lasts exactly clock.skipDurationMs.
+   */
+  vhs: {
+    /** Horizontal bands: time for one band to cross the screen, and its start delay. */
+    bands: [
+      { kind: 'thin', passMs: 520, delayMs: 0 },
+      { kind: 'wide', passMs: 900, delayMs: 180 },
+      { kind: 'dark', passMs: 700, delayMs: 60 },
+      { kind: 'thin', passMs: 380, delayMs: 300 },
+      { kind: 'dark', passMs: 1100, delayMs: 450 },
+      { kind: 'wide', passMs: 640, delayMs: 820 },
+    ],
+    /** Horizontal shake of the whole screen (logical px) and slight skew (degrees). */
+    jitterPx: [0, -5, 3, -6, 2, -4, 5, -2, 4, -3, 3, -5, 2, 0],
+    skewDeg: [0, 0.4, -0.3, 0.5, -0.2, 0.3, -0.4, 0.2, -0.3, 0.4, -0.2, 0.3, -0.1, 0],
+    /** Brightness flicker (opacity of a light veil). */
+    flicker: [0, 0.08, 0.03, 0.1, 0.04, 0.09, 0.02, 0.08, 0.03, 0.09, 0],
+    /** "Reduced animations": a single discreet fade instead of the effect. */
+    reducedFadeOpacity: 0.16,
+  },
+
   debug: {
     /** Delay of the engine round-trip demo in the sandbox. */
     pingDelayMs: 1500,

@@ -1,7 +1,19 @@
 # HELPLINE93 — Game Design Document
 
-> Version 1.4 — temps du service en temps réel avec sauts mis en scène, sons répétitifs discrets (J1)
+> Version 1.5 — glossaire, effet VHS du saut dans le temps, règle d'usage de « Nightline » (J1)
 > Destinataire final : Claude Code (implémentation de l'interface et des systèmes)
+
+---
+
+## Glossaire
+
+| Terme | Ce que c'est |
+|-------|--------------|
+| **Helpline93** | Le titre du jeu. |
+| **HelplineOS** | Le système d'exploitation fictif du poste de l'opérateur, dans lequel tout le jeu se déroule. |
+| **Heltron Computer Corp.** | L'entreprise locale qui fabrique les ordinateurs et emploie l'opérateur de nuit. |
+| **Nightline / NL** | Le réseau clandestin antagoniste, caché en pleine vue : le joueur le prend d'abord pour le nom interne du service de nuit de Heltron. L'abréviation « NL » (poste NL-04, lignes NL-01 à NL-03) est visible en permanence ; le nom complet reste rare et discret, et n'est **jamais** utilisé comme nom de marque visible (écran de boot, logo, nom d'application, titre de fenêtre principal, barre des tâches) : on y utilise « HelplineOS » ou « Heltron ». |
+| **San Aurelio** | La ville côtière fictive de l'Ouest américain où se déroule le jeu. |
 
 ---
 
@@ -71,6 +83,7 @@ Peu à peu, tu comprends que la hotline sert de **relais à un réseau clandesti
 - Le service commence toujours à **22:00**.
 - Pendant les appels et l'exploration, l'horloge avance **en temps réel** : 1 minute de jeu = 1 minute réelle.
 - Entre deux appels, quand il ne se passe rien, l'horloge **saute jusqu'au prochain événement programmé**. Le saut est mis en scène : l'horloge défile vite pendant 2 à 3 s avec un son discret, puis l'événement arrive.
+- Pendant le saut, un **effet visuel d'avance rapide façon cassette VHS** (voir 6.1) fait comprendre que le temps avance ; retour net à l'image normale à la fin.
 - Le saut se déclenche de deux façons : le bouton discret **« Attendre le prochain appel »** de l'app Téléphone, ou **automatiquement après un délai d'inactivité** (réglable dans `feel.config.ts`). Jamais de saut pendant un appel, ni pendant que le joueur lit, tape ou fouille : toute action remet le délai à zéro.
 - Les délais du format de nuit (`at`, `after_previous`, section 7.9) sont en **minutes de jeu**. Une nuit reste ainsi autour de 20 à 30 minutes réelles.
 5. **Fin de shift** : rapport automatique (tickets clos, temps moyen) + journal d'activité.
@@ -283,7 +296,7 @@ L'interface est l'unique moyen d'agir. **Rien ne doit être mort, plat ou instan
 - Curseurs d'époque crème à contour pétrole (flèche, sablier, main, texte).
 - Frappe clavier : son de clavier mécanique à chaque touche, caret clignotant.
 
-**Style visuel de l'écran (pas de filtre CRT) :**
+**Style visuel de l'écran (pas de filtre CRT, sauf l'avance rapide VHS du saut dans le temps, voir 6.1) :**
 - Interface old school nette : pixels francs, reliefs biseautés, pas de flou ni de lignes de balayage.
 - Palette **cuivre / pétrole** (voir section 6).
 - Allumage du poste : bref « clac » d'interrupteur + ronronnement du disque dur, puis séquence BIOS.
@@ -353,6 +366,11 @@ HelplineOS reprend **l'ossature** d'un OS de bureau du début des années 90 (fe
 | Boîtes de dialogue, sabliers, sons système | Rythme maîtrisé : latences mises en scène, jamais pénibles |
 
 **À ne jamais faire :** filtre CRT, grain, flou décoratif, glassmorphism marqué, ombres épaisses, coins très arrondis, look « flat design » générique, imitation pixel-perfect de Win95 (ni son logo, ni ses icônes, ni ses polices).
+
+**Seule exception à « aucun effet CRT » : l'avance rapide VHS du saut dans le temps** (voir 2.2). Pendant les 2,5 s du saut, un effet bref et ponctuel, jamais permanent, montre que le temps avance :
+- version néo-rétro, propre et stylisée (pas de neige sale) : quelques bandes horizontales nettes qui défilent, léger décalage / tremblement horizontal de l'écran, luminosité légèrement modulée, petit indicateur « ▶▶ » discret ;
+- synchronisé avec le son et le défilement de l'horloge, puis retour net à l'image normale ;
+- avec l'option « animations réduites » : remplacé par un simple fondu discret.
 
 ### 6.2 Palette
 
@@ -731,7 +749,7 @@ Tous les réglages (durées, courbes de ressort, volumes) sont dans **un seul fi
 
 **Lisibilité :** à cette résolution, des éléments Win95 à leur taille d'origine seraient minuscules. Les tailles de base sont donc **agrandies** (texte courant ≈ 18-20 px logiques, barres de titre ≈ 36 px, icônes 48 px) pour rester lisibles quand l'écran est réduit (ex. portable 1366 × 768 → facteur ≈ 0,71). Toutes ces tailles sont des variables du thème.
 
-**Approche :** interface 100 % HTML/CSS, nette, **sans aucun filtre CRT** (pas de lignes de balayage, de courbure, de scintillement ni de lueur). Icônes et bitmaps en `image-rendering: pixelated` pour garder des contours francs.
+**Approche :** interface 100 % HTML/CSS, nette, **sans aucun filtre CRT** (pas de lignes de balayage, de courbure, de scintillement ni de lueur), à la seule exception de l'avance rapide VHS du saut dans le temps (6.1). Icônes et bitmaps en `image-rendering: pixelated` pour garder des contours francs.
 
 **Thème :** toutes les couleurs, reliefs et polices sont des **variables CSS centralisées** dans `src/ui/theme/` (voir section 6). Aucune couleur écrite en dur dans les composants.
 
@@ -935,7 +953,7 @@ Chaque jalon se termine par un **point de contrôle** : Loïc teste, valide ou d
 
 ### 10.6 Interdits généraux
 
-- Aucun effet CRT (balayage, courbure, scintillement, lueur).
+- Aucun effet CRT (balayage, courbure, scintillement, lueur). Seule exception : l'avance rapide VHS, brève et ponctuelle, du saut dans le temps (6.1).
 - Aucun décor hors de HelplineOS (moniteur, bureau physique, objets).
 - Aucun nom, logo ou police Microsoft ; aucune marque réelle.
 - Aucun texte de mission, e-mail ou page de doc dans le code.

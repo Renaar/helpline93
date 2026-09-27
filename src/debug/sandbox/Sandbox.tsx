@@ -14,6 +14,7 @@ import styles from './Sandbox.module.css';
 import { SettingsDemo } from './SettingsDemo.tsx';
 import { SoundsDemo } from './SoundsDemo.tsx';
 import { TypographyDemo } from './TypographyDemo.tsx';
+import { VhsDemo } from './VhsDemo.tsx';
 import { WindowDemo } from './WindowDemo.tsx';
 
 /** `?sandbox` — every feel-kit primitive, to test the game feel in isolation (GDD 10.5). */
@@ -46,6 +47,7 @@ export function Sandbox() {
           <WindowDemo />
           <EngineDemo />
           <LampsDemo />
+          <VhsDemo />
         </div>
         <div className={styles.column}>
           <TypographyDemo />

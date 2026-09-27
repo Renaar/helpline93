@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { useState } from 'react';
 import { OPERATOR_NAME_MAX_LENGTH } from '../../engine/config.ts';
 import { engine } from '../engine/runtime.ts';
@@ -13,7 +14,7 @@ import { useBoot } from './bootStore.ts';
 /** Login: the player types the operator's name (GDD 3.3), which starts the shift. */
 export function LoginScreen() {
   const [name, setName] = useState('');
-  const { scope, deny } = useFeedback<HTMLDivElement>();
+  const { motionStyle, deny } = useFeedback();
 
   const submit = () => {
     if (name.trim() === '') {
@@ -27,7 +28,12 @@ export function LoginScreen() {
 
   return (
     <div className={styles.login}>
-      <div ref={scope} className={styles.dialog} role="dialog" aria-labelledby="login-title">
+      <motion.div
+        style={motionStyle}
+        className={styles.dialog}
+        role="dialog"
+        aria-labelledby="login-title"
+      >
         <header className={styles.dialogTitle}>
           <h1 id="login-title">{t('boot.login.title')}</h1>
         </header>
@@ -52,7 +58,7 @@ export function LoginScreen() {
             {t('boot.login.ok')}
           </Button95>
         </footer>
-      </div>
+      </motion.div>
     </div>
   );
 }
