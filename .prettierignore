@@ -1,0 +1,9 @@
+node_modules
+dist
+package-lock.json
+assets/fonts
+assets/sounds
+GDD_HELPLINE93.md
+src/ui/theme/cursors.css
+src/ui/theme/palette.css
+CLAUDE.md
