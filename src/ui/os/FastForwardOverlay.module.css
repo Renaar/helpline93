@@ -1,0 +1,50 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-vhs);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.band {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.thin {
+  height: var(--vhs-band-thin);
+  background: var(--color-vhs-band);
+}
+
+.wide {
+  height: var(--vhs-band-wide);
+  background: var(--color-vhs-band);
+}
+
+.dark {
+  height: var(--vhs-band-dark);
+  background: var(--color-vhs-band-dark);
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  background: var(--color-vhs-veil);
+  opacity: 0;
+}
+
+/* Tape-deck on-screen display: crisp, in the middle of the screen. */
+.indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--vhs-indicator-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.1em;
+  text-shadow: var(--press-offset) var(--press-offset) 0 var(--color-bevel-dark);
+  transform: translate(-50%, -50%);
+}

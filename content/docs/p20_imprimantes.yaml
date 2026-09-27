@@ -1,0 +1,18 @@
+# Page provisoire (J1) : sert à tester la Visionneuse. Contenu définitif : J3.
+id: p.20
+tab: Périphériques
+title: Imprimantes matricielles
+keywords: [imprimante, papier, bourrage, ruban, matricielle, impression]
+revision: { night: 1 }
+body: |
+  ## 20-A — Bourrage papier
+  - Éteignez l'imprimante avant toute manipulation.
+  - Relevez le capot et tournez le bouton d'avance **vers l'arrière**.
+  - Ne tirez jamais le papier par l'avant : les picots se tordent.
+
+  ## 20-B — Impression pâle ou effacée
+  Le ruban encreur est usé. Remplacement par la référence **RB-80** (code **R-22**).
+
+  | Symptôme | Cause probable | Procédure |
+  | Lignes manquantes | Tête encrassée | 20-C |
+  | Caractères étranges | Câble mal serré | 20-D |

@@ -1,0 +1,178 @@
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--bevel-width);
+  border-radius: var(--radius-sm);
+  background: var(--color-panel);
+  box-shadow: var(--outline-default), var(--bevel-raised), var(--shadow-window);
+  transform-origin: 0 0;
+}
+
+.titlebar {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--titlebar-height);
+  padding: 0 var(--space-1) 0 var(--space-2);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--color-bevel-light);
+  color: var(--color-text-dim);
+  cursor: var(--cursor-arrow);
+  touch-action: none;
+}
+
+/* The active gradient fades in over the inactive colour (opacity only). */
+.titlebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--gradient-titlebar-active);
+  opacity: 0;
+  transition: opacity var(--feel-hover-out) ease-out;
+}
+
+.window[data-active] .titlebar {
+  color: var(--color-text-on-accent);
+}
+
+.window[data-active] .titlebar::before {
+  opacity: 1;
+  transition-duration: var(--feel-hover-in);
+}
+
+.titleIcon,
+.title,
+.control {
+  position: relative;
+}
+
+.titleIcon {
+  width: var(--icon-titlebar);
+  height: var(--icon-titlebar);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.control {
+  width: var(--titlebar-control-width);
+  height: var(--titlebar-control-height);
+  background: var(--color-panel);
+  box-shadow: var(--bevel-raised);
+  color: var(--color-text);
+}
+
+.control[data-pressed] {
+  box-shadow: var(--bevel-sunken);
+}
+
+.control[data-pressed] svg {
+  transform: translate(var(--press-offset), var(--press-offset));
+}
+
+.close {
+  margin-left: var(--space-1);
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Sizing grip, bottom right (decoration: the corner handle does the work). */
+.grip {
+  position: absolute;
+  right: var(--bevel-width);
+  bottom: var(--bevel-width);
+  color: var(--color-text-dim);
+  pointer-events: none;
+}
+
+/* Resize handles: invisible strips on the edges, squares on the corners. */
+.handle {
+  position: absolute;
+  touch-action: none;
+}
+
+.n,
+.s {
+  right: var(--resize-corner);
+  left: var(--resize-corner);
+  height: var(--resize-handle);
+  cursor: var(--cursor-resize-ns);
+}
+
+.n {
+  top: calc(var(--resize-handle) / -2);
+}
+
+.s {
+  bottom: calc(var(--resize-handle) / -2);
+}
+
+.e,
+.w {
+  top: var(--resize-corner);
+  bottom: var(--resize-corner);
+  width: var(--resize-handle);
+  cursor: var(--cursor-resize-ew);
+}
+
+.e {
+  right: calc(var(--resize-handle) / -2);
+}
+
+.w {
+  left: calc(var(--resize-handle) / -2);
+}
+
+.ne,
+.nw,
+.se,
+.sw {
+  width: var(--resize-corner);
+  height: var(--resize-corner);
+}
+
+.nw {
+  top: calc(var(--resize-handle) / -2);
+  left: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nwse);
+}
+
+.se {
+  right: calc(var(--resize-handle) / -2);
+  bottom: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nwse);
+}
+
+.ne {
+  top: calc(var(--resize-handle) / -2);
+  right: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nesw);
+}
+
+.sw {
+  bottom: calc(var(--resize-handle) / -2);
+  left: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nesw);
+}

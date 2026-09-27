@@ -1,0 +1,74 @@
+/* Shared layout pieces for HelplineOS applications. */
+
+.app {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  box-shadow: inset 0 calc(-1 * var(--bevel-width)) 0 var(--color-separator);
+}
+
+.pane {
+  flex: 1;
+  min-height: 0;
+  margin: var(--space-2);
+  overflow: auto;
+  background: var(--color-panel-sunken);
+  box-shadow: var(--bevel-sunken);
+  scrollbar-color: var(--color-border) var(--color-panel-sunken);
+}
+
+.padded {
+  padding: var(--space-4);
+}
+
+.caption {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.highlight {
+  color: var(--color-highlight);
+}
+
+.empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.emptyIcon {
+  opacity: var(--opacity-muted);
+}
+
+.emptyTitle {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-lg);
+}
+
+.emptyHint {
+  max-width: var(--empty-hint-width);
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}

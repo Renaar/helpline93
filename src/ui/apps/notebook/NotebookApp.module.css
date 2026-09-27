@@ -1,0 +1,5 @@
+.notes {
+  flex: 1;
+  min-height: 0;
+  margin: var(--space-2);
+}

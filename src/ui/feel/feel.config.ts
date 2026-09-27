@@ -15,7 +15,10 @@ export const feelConfig = {
       SoundCategory,
       number
     >,
-    /** Soft and muffled, never aggressive (GDD 5.1). Hover < release < press. */
+    /**
+     * Soft and muffled, never aggressive (GDD 5.1). Repetitive sounds (hover, keyboard, pages)
+     * stay well below every one-off sound (GDD 6.5, checked by a test).
+     */
     volumes: {
       'ui.hover': 0.035,
       /** Same file and level as the J0 hover sound, which Loïc validated. */
@@ -23,9 +26,32 @@ export const feelConfig = {
       'ui.release': 0.06,
       'ui.deny': 0.3,
       'ui.confirm': 0.22,
+      'os.power': 0.35,
+      'os.spinup': 0.18,
+      'os.hdd': 0.16,
+      'bios.beep': 0.12,
+      'window.open': 0.12,
+      'window.close': 0.1,
+      'window.minimize': 0.1,
+      'window.restore': 0.1,
+      'menu.open': 0.08,
+      'drag.pick': 0.08,
+      'drag.drop': 0.1,
+      'page.turn': 0.04,
+      'viewer.jump': 0.035,
+      'key.press': 0.025,
+      'clock.skip': 0.2,
+      'phone.ring': 0.22,
+      'phone.pickup': 0.3,
+      'phone.hangup': 0.3,
+      'phone.hold': 0.2,
     } satisfies Record<SoundId, number>,
     /** Minimum gap between two plays of the same sound, to avoid stacking on fast hovers. */
     minGapMs: 30,
+    /** Procedural PC hum, started at power-on (GDD 8.5). Barely audible. */
+    humVolume: 0.05,
+    humFadeInMs: 1500,
+    humFadeOutMs: 400,
   },
 
   hover: {
@@ -52,10 +78,99 @@ export const feelConfig = {
   },
 
   lamp: {
-    /** Indicator lamp used in the sandbox engine demo. */
+    /** Indicator lamps (phone lines, notification area). */
     onMs: 90,
     offMs: 600,
+    /** Sandbox engine demo: how long the lamp stays lit. */
     holdMs: 900,
+    /** Full blink cycles: ringing, urgent, and the slow pulse of a line on hold. */
+    blinkSlowMs: 1000,
+    blinkFastMs: 360,
+    pulseMs: 2200,
+  },
+
+  window: {
+    /** Staged period latency (GDD 5.1): hourglass + disk scratch before a window appears. */
+    openLatencyMs: { min: 260, max: 650 },
+    /** Window unfolding from its icon / folding into the taskbar. */
+    openSpring: { stiffness: 380, damping: 32, mass: 0.9 },
+    minimizeSpring: { stiffness: 520, damping: 42, mass: 0.8 },
+    /** Automatic re-arrangement (incoming call layout). */
+    moveSpring: { stiffness: 300, damping: 34, mass: 1 },
+    closeMs: 130,
+  },
+
+  drag: {
+    /** Light inertia when a dragged window is released (GDD 5.1 "poids et matière"). */
+    inertiaPower: 0.12,
+    inertiaTimeConstantMs: 90,
+  },
+
+  desktop: {
+    /** Two presses closer than this open a desktop icon. */
+    doubleClickMs: 420,
+  },
+
+  menu: {
+    spring: { stiffness: 700, damping: 40, mass: 0.7 },
+  },
+
+  typing: {
+    /** TypedText rhythm: base speed and random irregularity (0 = metronome). */
+    charsPerSecond: 70,
+    jitter: 0.6,
+    caretBlinkMs: 530,
+  },
+
+  boot: {
+    /** Pause between two BIOS lines (random in range). */
+    lineDelayMs: { min: 90, max: 320 },
+    memoryCountMs: 1300,
+    /** Pause on the last BIOS line before the login screen. */
+    endHoldMs: 700,
+    loginFadeMs: 400,
+    desktopFadeMs: 600,
+    shutdownFadeMs: 500,
+  },
+
+  phone: {
+    /** A ring every… while a line is ringing. */
+    ringIntervalMs: 3400,
+    toastSpring: { stiffness: 420, damping: 30, mass: 0.9 },
+  },
+
+  clock: {
+    /** Staged jump to the next event: the clock runs fast for this long (sound: 2.5 s). */
+    skipDurationMs: 2500,
+    /**
+     * Automatic jump after this much inactivity (no pointer, key or wheel), and only when no call
+     * is going on: never while the player reads, types or searches.
+     */
+    autoSkipIdleMs: 60_000,
+    idleCheckMs: 1000,
+  },
+
+  /**
+   * VHS fast-forward effect during a time jump (GDD 6.1: the only CRT-like exception, brief and
+   * never permanent). It lasts exactly clock.skipDurationMs.
+   */
+  vhs: {
+    /** Horizontal bands: time for one band to cross the screen, and its start delay. */
+    bands: [
+      { kind: 'thin', passMs: 520, delayMs: 0 },
+      { kind: 'wide', passMs: 900, delayMs: 180 },
+      { kind: 'dark', passMs: 700, delayMs: 60 },
+      { kind: 'thin', passMs: 380, delayMs: 300 },
+      { kind: 'dark', passMs: 1100, delayMs: 450 },
+      { kind: 'wide', passMs: 640, delayMs: 820 },
+    ],
+    /** Horizontal shake of the whole screen (logical px) and slight skew (degrees). */
+    jitterPx: [0, -5, 3, -6, 2, -4, 5, -2, 4, -3, 3, -5, 2, 0],
+    skewDeg: [0, 0.4, -0.3, 0.5, -0.2, 0.3, -0.4, 0.2, -0.3, 0.4, -0.2, 0.3, -0.1, 0],
+    /** Brightness flicker (opacity of a light veil). */
+    flicker: [0, 0.08, 0.03, 0.1, 0.04, 0.09, 0.02, 0.08, 0.03, 0.09, 0],
+    /** "Reduced animations": a single discreet fade instead of the effect. */
+    reducedFadeOpacity: 0.16,
   },
 
   debug: {
@@ -73,6 +188,11 @@ export function feelCssVariables(config: FeelConfig = feelConfig): Record<string
     '--feel-hover-out': `${config.hover.fadeOutMs}ms`,
     '--feel-lamp-on': `${config.lamp.onMs}ms`,
     '--feel-lamp-off': `${config.lamp.offMs}ms`,
+    '--feel-caret-blink': `${config.typing.caretBlinkMs}ms`,
+    '--feel-blink-slow': `${config.lamp.blinkSlowMs}ms`,
+    '--feel-blink-fast': `${config.lamp.blinkFastMs}ms`,
+    '--feel-pulse': `${config.lamp.pulseMs}ms`,
+    '--feel-boot-fade': `${config.boot.loginFadeMs}ms`,
   };
 }
 

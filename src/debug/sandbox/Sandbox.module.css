@@ -230,3 +230,16 @@
 .contrastRequired {
   color: var(--color-text-dim);
 }
+
+.windowArea {
+  position: relative;
+  height: var(--sandbox-window-area);
+  overflow: hidden;
+  background: var(--color-desktop);
+  box-shadow: var(--bevel-sunken);
+}
+
+.windowBody {
+  margin: 0;
+  padding: var(--space-4);
+}

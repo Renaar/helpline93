@@ -5,4 +5,8 @@
   --cursor-hand: url('../../../assets/cursors/hand.svg') 11 2, pointer;
   --cursor-text: url('../../../assets/cursors/text.svg') 16 16, text;
   --cursor-wait: url('../../../assets/cursors/wait.svg') 16 16, wait;
+  --cursor-resize-ns: url('../../../assets/cursors/resize-ns.svg') 16 16, ns-resize;
+  --cursor-resize-ew: url('../../../assets/cursors/resize-ew.svg') 16 16, ew-resize;
+  --cursor-resize-nwse: url('../../../assets/cursors/resize-nwse.svg') 16 16, nwse-resize;
+  --cursor-resize-nesw: url('../../../assets/cursors/resize-nesw.svg') 16 16, nesw-resize;
 }

@@ -1,5 +1,6 @@
 import { Howl, Howler } from 'howler';
 import type { SoundCategory, SoundId } from './soundDefinitions.ts';
+import { PcHum } from './pcHum.ts';
 import { soundDefinitions } from './soundDefinitions.ts';
 import { pickVariant, varyPlayback } from './variation.ts';
 
@@ -10,6 +11,10 @@ export interface AudioConfig {
   categories: Readonly<Record<SoundCategory, number>>;
   volumes: Readonly<Record<SoundId, number>>;
   minGapMs: number;
+  /** Procedural PC hum level (before the ambience category volume). */
+  humVolume: number;
+  humFadeInMs: number;
+  humFadeOutMs: number;
 }
 
 export interface AudioManagerOptions {
@@ -34,6 +39,8 @@ export class AudioManager {
   readonly #categoryVolumes: Record<SoundCategory, number>;
   #muted = false;
   #started = false;
+  #humWanted = false;
+  #hum: PcHum | null = null;
 
   constructor({
     urls,
@@ -104,6 +111,21 @@ export class AudioManager {
     Howler.volume(this.#config.master);
     Howler.mute(this.#muted);
     for (const urls of Object.values(this.#urls)) for (const url of urls) this.#howl(url);
+    if (this.#humWanted) this.startHum();
+  }
+
+  /** Starts the PC hum (now, or as soon as audio is allowed to start). */
+  startHum(): void {
+    this.#humWanted = true;
+    if (!this.#started) return;
+    this.#hum ??= new PcHum(Howler.ctx, Howler.masterGain);
+    const volume = this.#config.humVolume * this.#categoryVolumes.ambience;
+    this.#hum.start(volume, this.#config.humFadeInMs / 1000);
+  }
+
+  stopHum(): void {
+    this.#humWanted = false;
+    this.#hum?.stop(this.#config.humFadeOutMs / 1000);
   }
 
   #howl(url: string): Howl {

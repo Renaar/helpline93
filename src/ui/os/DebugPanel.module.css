@@ -1,0 +1,40 @@
+.panel {
+  position: absolute;
+  bottom: calc(var(--taskbar-height) + var(--space-2));
+  left: 50%;
+  z-index: var(--z-debug);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: var(--bevel-width) dashed var(--color-alert);
+  background: var(--color-panel-sunken);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  cursor: var(--cursor-arrow);
+  touch-action: none;
+}
+
+.toggle {
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-alert);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.info {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}

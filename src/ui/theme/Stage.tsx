@@ -1,7 +1,7 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { STAGE_HEIGHT, STAGE_WIDTH } from './layout.ts';
 import styles from './Stage.module.css';
-import { StageScaleContext } from './stageScale.ts';
+import { StageContext } from './stageScale.ts';
 
 function fitScale(): number {
   return Math.min(window.innerWidth / STAGE_WIDTH, window.innerHeight / STAGE_HEIGHT);
@@ -13,6 +13,8 @@ function fitScale(): number {
  */
 export function Stage({ children }: { children: ReactNode }) {
   const [scale, setScale] = useState(fitScale);
+  const [root, setRoot] = useState<HTMLDivElement | null>(null);
+  const geometry = useMemo(() => ({ scale, root }), [scale, root]);
 
   useEffect(() => {
     const onResize = () => {
@@ -26,8 +28,9 @@ export function Stage({ children }: { children: ReactNode }) {
 
   return (
     <div className={styles.viewport}>
-      <StageScaleContext.Provider value={scale}>
+      <StageContext.Provider value={geometry}>
         <div
+          ref={setRoot}
           className={styles.stage}
           style={{
             width: STAGE_WIDTH,
@@ -37,7 +40,7 @@ export function Stage({ children }: { children: ReactNode }) {
         >
           {children}
         </div>
-      </StageScaleContext.Provider>
+      </StageContext.Provider>
     </div>
   );
 }

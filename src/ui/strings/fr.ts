@@ -8,12 +8,173 @@ export const fr = {
     title: 'HELPLINE93',
   },
 
-  home: {
-    os: 'HelplineOS',
-    milestone: 'Jalon J0 — fondations',
-    notice:
-      'Le poste sera allumable au jalon J1. En attendant, le bac à sable présente le kit « feel ».',
-    openSandbox: 'Ouvrir le bac à sable',
+  format: {
+    /** US phone numbers (the setting stays American, GDD 1.4). */
+    phoneNumber: '({area}) {exchange}-{line}',
+  },
+
+  boot: {
+    powerOn: 'Allumer le poste',
+    bios: {
+      header: 'HELTRON BIOS v2.11',
+      copyright: '© 1992 Heltron Computer Corp. — San Aurelio',
+      cpu: 'Processeur : 486DX2-66',
+      memory: 'Test de la mémoire : {amount} Ko',
+      memoryOk: 'Test de la mémoire : {amount} Ko OK',
+      floppy: 'Lecteur de disquettes A: 1,44 Mo',
+      drives: 'Détection des disques IDE…',
+      primaryMaster: '  Maître primaire : HX-340A',
+      primarySlave: '  Esclave primaire : aucun',
+      starting: 'Démarrage de HelplineOS…',
+      skipHint: 'Appuyez sur ÉCHAP pour passer',
+    },
+    login: {
+      title: 'Ouverture de session',
+      station: 'Poste NL-04 · Service de nuit',
+      prompt: 'Entrez votre nom pour commencer le service.',
+      nameLabel: 'Nom de l’opérateur',
+      ok: 'OK',
+    },
+    defaultOperator: 'Opérateur',
+  },
+
+  os: {
+    start: 'Démarrer',
+    shutdown: 'Arrêter le poste',
+    minimize: 'Réduire',
+    close: 'Fermer',
+    taskbar: 'Barre des tâches',
+    tray: {
+      phone: 'Téléphone',
+      clock: 'Heure du service',
+    },
+    brand: 'HelplineOS',
+    /** Tape-deck fast-forward indicator shown during a time jump. */
+    fastForward: '▶▶',
+  },
+
+  apps: {
+    phone: {
+      title: 'Téléphone',
+      switchboard: 'Standard · Service de nuit',
+      line: 'Ligne {line}',
+      lineCode: 'NL-0{line}',
+      status: {
+        idle: 'Libre',
+        ringing: 'Appel entrant',
+        active: 'En communication',
+        held: 'En attente',
+      },
+      answer: 'Décrocher',
+      hold: 'Attente',
+      resume: 'Reprendre',
+      hangUp: 'Raccrocher',
+      waitNext: 'Attendre le prochain appel',
+      history: 'Historique des appels',
+      historyEmpty: 'Aucun appel pour l’instant.',
+      columns: {
+        time: 'Heure',
+        line: 'Ligne',
+        number: 'Numéro',
+        duration: 'Durée',
+      },
+      duration: {
+        one: '{count} min',
+        other: '{count} min',
+      },
+    },
+    incoming: {
+      title: 'Appel entrant — Ligne {line}',
+      urgentTitle: 'Appel urgent — Ligne {line}',
+      transferred: 'Appel transféré par le standard',
+      number: 'Numéro',
+      time: 'Reçu à',
+      answer: 'Décrocher',
+      hide: 'Masquer',
+    },
+    chat: {
+      title: 'Chat Opérateur',
+      idle: 'Aucun appel en cours.',
+      idleHint: 'Les appels transférés s’afficheront ici.',
+      connected: 'Ligne {line} · {number}',
+      waiting: 'Liaison établie. En attente de la transcription…',
+    },
+    helpdesk: {
+      title: 'HelpDesk',
+      empty: 'Aucun ticket ouvert.',
+      emptyHint: 'Un ticket s’ouvre à chaque appel décroché.',
+      ticket: 'Ticket n° {number}',
+      fields: {
+        opened: 'Ouvert à',
+        line: 'Ligne',
+        caller: 'Appelant',
+        product: 'Produit',
+        symptoms: 'Symptômes',
+      },
+      unknown: '—',
+      close: 'Clore le ticket',
+    },
+    notebook: {
+      title: 'Carnet',
+      tabs: {
+        clues: 'Indices',
+        notes: 'Notes',
+      },
+      cluesEmpty: 'Aucun indice pour l’instant.',
+      cluesHint: 'Les informations capturées pendant les appels viendront s’ajouter ici.',
+      notesLabel: 'Notes libres',
+      notesPlaceholder: 'Écrire une note…',
+    },
+    mail: {
+      title: 'Messagerie',
+      inbox: 'Boîte de réception',
+      empty: 'Aucun message.',
+    },
+    clients: {
+      title: 'Base Clients',
+      searchLabel: 'Rechercher un client',
+      searchPlaceholder: 'Nom, n° de série, ville…',
+      empty: 'Aucune fiche à afficher.',
+    },
+    viewer: {
+      title: 'Visionneuse',
+      document: 'Manuel de procédures',
+      tabs: {
+        contents: 'Sommaire',
+        bookmarks: 'Signets',
+        search: 'Recherche',
+      },
+      page: 'Page {current} / {total}',
+      previous: 'Page précédente',
+      next: 'Page suivante',
+      zoomIn: 'Agrandir',
+      zoomOut: 'Réduire',
+      zoom: '{percent} %',
+      bookmark: 'Signet',
+      bookmarksEmpty: 'Aucun signet. Le bouton « Signet » marque la page affichée.',
+      searchLabel: 'Rechercher dans le manuel',
+      searchPlaceholder: 'Mot-clé…',
+      results: {
+        zero: 'Aucun résultat.',
+        one: '{count} résultat',
+        other: '{count} résultats',
+      },
+      searchHint: 'Deux lettres au moins.',
+      revision: 'Rév. nuit {night}',
+      pageNumber: 'p. {number}',
+    },
+  },
+
+  debug: {
+    title: 'Débogage',
+    toggle: 'Afficher ou masquer le débogage',
+    shortcut: 'F9 : masquer',
+    incomingCall: 'Simuler un appel',
+    urgentCall: 'Simuler un appel urgent',
+    scheduleCall: 'Programmer un appel (+{minutes} min)',
+    nextEvent: 'Prochain événement : {time}',
+    noEvent: 'Aucun événement programmé',
+    minute: 'Minute du service : {minute}',
   },
 
   icons: {
@@ -35,6 +196,7 @@ export const fr = {
     error: 'Erreur',
     warning: 'Avertissement',
     info: 'Information',
+    power: 'Marche / arrêt',
   },
 
   sandbox: {
@@ -70,6 +232,25 @@ export const fr = {
       release: 'Relâchement',
       deny: 'Refus',
       confirm: 'Validation',
+      power: 'Interrupteur',
+      spinup: 'Disque qui démarre',
+      hdd: 'Disque dur',
+      biosBeep: 'Bip BIOS',
+      windowOpen: 'Ouverture',
+      windowClose: 'Fermeture',
+      windowMinimize: 'Réduction',
+      windowRestore: 'Restauration',
+      menuOpen: 'Menu',
+      dragPick: 'Prise',
+      dragDrop: 'Pose',
+      pageTurn: 'Page',
+      viewerJump: 'Aller à la page',
+      key: 'Touche',
+      phoneRing: 'Sonnerie',
+      phonePickup: 'Décrocher',
+      phoneHangup: 'Raccrocher',
+      phoneHold: 'Attente',
+      clockSkip: 'Saut dans le temps',
     },
 
     feedback: {
@@ -96,6 +277,10 @@ export const fr = {
       text: 'Texte',
       wait: 'Sablier',
       denied: 'Refus',
+      'resize-ns': 'Hauteur',
+      'resize-ew': 'Largeur',
+      'resize-nwse': 'Coin ↘',
+      'resize-nesw': 'Coin ↙',
     },
 
     typography: {
@@ -134,6 +319,35 @@ export const fr = {
       required: 'min. {minimum}:1',
       informative: 'indicatif',
       sample: 'Aa',
+    },
+
+    inputs: {
+      title: 'TextField · TypedText',
+      hint: 'Chaque touche donne un son de clavier feutré. Le champ refuse au-delà de 12 caractères.',
+      fieldLabel: 'Champ de démonstration',
+      placeholder: 'Tapez quelque chose…',
+      typed: 'Liaison établie. En attente de la transcription de l’appel…',
+      replay: 'Rejouer',
+    },
+
+    vhs: {
+      title: 'Avance rapide VHS',
+      hint: 'L’effet du saut dans le temps (2,5 s). Avec « Animations réduites » : un simple fondu.',
+      play: 'Lancer l’effet',
+    },
+
+    lamps: {
+      title: 'Voyants',
+      hint: 'Éteint, allumé, sonnerie, attente, urgence.',
+    },
+
+    window: {
+      title: 'Window95',
+      hint: 'Déplacer par la barre de titre (inertie légère au lâcher), redimensionner par les bords et les coins, réduire, fermer.',
+      open: 'Ouvrir',
+      restore: 'Restaurer',
+      windowTitle: 'Fenêtre de démonstration',
+      body: 'Contenu de la fenêtre.',
     },
 
     settings: {

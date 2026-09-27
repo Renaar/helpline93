@@ -1,0 +1,129 @@
+.taskbar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-taskbar);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--taskbar-height);
+  padding: 0 var(--space-2);
+  background: var(--color-panel);
+  box-shadow: inset 0 var(--bevel-width) 0 var(--color-bevel-light);
+  font-family: var(--font-condensed);
+}
+
+.start,
+.task,
+.trayIcon {
+  height: var(--taskbar-button-height);
+  background: var(--color-panel);
+  box-shadow: var(--bevel-raised);
+}
+
+.start {
+  gap: var(--space-2);
+  padding: 0 var(--space-4) 0 var(--space-2);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.start[data-pressed],
+.start[aria-pressed='true'],
+.task[data-pressed],
+.task[aria-pressed='true'],
+.trayIcon[data-pressed] {
+  box-shadow: var(--bevel-sunken);
+}
+
+.start[data-pressed] > *,
+.start[aria-pressed='true'] > *,
+.task[data-pressed] > *,
+.task[aria-pressed='true'] > * {
+  transform: translate(var(--press-offset), var(--press-offset));
+}
+
+.task[aria-pressed='true'] {
+  background: var(--color-panel-sunken);
+}
+
+.tasks {
+  display: flex;
+  flex: 1;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.taskSlot {
+  display: flex;
+  flex: 0 1 var(--taskbar-task-width);
+  min-width: 0;
+}
+
+.task {
+  flex: 1;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0 var(--space-3) 0 var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.taskIcon {
+  width: var(--icon-titlebar);
+  height: var(--icon-titlebar);
+}
+
+.taskLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tray {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--taskbar-button-height);
+  padding: 0 var(--space-3) 0 var(--space-1);
+  box-shadow: var(--bevel-sunken);
+}
+
+.trayIcon {
+  width: var(--taskbar-button-height);
+  height: var(--tray-icon-size);
+  background: none;
+  box-shadow: none;
+}
+
+.trayIcon svg {
+  width: var(--icon-titlebar);
+  height: var(--icon-titlebar);
+}
+
+.blink[data-blink] {
+  display: block;
+  animation: blink var(--feel-blink-slow) steps(1) infinite;
+}
+
+.blink[data-blink='fast'] {
+  animation-duration: var(--feel-blink-fast);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.clock {
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  font-variant-numeric: tabular-nums;
+}
+
+/* While time jumps to the next event, the clock glows copper (colour change, no animation). */
+.clock[data-skipping] {
+  color: var(--color-highlight);
+}

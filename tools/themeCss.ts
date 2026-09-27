@@ -13,6 +13,10 @@ const fallbacks: Record<CursorName, string> = {
   hand: 'pointer',
   text: 'text',
   wait: 'wait',
+  'resize-ns': 'ns-resize',
+  'resize-ew': 'ew-resize',
+  'resize-nwse': 'nwse-resize',
+  'resize-nesw': 'nesw-resize',
 };
 
 export const cursorNames = Object.keys(cursorArt) as CursorName[];

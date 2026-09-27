@@ -1,0 +1,45 @@
+.wrapper {
+  display: inline-flex;
+  min-width: 0;
+}
+
+.wrapperMultiline {
+  display: flex;
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+  height: var(--button-height);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-panel-sunken);
+  box-shadow: var(--bevel-sunken);
+  color: var(--color-text);
+  caret-color: var(--color-highlight);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  outline: none;
+  cursor: var(--cursor-text);
+  user-select: text;
+}
+
+.field::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.field:focus-visible {
+  box-shadow: var(--bevel-sunken), var(--focus-halo);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.multiline {
+  height: auto;
+  padding: var(--space-3);
+  line-height: var(--line-height-body);
+  resize: none;
+}

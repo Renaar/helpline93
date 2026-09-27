@@ -1,0 +1,46 @@
+.desktop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-desktop);
+}
+
+/* Staged loading: hourglass everywhere while an application "loads" (GDD 5.1). */
+.desktop[data-busy],
+.desktop[data-busy] * {
+  cursor: var(--cursor-wait) !important;
+}
+
+.icons {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  height: calc(100% - var(--taskbar-height) - var(--space-6));
+}
+
+.iconSlot {
+  width: var(--desktop-icon-width);
+}
+
+.icon {
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-2) var(--space-1);
+}
+
+.iconLabel {
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-tight);
+  text-align: center;
+}
+
+.iconLabel[data-selected] {
+  background: var(--color-selection);
+}

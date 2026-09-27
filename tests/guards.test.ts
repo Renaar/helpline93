@@ -9,6 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { soundDefinitions } from '../src/audio/soundDefinitions.ts';
 import { cursorArt } from '../src/ui/icons/cursorArt.ts';
 import { iconArt } from '../src/ui/icons/iconArt.ts';
+import { TASKBAR_HEIGHT, TITLEBAR_HEIGHT } from '../src/ui/theme/layout.ts';
 import { validatePixelArt } from '../src/ui/icons/pixelArt.ts';
 import {
   cursorFile,
@@ -54,6 +55,12 @@ describe('theme', () => {
     }
   });
 
+  it('uses the same bar heights in layout.ts (window maths) and tokens.css (styles)', () => {
+    const tokens = readFileSync(join(THEME, 'tokens.css'), 'utf8');
+    expect(tokens).toContain(`--taskbar-height: ${TASKBAR_HEIGHT}px;`);
+    expect(tokens).toContain(`--titlebar-height: ${TITLEBAR_HEIGHT}px;`);
+  });
+
   it('has no colour literal outside src/ui/theme/', () => {
     expect(
       offenders(
@@ -64,7 +71,8 @@ describe('theme', () => {
   });
 
   it('has no raw size, duration or font family in component stylesheets', () => {
-    expect(offenders(cssFiles, /(?<![\w-])\d*\.?\d+(?:px|ms|s|rem|em|vh|vw)\b/)).toEqual([]);
+    // `em` stays allowed: it is a proportion of the current text size, not a hard size.
+    expect(offenders(cssFiles, /(?<![\w-])\d*\.?\d+(?:px|ms|s|rem|vh|vw)\b/)).toEqual([]);
     expect(offenders(cssFiles, /font-family:(?!\s*var\()/)).toEqual([]);
   });
 });

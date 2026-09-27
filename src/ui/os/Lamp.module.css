@@ -1,6 +1,7 @@
 .lamp {
   position: relative;
   display: inline-block;
+  flex: none;
   width: var(--lamp-size);
   height: var(--lamp-size);
   border-radius: 50%;
@@ -25,7 +26,31 @@
   background: var(--color-alert);
 }
 
-.lamp[data-lit]::after {
+.lamp[data-mode]::after {
   opacity: 1;
   transition-duration: var(--feel-lamp-on);
+}
+
+.lamp[data-mode='blink']::after {
+  animation: blink var(--feel-blink-slow) steps(1) infinite;
+}
+
+.lamp[data-mode='fast']::after {
+  animation: blink var(--feel-blink-fast) steps(1) infinite;
+}
+
+.lamp[data-mode='slow']::after {
+  animation: pulse var(--feel-pulse) ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.3;
+  }
 }

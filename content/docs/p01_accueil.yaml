@@ -1,0 +1,19 @@
+# Page provisoire (J1) : sert à tester la Visionneuse. Contenu définitif : J3.
+id: p.01
+tab: Généralités
+title: Accueil et prise d'appel
+keywords: [accueil, appel, ticket, procédure]
+revision: { night: 1 }
+body: |
+  ## 1-A — Décrocher
+  Le standard transfère chaque appel sur une ligne libre. Décrochez sans attendre : un client qui patiente est un client qui s'énerve.
+
+  ## 1-B — Identifier le client
+  - Demandez le **numéro de série** inscrit à l'arrière de l'appareil.
+  - Notez le **modèle** et la date d'achat si le client les connaît.
+  - Vérifiez la fiche dans la Base Clients.
+
+  ## 1-C — Clore le ticket
+  Chaque appel se termine par un **code de résolution**. Choisissez le code qui correspond à l'intervention réalisée, jamais un autre.
+
+  > Service de nuit : suivez les procédures à la lettre. Toute initiative doit être signalée au chef de service.

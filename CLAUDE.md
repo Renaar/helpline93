@@ -18,6 +18,16 @@ Style **néo-rétro** : structure d'un OS de 1993, finition d'une interface mode
 - Demander avant de changer la stack, l'architecture, le format du contenu ou d'ajouter une dépendance.
 - Le jeu doit toujours démarrer sans erreur. `npm run check` doit passer avant de livrer.
 
+## Branches et fusions
+- main ne contient que des jalons validés par Loïc : c'est toujours une version stable et jouable.
+- Chaque jalon démarre sur une nouvelle branche créée depuis main à jour, nommée jN (j2, j3…). Une seule branche par jalon.
+- Fusion dans main uniquement quand Loïc écrit explicitement « JN validé ». Jamais avant, jamais de ta propre initiative.
+- Procédure de fusion : vérifier le contenu de la branche → `npm run check` → merge commit (`--no-ff`) → `npm run check` sur main → tag annoté `jN-valide` → push de main et du tag.
+- Interdits sur main : squash, rebase, force-push, commits directs (sauf la mise à jour de PROGRESS.md après une fusion).
+- Ne jamais supprimer de branche ni de tag sans l'accord de Loïc.
+- En cas de conflit : s'arrêter, expliquer, proposer des options.
+- Pour revenir en arrière : `git revert` sur le commit de fusion (jamais de réécriture d'historique).
+
 ## Stack
 TypeScript strict · Vite · React · Motion · Zustand · Zod + YAML · Howler.js + Web Audio · Vitest
 
@@ -28,7 +38,7 @@ TypeScript strict · Vite · React · Motion · Zustand · Zod + YAML · Howler.
 - Animations sur `transform` / `opacity` uniquement. 60 fps.
 - Aucune couleur/taille/police en dur (thème) ; aucune durée/volume en dur (`feel.config.ts`).
 - Aucun texte joueur dans le code : `content/` ou `src/ui/strings/fr.ts`.
-- Aucun HUD hors fiction. Aucun effet CRT. Aucun décor hors de l'OS.
+- Aucun HUD hors fiction. Aucun effet CRT (seule exception : l'avance rapide VHS du saut dans le temps, GDD 6.1). Aucun décor hors de l'OS.
 - Aucun nom/logo/police Microsoft ni marque réelle. Assets sous licence commerciale, tracés dans `assets/CREDITS.md`.
 
 ## Langues
