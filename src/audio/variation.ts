@@ -12,7 +12,7 @@ function spread(range: number, random: () => number): number {
 
 /**
  * Slight random pitch and volume change so repeated sounds never feel machine-gunned (GDD 8.5).
- * `pitchRange` 0.05 = ±5 %, `volumeRange` 0.1 = ±10 %.
+ * `pitchRange` 0.015 = ±1.5 %, `volumeRange` 0.04 = ±4 %.
  */
 export function varyPlayback(
   baseVolume: number,

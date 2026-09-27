@@ -32,6 +32,8 @@ export class AudioManager {
   readonly #lastVariant = new Map<SoundId, number>();
   readonly #lastPlayedAt = new Map<SoundId, number>();
   readonly #categoryVolumes: Record<SoundCategory, number>;
+  #muted = false;
+  #started = false;
 
   constructor({
     urls,
@@ -44,15 +46,24 @@ export class AudioManager {
     this.#random = random;
     this.#now = now;
     this.#categoryVolumes = { ...config.categories };
-    Howler.volume(config.master);
   }
 
-  /** Loads every sample now, so the first play of each sound has no delay. */
-  preloadAll(): void {
-    for (const urls of Object.values(this.#urls)) for (const url of urls) this.#howl(url);
+  /**
+   * Browsers refuse to start audio before a user gesture (GDD 8.5), so nothing touches the
+   * audio context until the first pointer or key press. Samples are loaded at that moment.
+   */
+  startOnFirstGesture(target: EventTarget = window): void {
+    const start = () => {
+      target.removeEventListener('pointerdown', start, true);
+      target.removeEventListener('keydown', start, true);
+      this.#start();
+    };
+    target.addEventListener('pointerdown', start, true);
+    target.addEventListener('keydown', start, true);
   }
 
   play(id: SoundId): void {
+    if (!this.#started) return;
     const now = this.#now();
     const last = this.#lastPlayedAt.get(id);
     if (last !== undefined && now - last < this.#config.minGapMs) return;
@@ -79,11 +90,20 @@ export class AudioManager {
   }
 
   setMuted(muted: boolean): void {
-    Howler.mute(muted);
+    this.#muted = muted;
+    if (this.#started) Howler.mute(muted);
   }
 
   setCategoryVolume(category: SoundCategory, volume: number): void {
     this.#categoryVolumes[category] = Math.min(1, Math.max(0, volume));
+  }
+
+  #start(): void {
+    if (this.#started) return;
+    this.#started = true;
+    Howler.volume(this.#config.master);
+    Howler.mute(this.#muted);
+    for (const urls of Object.values(this.#urls)) for (const url of urls) this.#howl(url);
   }
 
   #howl(url: string): Howl {

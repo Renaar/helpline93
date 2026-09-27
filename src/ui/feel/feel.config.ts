@@ -7,20 +7,22 @@ import type { SoundCategory, SoundId } from '../../audio/soundDefinitions.ts';
 export const feelConfig = {
   sound: {
     master: 0.8,
-    /** ±5 % pitch on every play (GDD 8.5). */
-    pitchVariation: 0.05,
-    /** ±10 % volume on every play (GDD 8.5). */
-    volumeVariation: 0.1,
+    /** ±1.5 % pitch on every play: just enough to avoid the machine-gun effect (GDD 8.5). */
+    pitchVariation: 0.015,
+    /** ±4 % volume on every play (GDD 8.5). */
+    volumeVariation: 0.04,
     categories: { ui: 1, phone: 1, ambience: 0.6, music: 0.5 } satisfies Record<
       SoundCategory,
       number
     >,
+    /** Soft and muffled, never aggressive (GDD 5.1). Hover < release < press. */
     volumes: {
-      'ui.hover': 0.1,
-      'ui.press': 0.55,
-      'ui.release': 0.35,
-      'ui.deny': 0.6,
-      'ui.confirm': 0.45,
+      'ui.hover': 0.035,
+      /** Same file and level as the J0 hover sound, which Loïc validated. */
+      'ui.press': 0.1,
+      'ui.release': 0.06,
+      'ui.deny': 0.3,
+      'ui.confirm': 0.22,
     } satisfies Record<SoundId, number>,
     /** Minimum gap between two plays of the same sound, to avoid stacking on fast hovers. */
     minGapMs: 30,

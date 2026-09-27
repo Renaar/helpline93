@@ -13,8 +13,8 @@ export interface SoundDefinition {
  */
 export const soundDefinitions = {
   'ui.hover': { category: 'ui', variants: ['ui-hover-1', 'ui-hover-2'] },
-  'ui.press': { category: 'ui', variants: ['ui-press-1', 'ui-press-2', 'ui-press-3'] },
-  'ui.release': { category: 'ui', variants: ['ui-release-1', 'ui-release-2', 'ui-release-3'] },
+  'ui.press': { category: 'ui', variants: ['ui-press-1', 'ui-press-2'] },
+  'ui.release': { category: 'ui', variants: ['ui-release-1', 'ui-release-2'] },
   'ui.deny': { category: 'ui', variants: ['ui-deny-1', 'ui-deny-2'] },
   'ui.confirm': { category: 'ui', variants: ['ui-confirm-1'] },
 } as const satisfies Record<string, SoundDefinition>;

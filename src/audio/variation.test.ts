@@ -6,11 +6,11 @@ describe('varyPlayback', () => {
   it('stays within ±pitch and ±volume ranges', () => {
     const rng = createRng(1);
     for (let i = 0; i < 500; i++) {
-      const { rate, volume } = varyPlayback(0.5, 0.05, 0.1, rng);
-      expect(rate).toBeGreaterThanOrEqual(0.95);
-      expect(rate).toBeLessThanOrEqual(1.05);
-      expect(volume).toBeGreaterThanOrEqual(0.45);
-      expect(volume).toBeLessThanOrEqual(0.55);
+      const { rate, volume } = varyPlayback(0.5, 0.015, 0.04, rng);
+      expect(rate).toBeGreaterThanOrEqual(0.985);
+      expect(rate).toBeLessThanOrEqual(1.015);
+      expect(volume).toBeGreaterThanOrEqual(0.48);
+      expect(volume).toBeLessThanOrEqual(0.52);
     }
   });
 
