@@ -67,6 +67,7 @@ export const fr = {
       hold: 'Attente',
       resume: 'Reprendre',
       hangUp: 'Raccrocher',
+      waitNext: 'Attendre le prochain appel',
       history: 'Historique des appels',
       historyEmpty: 'Aucun appel pour l’instant.',
       columns: {
@@ -164,8 +165,12 @@ export const fr = {
 
   debug: {
     title: 'Débogage',
+    toggle: 'Afficher ou masquer le débogage',
     incomingCall: 'Simuler un appel',
     urgentCall: 'Simuler un appel urgent',
+    scheduleCall: 'Programmer un appel (+{minutes} min)',
+    nextEvent: 'Prochain événement : {time}',
+    noEvent: 'Aucun événement programmé',
     minute: 'Minute du service : {minute}',
   },
 
@@ -242,6 +247,7 @@ export const fr = {
       phonePickup: 'Décrocher',
       phoneHangup: 'Raccrocher',
       phoneHold: 'Attente',
+      clockSkip: 'Saut dans le temps',
     },
 
     feedback: {

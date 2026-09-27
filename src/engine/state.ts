@@ -1,4 +1,6 @@
 import { createPhoneState, type PhoneState } from './phone.ts';
+import type { ScheduledCall } from './schedule.ts';
+import { createShiftState, type ShiftState } from './shift.ts';
 
 /** Bumped whenever the saved state shape changes, so old saves can be migrated (GDD 8.6). */
 export const STATE_VERSION = 1;
@@ -13,15 +15,6 @@ export interface NarrativeVars {
   awareness: number;
 }
 
-export interface ShiftState {
-  /** Clock time (ms) at which the shift started, null before login. */
-  startedAt: number | null;
-  /** First minute of the shift (minutes since midnight). */
-  startMinute: number;
-  /** Current shift minute; can exceed 1440 after midnight. */
-  minute: number;
-}
-
 export interface GameState {
   version: typeof STATE_VERSION;
   language: Language;
@@ -31,6 +24,8 @@ export interface GameState {
   operatorName: string | null;
   shift: ShiftState;
   phone: PhoneState;
+  /** Calls planned at a game minute, not yet ringing. */
+  upcomingCalls: ScheduledCall[];
   vars: NarrativeVars;
   /** trust_<npc>, keyed by caller id. */
   trust: Record<string, number>;
@@ -44,8 +39,9 @@ export function createInitialState(seed: number, shiftStartMinute: number): Game
     seed,
     started: false,
     operatorName: null,
-    shift: { startedAt: null, startMinute: shiftStartMinute, minute: shiftStartMinute },
+    shift: createShiftState(shiftStartMinute),
     phone: createPhoneState(),
+    upcomingCalls: [],
     vars: { reputation: 0, suspicion: 0, awareness: 0 },
     trust: {},
     flags: [],

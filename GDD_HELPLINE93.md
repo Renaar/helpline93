@@ -1,6 +1,6 @@
 # HELPLINE93 — Game Design Document
 
-> Version 1.3 — palette cuivre / pétrole et sons feutrés (validés au J0)
+> Version 1.4 — temps du service en temps réel avec sauts mis en scène, sons répétitifs discrets (J1)
 > Destinataire final : Claude Code (implémentation de l'interface et des systèmes)
 
 ---
@@ -66,6 +66,13 @@ Peu à peu, tu comprends que la hotline sert de **relais à un réseau clandesti
 2. **E-mail de début de shift** : consignes du chef, notes internes, parfois un message anormal.
 3. **4 à 6 appels**, entrecoupés de temps morts.
 4. **Temps morts** : lire les e-mails, fouiller les fichiers, annoter le Carnet, relire les procédures.
+
+**Le temps du service** — il passe comme dans la vraie vie :
+- Le service commence toujours à **22:00**.
+- Pendant les appels et l'exploration, l'horloge avance **en temps réel** : 1 minute de jeu = 1 minute réelle.
+- Entre deux appels, quand il ne se passe rien, l'horloge **saute jusqu'au prochain événement programmé**. Le saut est mis en scène : l'horloge défile vite pendant 2 à 3 s avec un son discret, puis l'événement arrive.
+- Le saut se déclenche de deux façons : le bouton discret **« Attendre le prochain appel »** de l'app Téléphone, ou **automatiquement après un délai d'inactivité** (réglable dans `feel.config.ts`). Jamais de saut pendant un appel, ni pendant que le joueur lit, tape ou fouille : toute action remet le délai à zéro.
+- Les délais du format de nuit (`at`, `after_previous`, section 7.9) sont en **minutes de jeu**. Une nuit reste ainsi autour de 20 à 30 minutes réelles.
 5. **Fin de shift** : rapport automatique (tickets clos, temps moyen) + journal d'activité.
 6. **Conséquences** visibles la nuit suivante (nouveaux e-mails, pages de procédures modifiées, appelants qui reviennent).
 
@@ -129,7 +136,7 @@ Peu à peu, tu comprends que la hotline sert de **relais à un réseau clandesti
 
 - Le joueur **ne passe jamais d'appel**. Il attend qu'un cas lui soit transmis.
 - Le standard transfère les appels : sonnerie, voyant de ligne qui clignote, bref message système (« Ligne 2 — appel transféré »).
-- Entre deux appels, le temps s'écoule (horloge du shift) : c'est le moment d'explorer.
+- Entre deux appels, le temps s'écoule en temps réel (horloge du shift) : c'est le moment d'explorer. Quand le joueur a fini, il peut **attendre le prochain appel** (bouton de l'app Téléphone) : l'horloge saute, de façon mise en scène, jusqu'à l'appel suivant. Après un long moment d'inactivité, ce saut se fait tout seul (voir 2.2).
 - Deux types d'appels :
 
 | Type | Signal | Règle |
@@ -410,6 +417,7 @@ Licence **SIL Open Font License** (usage commercial libre). Polices **auto-hébe
 ### 6.5 Audio — *à définir*
 
 - **Sons doux et feutrés, jamais agressifs.** L'interface doit rester reposante sur une longue session de nuit.
+- **Sons répétitifs nettement plus bas que les sons ponctuels.** Clavier, survol, pages, défilement : ils reviennent sans cesse et doivent se faire oublier, à peine audibles. Un test automatique vérifie que le plus fort des sons répétitifs reste sous le plus doux des sons ponctuels.
 - Principes déjà posés en 5.1 et 8.5 : chaque interaction a son son, variations aléatoires, ambiance de bureau de nuit.
 - Direction musicale et liste des sons à préciser pendant J1.
 
@@ -859,6 +867,7 @@ Chaque jalon se termine par un **point de contrôle** : Loïc teste, valide ou d
 - **J5 — Acte I** (nuits 2-3) : pages révisées, Explorateur, premiers indices, Bloc-notes.
 - **J6 — Actes II et III** : dossier de Marc, table de décodage, codes déviés, 4 fins.
 - **J7 — Tension et finitions** : appels urgents et jauge (4.10), Pense-bêtes, disquettes, Démineur, Panneau de configuration, sons et visuels définitifs, accessibilité.
+  - *Piste à évaluer après le playtest du MVP :* une refonte graphique de HelplineOS.
 - **J8 — Publication** : version web publique (itch.io), puis portage Steam (Electron + steamworks.js).
 
 ### 9.4 Assets provisoires

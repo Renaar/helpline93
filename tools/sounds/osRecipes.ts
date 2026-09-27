@@ -76,7 +76,35 @@ function pageTurn(seed: number, length: number): Recipe {
   };
 }
 
+/**
+ * Time jump between calls: muffled ticks that speed up then slow down, following the clock's
+ * ease-in-out curve over the jump's duration (keep in sync with feel.config clock.skipDurationMs).
+ */
+function clockSkip(seed: number, length: number, ticks: number): Recipe {
+  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  return {
+    seed,
+    render: (rng) => {
+      const s = buffer(length + 0.05);
+      for (let i = 1; i < ticks; i++) {
+        // Time at which the eased progress reaches i / ticks (bisection).
+        let lo = 0;
+        let hi = 1;
+        for (let k = 0; k < 20; k++) {
+          const mid = (lo + hi) / 2;
+          if (ease(mid) < i / ticks) lo = mid;
+          else hi = mid;
+        }
+        addClick(s, rng, lo * length, 0.5 + rng() * 0.3, 0.0009, 0.3);
+      }
+      addTone(s, 90, 140, 0.08, length / 3, { attack: 0.4 });
+      return normalize(fade(highpass(s, 0.03), 0.3, 0.4), 0.35);
+    },
+  };
+}
+
 export const osRecipes: Record<string, Recipe> = {
+  'clock-skip-1': clockSkip(625, 2.5, 48),
   'page-turn-1': pageTurn(622, 0.13),
   'page-turn-2': pageTurn(623, 0.15),
   // Jump to a page from the contents or a search result: one short, soft tick.

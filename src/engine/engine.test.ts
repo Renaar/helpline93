@@ -131,4 +131,79 @@ describe('engine', () => {
     engine.dispatch({ type: 'ANSWER_CALL', line: 1 });
     expect(calls).toBe(1);
   });
+
+  describe('waiting for the next event', () => {
+    function loggedIn() {
+      const ctx = setup();
+      ctx.engine.dispatch({ type: 'START_SHIFT', operatorName: 'Alex' });
+      return ctx;
+    }
+
+    it('rings a planned call when its game minute comes', () => {
+      const { clock, engine, log } = loggedIn();
+      engine.dispatch({ type: 'SCHEDULE_CALL', atMinute: 1325 });
+      clock.advance(4 * GAME_MINUTE_MS);
+      engine.update();
+      expect(log.some((e) => e.type === 'call.incoming')).toBe(false);
+      clock.advance(GAME_MINUTE_MS);
+      engine.update();
+      expect(log.filter((e) => e.type === 'call.incoming')).toHaveLength(1);
+      expect(engine.getState().upcomingCalls).toEqual([]);
+    });
+
+    it('jumps to the next planned call, staged, then rings it', () => {
+      const { clock, engine, log } = loggedIn();
+      engine.dispatch({ type: 'SCHEDULE_CALL', atMinute: 1340 });
+      engine.dispatch({ type: 'SKIP_TO_NEXT_EVENT', durationMs: 2500 });
+      expect(log.find((e) => e.type === 'shift.skipStarted')?.payload).toEqual({
+        fromMinute: 1320,
+        toMinute: 1340,
+        durationMs: 2500,
+      });
+      clock.advance(1250);
+      engine.update();
+      expect(engine.getState().shift.minute).toBeGreaterThan(1320);
+      expect(log.some((e) => e.type === 'call.incoming')).toBe(false);
+      clock.advance(1250);
+      engine.update();
+      expect(engine.getState().shift.minute).toBe(1340);
+      expect(engine.getState().shift.fastForward).toBeNull();
+      const types = log.map((e) => e.type);
+      expect(types.indexOf('shift.skipEnded')).toBeLessThan(types.indexOf('call.incoming'));
+      // Real time again afterwards.
+      clock.advance(GAME_MINUTE_MS);
+      engine.update();
+      expect(engine.getState().shift.minute).toBe(1341);
+    });
+
+    it('refuses to skip during a call, with nothing planned, or before login', () => {
+      const idle = setup();
+      idle.engine.dispatch({ type: 'SCHEDULE_CALL', atMinute: 1340 });
+      idle.engine.dispatch({ type: 'SKIP_TO_NEXT_EVENT', durationMs: 2500 });
+      expect(idle.log.some((e) => e.type === 'shift.skipStarted')).toBe(false);
+
+      const nothing = loggedIn();
+      nothing.engine.dispatch({ type: 'SKIP_TO_NEXT_EVENT', durationMs: 2500 });
+      expect(nothing.log.some((e) => e.type === 'shift.skipStarted')).toBe(false);
+
+      const busy = loggedIn();
+      busy.engine.dispatch({ type: 'SCHEDULE_CALL', atMinute: 1340 });
+      busy.engine.dispatch({ type: 'DEBUG_INCOMING_CALL' });
+      busy.engine.dispatch({ type: 'SKIP_TO_NEXT_EVENT', durationMs: 2500 });
+      expect(busy.log.some((e) => e.type === 'shift.skipStarted')).toBe(false);
+    });
+
+    it('keeps a due call waiting while every line is busy', () => {
+      const { engine } = loggedIn();
+      for (let i = 0; i < 3; i++) engine.dispatch({ type: 'DEBUG_INCOMING_CALL' });
+      engine.dispatch({ type: 'SCHEDULE_CALL', atMinute: 1320 });
+      engine.update();
+      expect(engine.getState().upcomingCalls).toHaveLength(1);
+      engine.dispatch({ type: 'ANSWER_CALL', line: 1 });
+      engine.dispatch({ type: 'HANG_UP', line: 1 });
+      engine.update();
+      expect(engine.getState().upcomingCalls).toEqual([]);
+      expect(engine.getState().phone.lines[0]?.status).toBe('ringing');
+    });
+  });
 });

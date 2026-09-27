@@ -40,6 +40,7 @@ export const feelConfig = {
       'page.turn': 0.04,
       'viewer.jump': 0.035,
       'key.press': 0.025,
+      'clock.skip': 0.2,
       'phone.ring': 0.22,
       'phone.pickup': 0.3,
       'phone.hangup': 0.3,
@@ -136,6 +137,17 @@ export const feelConfig = {
     /** A ring every… while a line is ringing. */
     ringIntervalMs: 3400,
     toastSpring: { stiffness: 420, damping: 30, mass: 0.9 },
+  },
+
+  clock: {
+    /** Staged jump to the next event: the clock runs fast for this long (sound: 2.5 s). */
+    skipDurationMs: 2500,
+    /**
+     * Automatic jump after this much inactivity (no pointer, key or wheel), and only when no call
+     * is going on: never while the player reads, types or searches.
+     */
+    autoSkipIdleMs: 60_000,
+    idleCheckMs: 1000,
   },
 
   debug: {

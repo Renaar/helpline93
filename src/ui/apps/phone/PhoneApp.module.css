@@ -1,6 +1,14 @@
+.header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+}
+
 .switchboard {
   margin: 0;
-  padding: var(--space-2) var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-text-dim);

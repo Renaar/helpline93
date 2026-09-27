@@ -9,8 +9,12 @@ import type { CallRecord, CallType } from './phone.ts';
 export interface EngineEventMap {
   'engine.started': { seed: number };
   'shift.started': { operatorName: string; minute: number };
-  /** Emitted once per game minute while the shift runs. */
+  /** Emitted each time the shift clock reaches a new game minute. */
   'shift.minute': { minute: number };
+  /** A staged jump in time begins (the UI stages it: fast clock, soft sound). */
+  'shift.skipStarted': { fromMinute: number; toMinute: number; durationMs: number };
+  'shift.skipEnded': { minute: number };
+  'call.scheduled': { callId: string; atMinute: number; callType: CallType };
   'call.incoming': { callId: string; line: LineId; number: string; callType: CallType };
   /** `held` = line automatically put on hold to take this call. */
   'call.answered': { callId: string; line: LineId; held: LineId | null };

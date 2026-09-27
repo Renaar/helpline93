@@ -122,3 +122,8 @@
   font-size: var(--text-md);
   font-variant-numeric: tabular-nums;
 }
+
+/* While time jumps to the next event, the clock glows copper (colour change, no animation). */
+.clock[data-skipping] {
+  color: var(--color-highlight);
+}

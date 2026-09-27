@@ -10,6 +10,7 @@ import { useWindows } from './windowStore.ts';
 export function Tray() {
   const phone = useEngineState((state) => state.phone);
   const minute = useEngineState((state) => state.shift.minute);
+  const skipping = useEngineState((state) => state.shift.fastForward !== null);
   const ringing = phone.lines.find((line) => line.status === 'ringing');
   const urgent = ringing?.call?.type === 'urgent';
 
@@ -29,7 +30,11 @@ export function Tray() {
           <PixelIcon name={ringing ? 'incoming-call' : 'phone'} size="sm" />
         </span>
       </Pressable>
-      <time className={styles.clock} aria-label={t('os.tray.clock')}>
+      <time
+        className={styles.clock}
+        data-skipping={skipping || undefined}
+        aria-label={t('os.tray.clock')}
+      >
         {formatClock(minute)}
       </time>
     </div>

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { CallStaging } from './CallStaging.tsx';
+import { ClockDirector } from './ClockDirector.tsx';
 import { DebugPanel } from './DebugPanel.tsx';
 import styles from './Desktop.module.css';
 import { DesktopIcons } from './DesktopIcons.tsx';
@@ -37,6 +38,7 @@ export function Desktop() {
       <StartMenu />
       <Taskbar />
       <CallStaging />
+      <ClockDirector />
       {debug && <DebugPanel />}
     </main>
   );

@@ -40,6 +40,7 @@ export const soundDefinitions = {
     variants: ['key-1', 'key-2', 'key-3', 'key-4'],
     repetitive: true,
   },
+  'clock.skip': { category: 'ambience', variants: ['clock-skip-1'] },
   'phone.ring': { category: 'phone', variants: ['phone-ring-1'] },
   'phone.pickup': { category: 'phone', variants: ['phone-pickup-1'] },
   'phone.hangup': { category: 'phone', variants: ['phone-hangup-1'] },

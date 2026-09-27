@@ -13,5 +13,6 @@ export { EventBus, type BusEvent } from './eventBus.ts';
 export type { EngineEvent, EngineEventMap } from './events.ts';
 export type { Call, CallRecord, CallType, Line, LineStatus, PhoneState } from './phone.ts';
 export { createRng, type Rng } from './rng.ts';
+export { canSkip, callInProgress, nextEventMinute, type ScheduledCall } from './schedule.ts';
 export { minuteOfDay, parseClockTime } from './shift.ts';
 export { STATE_VERSION, createInitialState, type GameState, type Language } from './state.ts';

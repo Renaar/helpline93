@@ -5,6 +5,7 @@ import { randomDebugNumber } from './debugCalls.ts';
 import { EventBus } from './eventBus.ts';
 import type { EngineEvent, EngineEventMap } from './events.ts';
 import {
+  type CallType,
   answerLine,
   findLine,
   firstIdleLine,
@@ -16,7 +17,8 @@ import {
 } from './phone.ts';
 import { createRng, type Rng } from './rng.ts';
 import { Scheduler } from './scheduler.ts';
-import { parseClockTime, shiftMinuteAt } from './shift.ts';
+import { canSkip, nextEventMinute } from './schedule.ts';
+import { fastForwardEnded, minuteAt, parseClockTime, startFastForward } from './shift.ts';
 import { createInitialState, type GameState } from './state.ts';
 
 export interface EngineOptions {
@@ -66,6 +68,27 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
     return findLine(state.phone, line)?.call?.id ?? '';
   }
 
+  /** Rings the first free line. Returns false when every line is busy. */
+  function ring(callId: string, type: CallType): boolean {
+    const line = firstIdleLine(state.phone);
+    if (line === null) return false;
+    const call = {
+      id: callId,
+      number: randomDebugNumber(rng),
+      type,
+      ringingSince: state.shift.minute,
+      answeredAt: null,
+    };
+    const phone = ringLine(state.phone, line, call);
+    if (!phone) return false;
+    setPhone(phone);
+    emitNow({
+      type: 'call.incoming',
+      payload: { callId: call.id, line, number: call.number, callType: call.type },
+    });
+    return true;
+  }
+
   function dispatch(action: EngineAction): void {
     const minute = state.shift.minute;
     switch (action.type) {
@@ -83,22 +106,35 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
         return;
       }
       case 'DEBUG_INCOMING_CALL': {
-        const line = firstIdleLine(state.phone);
-        if (line === null) return;
+        callCounter += 1;
+        ring(`call-${callCounter}`, action.callType ?? 'libre');
+        return;
+      }
+      case 'SCHEDULE_CALL': {
         callCounter += 1;
         const call = {
           id: `call-${callCounter}`,
-          number: randomDebugNumber(rng),
+          atMinute: action.atMinute,
           type: action.callType ?? 'libre',
-          ringingSince: minute,
-          answeredAt: null,
         };
-        const phone = ringLine(state.phone, line, call);
-        if (!phone) return;
-        setPhone(phone);
+        setState({ ...state, upcomingCalls: [...state.upcomingCalls, call] });
         emitNow({
-          type: 'call.incoming',
-          payload: { callId: call.id, line, number: call.number, callType: call.type },
+          type: 'call.scheduled',
+          payload: { callId: call.id, atMinute: call.atMinute, callType: call.type },
+        });
+        return;
+      }
+      case 'SKIP_TO_NEXT_EVENT': {
+        const target = nextEventMinute(state);
+        if (!canSkip(state) || target === null) return;
+        const fromMinute = state.shift.minute;
+        setState({
+          ...state,
+          shift: startFastForward(state.shift, clock.now(), target, action.durationMs),
+        });
+        emitNow({
+          type: 'shift.skipStarted',
+          payload: { fromMinute, toMinute: target, durationMs: action.durationMs },
         });
         return;
       }
@@ -154,16 +190,31 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
   }
 
   function updateShiftClock(): void {
-    const { startedAt, startMinute, minute } = state.shift;
-    if (startedAt === null) return;
-    const next = shiftMinuteAt(startMinute, startedAt, clock.now());
-    if (next === minute) return;
-    setState({ ...state, shift: { ...state.shift, minute: next } });
-    emitNow({ type: 'shift.minute', payload: { minute: next } });
+    const now = clock.now();
+    if (state.shift.startedAt === null) return;
+    const skipDone = fastForwardEnded(state.shift, now);
+    const shift = skipDone ? { ...state.shift, fastForward: null } : state.shift;
+    const minute = minuteAt(shift, now);
+    if (shift !== state.shift || minute !== shift.minute) {
+      setState({ ...state, shift: { ...shift, minute } });
+    }
+    if (minute !== shift.minute) emitNow({ type: 'shift.minute', payload: { minute } });
+    if (skipDone) emitNow({ type: 'shift.skipEnded', payload: { minute } });
+  }
+
+  /** Rings planned calls whose minute has come (they wait if every line is busy). */
+  function ringDueCalls(): void {
+    if (state.shift.fastForward !== null) return;
+    for (const call of state.upcomingCalls) {
+      if (call.atMinute > state.shift.minute) continue;
+      if (!ring(call.id, call.type)) return;
+      setState({ ...state, upcomingCalls: state.upcomingCalls.filter((c) => c.id !== call.id) });
+    }
   }
 
   function update(): void {
     updateShiftClock();
+    ringDueCalls();
     for (const { item } of scheduler.popDue(clock.now())) events.emit(item);
   }
 

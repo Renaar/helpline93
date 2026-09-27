@@ -2,17 +2,45 @@
 
 ## Jalon en cours
 
-**J1 — Interface HelplineOS** : livré, **en attente du test « game feel » de Loïc** (10 minutes sans contenu).
+**J1 — Interface HelplineOS** : révision 1 livrée (sons, horloge du shift), **en attente de validation par Loïc**.
 Branche : `claude/j1-interface-helplineos` (partie de J0, PR J0 : https://github.com/Renaar/helpline93/pull/1).
 
 ---
 
-## J1 — Interface HelplineOS : livré, à tester
+## J1 — Révision 1 (retours de Loïc)
+
+Validé, ne plus toucher : comportement des fenêtres (ouverture, déplacement, focus, réduction, fermeture), séquence de boot (y compris la possibilité de la passer), feeling général.
+
+- [x] **Sons répétitifs beaucoup plus discrets** : clavier redessiné (un seul petit « tic » étouffé, à peine audible), page de la Visionneuse plus courte et plus douce, nouveau son très bref pour aller à une page depuis le sommaire ou un résultat de recherche.
+- [x] **Règle des sons répétitifs** (GDD 6.5) : chaque son est déclaré répétitif ou ponctuel ; un test vérifie que le plus fort des répétitifs (survol, clavier, pages) reste sous le plus doux des ponctuels.
+- [x] **Horloge du shift en temps réel** : 22:00, puis 1 minute de jeu = 1 minute réelle.
+- [x] **Appels programmés en minutes de jeu** (préparation du planificateur de nuit J3, GDD 7.9).
+- [x] **Saut vers le prochain événement**, mis en scène : l'horloge défile en accélérant puis en ralentissant pendant 2,5 s, s'éclaire en cuivre, avec un tic-tac feutré ; puis l'appel sonne.
+  - Bouton **« Attendre le prochain appel »** dans l'app Téléphone (grisé pendant un appel ou si rien n'est prévu).
+  - **Saut automatique** après 60 s sans aucune action (souris, clavier, molette), jamais pendant un appel. Réglage : `clock.autoSkipIdleMs` dans `feel.config.ts`.
+- [x] GDD mis à jour : 2.2 et 4.1 (temps du service), 6.5 (sons répétitifs), 9.3 (piste de refonte graphique au J7). Version 1.4.
+- [x] Panneau de débogage replié par défaut et déplaçable (il cachait le bouton du Téléphone).
+
+### Comment tester la révision 1
+
+1. `npm run dev`, puis ouvrir `/?debug&boot=skip` (ou faire l'allumage complet avec `/?debug`).
+2. **Sons** : taper dans le Carnet ou la recherche de la Visionneuse, tourner les pages, cliquer le sommaire.
+3. **Horloge** : ouvrir le Téléphone. Le bouton « Attendre le prochain appel » est grisé (rien de prévu).
+4. En bas au centre, déplier **Débogage**, cliquer **Programmer un appel (+15 min)** : le bouton du Téléphone devient actif. Le cliquer : l'horloge défile jusqu'à l'appel, qui sonne.
+5. Décrocher, raccrocher, programmer un appel (+45 min), puis **ne plus toucher à rien pendant une minute** : le saut se fait tout seul.
+
+### Note pour plus tard
+
+- **Refonte graphique** : piste à évaluer après le playtest du MVP (inscrite au J7 dans le GDD 9.3). Rien à faire d'ici là.
+
+---
+
+## J1 — Interface HelplineOS : premier jet
 
 ### Livré
 
 - **Allumage** : écran « Allumer le poste » (clac d'interrupteur, ronronnement du PC synthétisé en direct), séquence BIOS (lignes qui apparaissent, mémoire qui compte, bip, disque qui démarre), ouverture de session avec le **nom de l'opérateur** (GDD 3.3), puis bureau. Échap, Entrée ou un clic passe le BIOS.
-- **Moteur** : horloge du shift (22:00, 1 minute de jeu = 3 s réelles), 3 lignes téléphoniques (sonnerie, décrocher, attente, reprise, raccrocher, historique), mise en attente automatique quand on prend un autre appel. Tout est testé.
+- **Moteur** : horloge du shift (22:00 ; temps réel depuis la révision 1), 3 lignes téléphoniques (sonnerie, décrocher, attente, reprise, raccrocher, historique), mise en attente automatique quand on prend un autre appel. Tout est testé.
 - **Fenêtres (`Window95`)** : ouverture avec latence d'époque (sablier + grattement de disque, 0,26 à 0,65 s), fenêtre qui se déploie depuis son icône, déplacement par la barre de titre avec inertie légère, focus (barre de titre cuivrée), réduction dans son bouton de barre des tâches, restauration, fermeture, empilement. Sons pour chaque geste.
 - **Bureau** : icônes (un clic sélectionne, double-clic ouvre), barre des tâches (un bouton par fenêtre : focus, réduire, restaurer), menu Démarrer (toutes les apps, « Arrêter le poste »), zone de notification (téléphone qui clignote quand une ligne sonne, plus vite si urgent), horloge du shift.
 - **Téléphone** : fenêtre « Appel entrant » qui glisse depuis le coin, app Téléphone (voyants par ligne, boutons, historique), sonnerie répétée, disposition automatique au décroché (Chat à gauche, Visionneuse à droite, ticket et téléphone en bas).
@@ -40,12 +68,11 @@ Branche : `claude/j1-interface-helplineos` (partie de J0, PR J0 : https://github
 - **Arrêter le poste** revient à l'écran éteint ; la session (heure, appels, fenêtres) est conservée si on rallume.
 - Pas de redimensionnement des fenêtres ni de déplacement des icônes du bureau (absents du GDD) : à ajouter si le test le demande.
 
-### Points à valider par Loïc (test « game feel » de 10 minutes)
+### Points à valider par Loïc
 
-1. **Ressenti des fenêtres** : latence d'ouverture, déploiement depuis l'icône, inertie au lâcher, réduction. Trop lent, trop rapide ? (`feel.config.ts`)
-2. **Sons du J1** : lesquels sont trop présents ou trop discrets ? (Sonnerie, clavier, disque, fenêtres…)
-3. **Rythme du BIOS** et **horloge** (1 minute de jeu = 3 s).
-4. **Touches « Nightline »** ci-dessus : on garde ?
+1. **Sons répétitifs** (révision 1) : clavier, pages, sommaire assez discrets maintenant ?
+2. **Saut dans le temps** : durée (2,5 s), son, et délai du saut automatique (60 s).
+3. **Touches « Nightline »** : on garde ? (question du premier jet, toujours ouverte)
 
 ---
 
