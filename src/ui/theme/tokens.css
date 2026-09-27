@@ -1,0 +1,87 @@
+/*
+ * HelplineOS design tokens (GDD 6 and 8.4).
+ * The only place where colours, sizes and fonts are written. Components use these variables.
+ * Durations and curves live in src/ui/feel/feel.config.ts (exposed as --feel-* variables).
+ */
+:root {
+  /* Palette — keep in sync with palette.ts (a test checks it). */
+  --color-night: #0b1026;
+  --color-surface: #1a2248;
+  --color-bevel-light: #2e3a6e;
+  --color-bevel-dark: #060914;
+  --color-amber: #ffb000;
+  --color-amber-dim: #b37a00;
+  --color-violet: #7b5bd6;
+  --color-violet-deep: #3d2a73;
+  --color-alert: #ff5a36;
+
+  /* Roles */
+  --color-desktop: var(--color-night);
+  --color-letterbox: var(--color-night);
+  --color-text: var(--color-amber);
+  --color-text-dim: var(--color-amber-dim);
+  --color-text-on-accent: var(--color-amber);
+  --color-selection: var(--color-violet);
+  --color-panel: var(--color-surface);
+  --color-panel-sunken: var(--color-night);
+  --color-hover-overlay: rgb(255 176 0 / 0.07);
+  --color-press-overlay: rgb(6 9 20 / 0.18);
+  --gradient-titlebar-active: linear-gradient(90deg, var(--color-violet), var(--color-violet-deep));
+
+  /* Fonts (GDD 6.3) */
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-condensed: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-serif: 'IBM Plex Serif', serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Text sizes (logical px, at 1920 × 1080) */
+  --text-xs: 14px;
+  --text-sm: 16px;
+  --text-md: 19px;
+  --text-lg: 22px;
+  --text-xl: 28px;
+  --text-xxl: 40px;
+  --line-height-tight: 1.2;
+  --line-height-body: 1.45;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Reliefs (GDD 6.1: thin and crisp, corners 2 px max) */
+  --bevel-width: 1px;
+  --radius-sm: 2px;
+  --bevel-raised:
+    inset var(--bevel-width) var(--bevel-width) 0 var(--color-bevel-light),
+    inset calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 var(--color-bevel-dark);
+  --bevel-sunken:
+    inset var(--bevel-width) var(--bevel-width) 0 var(--color-bevel-dark),
+    inset calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 var(--color-bevel-light);
+  --outline-default: 0 0 0 var(--bevel-width) var(--color-bevel-dark);
+  --focus-halo: 0 0 0 2px rgb(255 176 0 / 0.35);
+  --shadow-soft: 0 6px 18px rgb(6 9 20 / 0.45);
+  --press-offset: 1px;
+  --opacity-disabled: 0.4;
+
+  /* Component sizes */
+  --titlebar-height: 36px;
+  --button-height: 40px;
+  --button-min-width: 128px;
+  --icon-sm: 32px;
+  --icon-md: 48px;
+  --icon-lg: 64px;
+  --icon-tile-width: 112px;
+  --swatch-size: 72px;
+  --lamp-size: 18px;
+  --sandbox-column: 880px;
+}
