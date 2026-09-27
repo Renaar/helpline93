@@ -236,6 +236,7 @@ export const fr = {
       dragPick: 'Prise',
       dragDrop: 'Pose',
       pageTurn: 'Page',
+      viewerJump: 'Aller à la page',
       key: 'Touche',
       phoneRing: 'Sonnerie',
       phonePickup: 'Décrocher',

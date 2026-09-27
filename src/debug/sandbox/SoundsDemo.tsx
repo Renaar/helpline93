@@ -24,6 +24,7 @@ const labels: Record<SoundId, UiStringKey> = {
   'drag.pick': 'sandbox.sounds.dragPick',
   'drag.drop': 'sandbox.sounds.dragDrop',
   'page.turn': 'sandbox.sounds.pageTurn',
+  'viewer.jump': 'sandbox.sounds.viewerJump',
   'key.press': 'sandbox.sounds.key',
   'phone.ring': 'sandbox.sounds.phoneRing',
   'phone.pickup': 'sandbox.sounds.phonePickup',

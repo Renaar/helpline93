@@ -28,7 +28,7 @@ function PageLink({ page, children }: { page: DocPage; children?: React.ReactNod
       pressEffect="none"
       toggled={current}
       onPress={() => {
-        audio.play('page.turn');
+        audio.play('viewer.jump');
         useViewer.getState().goTo(page.id);
       }}
     >

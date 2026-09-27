@@ -30,16 +30,17 @@ function hddSeek(seed: number, grains: number, length: number): Recipe {
   };
 }
 
-/** Mechanical key: soft click down + bottom-out thock. */
-function key(seed: number, pitch: number): Recipe {
+/**
+ * Keyboard: a single tiny, muffled tick. It repeats constantly, so it must be forgotten
+ * (GDD 6.5: repetitive sounds stay far below one-off sounds).
+ */
+function key(seed: number, lowpass: number): Recipe {
   return {
     seed,
     render: (rng) => {
-      const s = buffer(0.06);
-      addClick(s, rng, 0, 1, 0.0012, 0.55);
-      addClick(s, rng, 0.012, 0.6, 0.0018, 0.35);
-      addTone(s, pitch, pitch * 0.8, 0.35, 0.006, { start: 0.012 });
-      return normalize(highpass(s, 0.05), 0.45);
+      const s = buffer(0.025);
+      addClick(s, rng, 0, 1, 0.0009, lowpass);
+      return normalize(highpass(s, 0.04), 0.3);
     },
   };
 }
@@ -57,7 +58,7 @@ function sweep(seed: number, from: number, to: number, length: number): Recipe {
   };
 }
 
-/** Paper page turning: a soft, band-limited rustle that swells and fades. */
+/** Paper page turning: a short, soft, band-limited brush. */
 function pageTurn(seed: number, length: number): Recipe {
   return {
     seed,
@@ -66,18 +67,27 @@ function pageTurn(seed: number, length: number): Recipe {
       let y = 0;
       for (let i = 0; i < s.length; i++) {
         const p = i / s.length;
-        const swell = Math.sin(Math.PI * p) ** 1.5;
-        y += 0.35 * (rng() * 2 - 1 - y);
-        s[i] = y * swell * (0.7 + 0.3 * Math.sin(p * 40));
+        const swell = Math.sin(Math.PI * p) ** 2;
+        y += 0.18 * (rng() * 2 - 1 - y);
+        s[i] = y * swell;
       }
-      return normalize(highpass(s, 0.06), 0.4);
+      return normalize(highpass(s, 0.05), 0.3);
     },
   };
 }
 
 export const osRecipes: Record<string, Recipe> = {
-  'page-turn-1': pageTurn(622, 0.22),
-  'page-turn-2': pageTurn(623, 0.26),
+  'page-turn-1': pageTurn(622, 0.13),
+  'page-turn-2': pageTurn(623, 0.15),
+  // Jump to a page from the contents or a search result: one short, soft tick.
+  'viewer-jump-1': {
+    seed: 624,
+    render: (rng) => {
+      const s = buffer(0.03);
+      addClick(s, rng, 0, 1, 0.0012, 0.3);
+      return normalize(highpass(s, 0.05), 0.3);
+    },
+  },
   // Power switch: a soft, low clack.
   'os-power-1': {
     seed: 601,
@@ -140,10 +150,10 @@ export const osRecipes: Record<string, Recipe> = {
       return normalize(s, 0.45);
     },
   },
-  'key-1': key(614, 190),
-  'key-2': key(615, 175),
-  'key-3': key(616, 205),
-  'key-4': key(617, 182),
+  'key-1': key(614, 0.28),
+  'key-2': key(615, 0.24),
+  'key-3': key(616, 0.3),
+  'key-4': key(617, 0.26),
   // 1993 office phone: a soft electronic trill (two tones alternating quickly).
   'phone-ring-1': {
     seed: 618,

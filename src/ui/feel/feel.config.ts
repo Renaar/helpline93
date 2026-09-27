@@ -15,7 +15,10 @@ export const feelConfig = {
       SoundCategory,
       number
     >,
-    /** Soft and muffled, never aggressive (GDD 5.1). Hover < release < press. */
+    /**
+     * Soft and muffled, never aggressive (GDD 5.1). Repetitive sounds (hover, keyboard, pages)
+     * stay well below every one-off sound (GDD 6.5, checked by a test).
+     */
     volumes: {
       'ui.hover': 0.035,
       /** Same file and level as the J0 hover sound, which Loïc validated. */
@@ -34,8 +37,9 @@ export const feelConfig = {
       'menu.open': 0.08,
       'drag.pick': 0.08,
       'drag.drop': 0.1,
-      'page.turn': 0.14,
-      'key.press': 0.12,
+      'page.turn': 0.04,
+      'viewer.jump': 0.035,
+      'key.press': 0.025,
       'phone.ring': 0.22,
       'phone.pickup': 0.3,
       'phone.hangup': 0.3,
