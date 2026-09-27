@@ -8,6 +8,8 @@ export interface Call {
   /** Ten digits, US style. */
   number: string;
   type: CallType;
+  /** The mission played on this call (null: debug call without content). */
+  missionId: string | null;
   /** Shift minute at which the phone started ringing. */
   ringingSince: number;
   answeredAt: number | null;

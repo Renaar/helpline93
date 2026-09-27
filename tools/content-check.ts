@@ -4,27 +4,10 @@
  * Warnings (unused captures, questions never unlocked…) do not fail the check.
  * Usage: npm run content:check
  */
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { dirname, join, relative, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { buildBundle } from '../src/content/bundle.ts';
+import { readContentFiles } from './contentFiles.ts';
 
-const CONTENT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'content');
-
-function listYamlFiles(dir: string): string[] {
-  return readdirSync(dir).flatMap((name) => {
-    const path = join(dir, name);
-    if (statSync(path).isDirectory()) return listYamlFiles(path);
-    return /\.ya?ml$/.test(name) ? [path] : [];
-  });
-}
-
-const files = Object.fromEntries(
-  listYamlFiles(CONTENT_DIR).map((path) => [
-    relative(CONTENT_DIR, path).split(sep).join('/'),
-    readFileSync(path, 'utf8'),
-  ]),
-);
+const files = readContentFiles();
 const { bundle, issues } = buildBundle(files);
 const errors = issues.filter((issue) => issue.level === 'error');
 const warnings = issues.filter((issue) => issue.level === 'warning');

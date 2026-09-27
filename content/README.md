@@ -22,4 +22,4 @@ Validation : `npm run content:check` — syntaxe YAML, schémas, identifiants un
 
 - Une réplique qui **commence** par une balise de capture doit être entre guillemets : `- '[[HX-486-0412|cap.serial]].'` (sinon YAML croit lire une liste).
 - Même chose pour une réplique qui commence par `{`, `*`, `&`, `!`, `%`, `@` ou `` ` ``.
-- Dans une liste sur une ligne (`[a, b]`), pas de balise de capture : écrire la liste en colonne (`- …`).
+- Dans une liste sur une ligne (`[a, b]`), une virgule sépare deux répliques, et une balise de capture casse la liste : pour les répliques, préférer la liste en colonne (`- …`).

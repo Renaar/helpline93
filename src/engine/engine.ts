@@ -1,9 +1,12 @@
+import type { ContentBundle } from '../content/schemas.ts';
 import type { EngineAction } from './actions.ts';
 import type { Clock } from './clock.ts';
 import { OPERATOR_NAME_MAX_LENGTH, SHIFT_START, type LineId } from './config.ts';
 import { randomDebugNumber } from './debugCalls.ts';
+import { EMPTY_CONTENT } from './emptyContent.ts';
+import { createDialogueSystem, type DialogueSystem } from './dialogue/system.ts';
 import { EventBus } from './eventBus.ts';
-import type { EngineEvent, EngineEventMap } from './events.ts';
+import type { EngineEvent, EngineEventMap, EventWithoutTime } from './events.ts';
 import {
   type CallType,
   answerLine,
@@ -24,11 +27,16 @@ import { createInitialState, type GameState } from './state.ts';
 export interface EngineOptions {
   clock: Clock;
   seed?: number;
+  /** Validated game content (GDD 7). Empty by default (tests of the phone, the clock…). */
+  content?: ContentBundle;
 }
 
 export interface Engine {
   readonly events: EventBus<EngineEventMap>;
   readonly rng: Rng;
+  readonly content: ContentBundle;
+  /** Option index and helpers of the dialogue system (read-only use by the UI). */
+  readonly dialogue: Pick<DialogueSystem, 'index'>;
   getState: () => Readonly<GameState>;
   dispatch: (action: EngineAction) => void;
   /** Advances time-based state and emits due events. Call it every frame. */
@@ -39,9 +47,11 @@ export interface Engine {
 
 const DEFAULT_SEED = 1993;
 
-type EventWithoutTime = { [E in EngineEvent as E['type']]: Omit<E, 'at'> }[EngineEvent['type']];
-
-export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Engine {
+export function createEngine({
+  clock,
+  seed = DEFAULT_SEED,
+  content = EMPTY_CONTENT,
+}: EngineOptions): Engine {
   const events = new EventBus<EngineEventMap>();
   const scheduler = new Scheduler<EngineEvent>();
   const listeners = new Set<() => void>();
@@ -60,28 +70,55 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
     setState({ ...state, phone });
   }
 
-  function emitNow(event: EventWithoutTime): void {
-    events.emit({ ...event, at: clock.now() });
+  function emitNow(event: EventWithoutTime, at = clock.now()): void {
+    events.emit({ ...event, at });
   }
+
+  function lineOf(callId: string): LineId | null {
+    return state.phone.lines.find((line) => line.call?.id === callId)?.id ?? null;
+  }
+
+  function endLine(line: LineId): void {
+    const result = hangUpLine(state.phone, line, state.shift.minute);
+    if (!result) return;
+    setPhone(result.phone);
+    emitNow({ type: 'call.ended', payload: { record: result.record } });
+  }
+
+  const dialogues: DialogueSystem = createDialogueSystem({
+    clock,
+    rng,
+    content,
+    getState: () => state,
+    setState,
+    emit: emitNow,
+    hangUp: (callId) => {
+      const line = lineOf(callId);
+      if (line !== null) endLine(line);
+    },
+  });
 
   function callIdOn(line: LineId): string {
     return findLine(state.phone, line)?.call?.id ?? '';
   }
 
   /** Rings the first free line. Returns false when every line is busy. */
-  function ring(callId: string, type: CallType): boolean {
+  function ring(callId: string, type: CallType, missionId: string | null): boolean {
     const line = firstIdleLine(state.phone);
     if (line === null) return false;
+    const mission = missionId === null ? undefined : content.missions[missionId];
+    const phone = mission && content.callers[mission.caller]?.phone;
     const call = {
       id: callId,
-      number: randomDebugNumber(rng),
+      number: phone ?? randomDebugNumber(rng),
       type,
+      missionId: mission ? mission.id : null,
       ringingSince: state.shift.minute,
       answeredAt: null,
     };
-    const phone = ringLine(state.phone, line, call);
-    if (!phone) return false;
-    setPhone(phone);
+    const next = ringLine(state.phone, line, call);
+    if (!next) return false;
+    setPhone(next);
     emitNow({
       type: 'call.incoming',
       payload: { callId: call.id, line, number: call.number, callType: call.type },
@@ -107,15 +144,22 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
       }
       case 'DEBUG_INCOMING_CALL': {
         callCounter += 1;
-        ring(`call-${callCounter}`, action.callType ?? 'libre');
+        const mission = action.missionId ? content.missions[action.missionId] : undefined;
+        ring(
+          `call-${callCounter}`,
+          action.callType ?? mission?.type ?? 'libre',
+          mission?.id ?? null,
+        );
         return;
       }
       case 'SCHEDULE_CALL': {
         callCounter += 1;
+        const mission = action.missionId ? content.missions[action.missionId] : undefined;
         const call = {
           id: `call-${callCounter}`,
           atMinute: action.atMinute,
-          type: action.callType ?? 'libre',
+          type: action.callType ?? mission?.type ?? 'libre',
+          missionId: mission?.id ?? null,
         };
         setState({ ...state, upcomingCalls: [...state.upcomingCalls, call] });
         emitNow({
@@ -142,39 +186,62 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
         const result = answerLine(state.phone, action.line, minute);
         if (!result) return;
         setPhone(result.phone);
+        if (result.held !== null) dialogues.onHold(callIdOn(result.held));
+        const call = findLine(state.phone, action.line)?.call;
         emitNow({
           type: 'call.answered',
-          payload: { callId: callIdOn(action.line), line: action.line, held: result.held },
+          payload: { callId: call?.id ?? '', line: action.line, held: result.held },
         });
+        if (call?.missionId) dialogues.start(call.id, call.missionId, action.line, call.number);
         return;
       }
       case 'HOLD_CALL': {
         const phone = holdLine(state.phone, action.line);
         if (!phone) return;
         setPhone(phone);
-        emitNow({
-          type: 'call.held',
-          payload: { callId: callIdOn(action.line), line: action.line },
-        });
+        const callId = callIdOn(action.line);
+        emitNow({ type: 'call.held', payload: { callId, line: action.line } });
+        dialogues.onHold(callId);
         return;
       }
       case 'RESUME_CALL': {
         const result = resumeLine(state.phone, action.line);
         if (!result) return;
         setPhone(result.phone);
+        if (result.held !== null) dialogues.onHold(callIdOn(result.held));
+        const callId = callIdOn(action.line);
         emitNow({
           type: 'call.resumed',
-          payload: { callId: callIdOn(action.line), line: action.line, held: result.held },
+          payload: { callId, line: action.line, held: result.held },
         });
+        dialogues.onResume(callId);
         return;
       }
       case 'HANG_UP': {
-        const result = hangUpLine(state.phone, action.line, minute);
-        if (!result) return;
-        setPhone(result.phone);
-        emitNow({ type: 'call.ended', payload: { record: result.record } });
+        const callId = callIdOn(action.line);
+        const before = state.phone;
+        endLine(action.line);
+        if (state.phone !== before) dialogues.onHangUp(callId);
         return;
       }
+      case 'CONSULT_PAGE':
+        dialogues.consultPage(action.pageId);
+        return;
+      case 'ASK':
+        dialogues.reply(action.callId, 'ask', action.questionId);
+        return;
+      case 'INSTRUCT':
+        dialogues.reply(action.callId, 'instruct', action.instructionId, action.params);
+        return;
+      case 'MANAGE':
+        dialogues.reply(action.callId, 'manage', action.manageId);
+        return;
+      case 'CAPTURE':
+        dialogues.capture(action.callId, action.captureId);
+        return;
+      case 'CLOSE_TICKET':
+        dialogues.closeTicket(action.ticketId, action.code);
+        return;
       case 'DEBUG_PING': {
         const requestedAt = clock.now();
         const at = requestedAt + Math.max(0, action.delayMs);
@@ -207,7 +274,7 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
     if (state.shift.fastForward !== null) return;
     for (const call of state.upcomingCalls) {
       if (call.atMinute > state.shift.minute) continue;
-      if (!ring(call.id, call.type)) return;
+      if (!ring(call.id, call.type, call.missionId)) return;
       setState({ ...state, upcomingCalls: state.upcomingCalls.filter((c) => c.id !== call.id) });
     }
   }
@@ -215,6 +282,7 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
   function update(): void {
     updateShiftClock();
     ringDueCalls();
+    dialogues.update(clock.now());
     for (const { item } of scheduler.popDue(clock.now())) events.emit(item);
   }
 
@@ -223,5 +291,14 @@ export function createEngine({ clock, seed = DEFAULT_SEED }: EngineOptions): Eng
     return () => listeners.delete(listener);
   }
 
-  return { events, rng, getState: () => state, dispatch, update, subscribe };
+  return {
+    events,
+    rng,
+    content,
+    dialogue: { index: dialogues.index },
+    getState: () => state,
+    dispatch,
+    update,
+    subscribe,
+  };
 }
