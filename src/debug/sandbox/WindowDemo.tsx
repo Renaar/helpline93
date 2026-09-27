@@ -7,7 +7,7 @@ import { Section } from './Section.tsx';
 
 export function WindowDemo() {
   const [phase, setPhase] = useState<WindowPhase | 'closed'>('closed');
-  const [position, setPosition] = useState({ x: 24, y: 16 });
+  const [rect, setRect] = useState({ x: 24, y: 16, width: 440, height: 240 });
   return (
     <Section title={t('sandbox.window.title')} hint={t('sandbox.window.hint')}>
       <div className={styles.row}>
@@ -25,7 +25,7 @@ export function WindowDemo() {
           <Window95
             title={t('sandbox.window.windowTitle')}
             icon="document"
-            rect={{ ...position, width: 440, height: 240 }}
+            rect={rect}
             active
             zIndex={1}
             phase={phase}
@@ -42,8 +42,9 @@ export function WindowDemo() {
               setPhase('closed');
             }}
             onMove={(x, y) => {
-              setPosition({ x, y });
+              setRect((current) => ({ ...current, x, y }));
             }}
+            onResize={setRect}
           >
             <p className={styles.windowBody}>{t('sandbox.window.body')}</p>
           </Window95>

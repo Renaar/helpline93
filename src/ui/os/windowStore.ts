@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import type { WindowPhase } from '../feel/Window95.tsx';
-import { audio } from '../feel/audio.ts';
 import { feelConfig } from '../feel/feel.config.ts';
 import type { Rect } from '../theme/layout.ts';
 import { appInfo, type AppId } from './apps.ts';
@@ -30,6 +29,8 @@ export interface WindowStoreState {
   /** Removes a window once its close animation is over. */
   closed: (app: AppId) => void;
   move: (app: AppId, x: number, y: number) => void;
+  /** Resized by hand: new position and size. */
+  resize: (app: AppId, rect: Rect) => void;
   /** Places windows (opening the missing ones among `openMissing`). */
   arrange: (layout: Partial<Record<AppId, Rect>>, openMissing: AppId[]) => void;
   setTaskbarRect: (app: AppId, rect: Rect) => void;
@@ -79,9 +80,8 @@ export const useWindows = create<WindowStoreState>()((set, get) => ({
       return;
     }
     if (loading.includes(app)) return;
-    // Staged latency (GDD 5.1): hourglass + disk scratch, then the window unfolds.
+    // Staged latency (GDD 5.1): hourglass, then the window unfolds (silently: no disk noise).
     set({ loading: [...loading, app] });
-    audio.play('os.hdd');
     setTimeout(() => {
       set((state) => ({
         loading: state.loading.filter((id) => id !== app),
@@ -123,6 +123,10 @@ export const useWindows = create<WindowStoreState>()((set, get) => ({
     set((state) => ({
       windows: state.windows.map((w) => (w.app === app ? { ...w, rect: { ...w.rect, x, y } } : w)),
     }));
+  },
+
+  resize: (app, rect) => {
+    set((state) => ({ windows: update(state.windows, app, { rect }) }));
   },
 
   arrange: (layout, openMissing) => {

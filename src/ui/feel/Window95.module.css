@@ -97,3 +97,82 @@
   min-height: 0;
   overflow: hidden;
 }
+
+/* Sizing grip, bottom right (decoration: the corner handle does the work). */
+.grip {
+  position: absolute;
+  right: var(--bevel-width);
+  bottom: var(--bevel-width);
+  color: var(--color-text-dim);
+  pointer-events: none;
+}
+
+/* Resize handles: invisible strips on the edges, squares on the corners. */
+.handle {
+  position: absolute;
+  touch-action: none;
+}
+
+.n,
+.s {
+  right: var(--resize-corner);
+  left: var(--resize-corner);
+  height: var(--resize-handle);
+  cursor: var(--cursor-resize-ns);
+}
+
+.n {
+  top: calc(var(--resize-handle) / -2);
+}
+
+.s {
+  bottom: calc(var(--resize-handle) / -2);
+}
+
+.e,
+.w {
+  top: var(--resize-corner);
+  bottom: var(--resize-corner);
+  width: var(--resize-handle);
+  cursor: var(--cursor-resize-ew);
+}
+
+.e {
+  right: calc(var(--resize-handle) / -2);
+}
+
+.w {
+  left: calc(var(--resize-handle) / -2);
+}
+
+.ne,
+.nw,
+.se,
+.sw {
+  width: var(--resize-corner);
+  height: var(--resize-corner);
+}
+
+.nw {
+  top: calc(var(--resize-handle) / -2);
+  left: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nwse);
+}
+
+.se {
+  right: calc(var(--resize-handle) / -2);
+  bottom: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nwse);
+}
+
+.ne {
+  top: calc(var(--resize-handle) / -2);
+  right: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nesw);
+}
+
+.sw {
+  bottom: calc(var(--resize-handle) / -2);
+  left: calc(var(--resize-handle) / -2);
+  cursor: var(--cursor-resize-nesw);
+}

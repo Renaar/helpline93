@@ -82,6 +82,8 @@
   --titlebar-control-width: 32px;
   --titlebar-control-height: 26px;
   --icon-titlebar: 24px;
+  --resize-handle: 8px;
+  --resize-corner: 18px;
   --button-height: 40px;
   --button-min-width: 128px;
   --glyph-size: 16px;
@@ -117,6 +119,7 @@
   --vhs-band-thin: 6px;
   --vhs-band-wide: 44px;
   --vhs-band-dark: 18px;
+  --vhs-indicator-size: 72px;
   --z-vhs: 1500;
 
   /* Stacking (windows use 1…n) */

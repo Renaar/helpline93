@@ -9,6 +9,10 @@ export const TASKBAR_HEIGHT = 52;
 export const WINDOW_KEEP_VISIBLE = 120;
 export const TITLEBAR_HEIGHT = 36;
 
+/** Smallest size a window can be resized to. */
+export const WINDOW_MIN_WIDTH = 360;
+export const WINDOW_MIN_HEIGHT = 200;
+
 export interface Rect {
   x: number;
   y: number;

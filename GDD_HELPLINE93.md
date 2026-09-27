@@ -284,7 +284,7 @@ L'interface est l'unique moyen d'agir. **Rien ne doit être mort, plat ou instan
 **Principes :**
 - **Sons doux et feutrés, jamais agressifs.** L'interface doit rester reposante sur une longue session de nuit.
 - **Aucun clic mort** : tout ce qui semble cliquable réagit, même pour dire « non » (son sourd, petit tremblement).
-- **Latence d'époque, mise en scène** : ouvrir une application = sablier + grattement de disque dur + fenêtre qui se dessine. C'est court (0,3 à 1,5 s) et satisfaisant, jamais pénible.
+- **Latence d'époque, mise en scène** : ouvrir une application = sablier + fenêtre qui se dessine (sans bruit de disque, qui parasitait ; le disque ne s'entend qu'au démarrage du poste). C'est court (0,3 à 1,5 s) et satisfaisant, jamais pénible.
 - **Poids et matière** : les fenêtres se déplacent avec une légère inertie, les pages de la Visionneuse défilent avec élan, une fiche capturée « colle » en arrivant dans le ticket.
 - **Hover partout** : survol = changement subtil (surbrillance, curseur contextuel, léger décalage).
 - **60 fps constant.** Animations interruptibles : le joueur n'attend jamais la fin d'une animation pour agir.
@@ -368,7 +368,7 @@ HelplineOS reprend **l'ossature** d'un OS de bureau du début des années 90 (fe
 **À ne jamais faire :** filtre CRT, grain, flou décoratif, glassmorphism marqué, ombres épaisses, coins très arrondis, look « flat design » générique, imitation pixel-perfect de Win95 (ni son logo, ni ses icônes, ni ses polices).
 
 **Seule exception à « aucun effet CRT » : l'avance rapide VHS du saut dans le temps** (voir 2.2). Pendant les 2,5 s du saut, un effet bref et ponctuel, jamais permanent, montre que le temps avance :
-- version néo-rétro, propre et stylisée (pas de neige sale) : quelques bandes horizontales nettes qui défilent, léger décalage / tremblement horizontal de l'écran, luminosité légèrement modulée, petit indicateur « ▶▶ » discret ;
+- version néo-rétro, propre et stylisée (pas de neige sale) : quelques bandes horizontales nettes qui défilent, léger décalage / tremblement horizontal de l'écran, luminosité légèrement modulée, indicateur « ▶▶ » au centre de l'écran ;
 - synchronisé avec le son et le défilement de l'horloge, puis retour net à l'image normale ;
 - avec l'option « animations réduites » : remplacé par un simple fondu discret.
 
@@ -734,7 +734,7 @@ Pour garantir que **tout** respecte la règle des 3 retours, l'UI passe par une 
 |-----------|------|
 | `<Pressable>` | Tout élément cliquable : état survol/enfoncé, son, micro-animation, refus sonore si désactivé |
 | `<Button95>` | Bouton style Win95 basé sur `Pressable` (relief inversé, décalage 1 px) |
-| `<Window95>` | Fenêtre : ouverture « rectangle qui explose », focus, déplacement, réduction, fermeture |
+| `<Window95>` | Fenêtre : ouverture « rectangle qui explose », focus, déplacement, redimensionnement par les bords et les coins, réduction, fermeture |
 | `<Draggable>` | Élément déplaçable (fenêtre, fiche capturée, icône) : inertie légère, son de prise/pose |
 | `<TypedText>` | Texte qui s'écrit (chat, boot), rythme variable |
 | `<Capturable>` | Info cliquable (section 4.2.3) : soulignement, feutre, envol vers le ticket |

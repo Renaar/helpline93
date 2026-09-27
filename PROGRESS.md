@@ -2,9 +2,28 @@
 
 ## Jalon en cours
 
-**J1 — Interface HelplineOS** : ✅ **validé par Loïc, sous réserve de l'effet VHS** du saut dans le temps (révision 2, à valider).
+**J1 — Interface HelplineOS** : révision 3 livrée, **à retester par Loïc avant validation**.
 Prochain jalon après validation : **J2 — Système de communication**.
 Branche : `claude/j1-interface-helplineos` (partie de J0, PR J0 : https://github.com/Renaar/helpline93/pull/1).
+
+---
+
+## J1 — Révision 3 (retours de Loïc)
+
+Validé : l'effet VHS (« on comprend qu'on avance ») ; la réorganisation des fenêtres au décroché.
+
+- [x] **« ▶▶ » au centre de l'écran** pendant le saut (72 px, lisible sans être envahissant).
+- [x] **Plus de grattement de disque à l'ouverture des apps** : il parasitait. Le sablier reste ; le disque ne s'entend plus qu'au démarrage du poste (BIOS, ouverture de session). GDD 5.1 mis à jour.
+- [x] **Fenêtres redimensionnables à la main** par les 4 bords et les 4 coins : curseurs pixel dédiés (doubles flèches), poignée visuelle en bas à droite, sons de prise / pose, taille minimale 360 × 200, la fenêtre ne sort jamais du bureau. La nouvelle taille est conservée quand on déplace la fenêtre. Calcul testé (`resizeRect`). GDD 8.3 mis à jour.
+  - Cas qui gênait : après avoir raccroché, le Téléphone gardait la taille compacte de la disposition d'appel et cachait l'historique ; il suffit maintenant de l'agrandir.
+
+### Comment tester la révision 3
+
+1. `npm run dev`, ouvrir `/?boot=skip`.
+2. Déplier **Débogage** (en bas au centre), **Simuler un appel**, décrocher : les fenêtres se réorganisent.
+3. Raccrocher, puis agrandir le Téléphone en tirant son bord haut (ou un coin) : l'historique apparaît. Le déplacer ensuite : il garde sa taille. Essayer de le réduire au maximum : il s'arrête à la taille minimale.
+4. Ouvrir des apps : sablier, sans bruit de disque.
+5. **Programmer un appel (+15 min)**, puis **Attendre le prochain appel** : « ▶▶ » au centre pendant l'effet VHS.
 
 ---
 
@@ -101,7 +120,7 @@ Validé, ne plus toucher : comportement des fenêtres (ouverture, déplacement, 
 
 ### Point à valider par Loïc
 
-1. **Effet VHS** du saut dans le temps (révision 2) : lisibilité, intensité des bandes et du tremblement.
+1. **Retest de la révision 3** (redimensionnement, « ▶▶ » centré, ouverture silencieuse), puis validation du J1.
 
 ---
 

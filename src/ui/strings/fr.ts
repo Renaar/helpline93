@@ -277,6 +277,10 @@ export const fr = {
       text: 'Texte',
       wait: 'Sablier',
       denied: 'Refus',
+      'resize-ns': 'Hauteur',
+      'resize-ew': 'Largeur',
+      'resize-nwse': 'Coin ↘',
+      'resize-nesw': 'Coin ↙',
     },
 
     typography: {
@@ -339,7 +343,7 @@ export const fr = {
 
     window: {
       title: 'Window95',
-      hint: 'Déplacer par la barre de titre (inertie légère au lâcher), réduire, fermer.',
+      hint: 'Déplacer par la barre de titre (inertie légère au lâcher), redimensionner par les bords et les coins, réduire, fermer.',
       open: 'Ouvrir',
       restore: 'Restaurer',
       windowTitle: 'Fenêtre de démonstration',

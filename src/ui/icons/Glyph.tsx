@@ -63,6 +63,17 @@ const glyphs = {
     '........',
     '........',
   ],
+  /** Sizing grip of a window's bottom-right corner. */
+  grip: [
+    '........',
+    '......X.',
+    '.....X..',
+    '....X.X.',
+    '...X.X..',
+    '..X.X.X.',
+    '.X.X.X..',
+    '........',
+  ],
 } as const satisfies Record<string, readonly string[]>;
 
 export type GlyphName = keyof typeof glyphs;

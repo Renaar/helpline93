@@ -8,7 +8,7 @@ import { focusedApp, useWindows } from './windowStore.ts';
 export function WindowLayer() {
   const windows = useWindows((state) => state.windows);
   const taskbarRects = useWindows((state) => state.taskbarRects);
-  const { focus, minimize, close, closed, move } = useWindows.getState();
+  const { focus, minimize, close, closed, move, resize } = useWindows.getState();
   const focused = focusedApp(windows);
 
   return (
@@ -40,6 +40,9 @@ export function WindowLayer() {
           }}
           onMove={(x, y) => {
             move(entry.app, x, y);
+          }}
+          onResize={(rect) => {
+            resize(entry.app, rect);
           }}
         >
           <AppContent app={entry.app} />

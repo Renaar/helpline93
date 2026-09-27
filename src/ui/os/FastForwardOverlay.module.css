@@ -35,16 +35,16 @@
   opacity: 0;
 }
 
-/* Tape-deck on-screen display: small and crisp, top centre (never over an icon). */
+/* Tape-deck on-screen display: crisp, in the middle of the screen. */
 .indicator {
   position: absolute;
-  top: var(--space-5);
+  top: 50%;
   left: 50%;
   color: var(--color-text);
   font-family: var(--font-mono);
-  font-size: var(--text-xxl);
+  font-size: var(--vhs-indicator-size);
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.1em;
   text-shadow: var(--press-offset) var(--press-offset) 0 var(--color-bevel-dark);
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 }

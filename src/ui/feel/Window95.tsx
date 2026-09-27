@@ -1,14 +1,22 @@
 import { animate, motion, useMotionValue, type MotionValue } from 'motion/react';
-import { useEffect, useEffectEvent, useRef, type ReactNode } from 'react';
+import { useEffect, useEffectEvent, useRef, useState, type ReactNode } from 'react';
 import { cx } from '../cx.ts';
 import { Glyph } from '../icons/Glyph.tsx';
 import type { IconName } from '../icons/iconArt.ts';
 import { PixelIcon } from '../icons/PixelIcon.tsx';
 import { useSettings } from '../settings/settingsStore.ts';
-import { DESKTOP_AREA, TITLEBAR_HEIGHT, WINDOW_KEEP_VISIBLE, type Rect } from '../theme/layout.ts';
+import {
+  DESKTOP_AREA,
+  TITLEBAR_HEIGHT,
+  WINDOW_KEEP_VISIBLE,
+  WINDOW_MIN_HEIGHT,
+  WINDOW_MIN_WIDTH,
+  type Rect,
+} from '../theme/layout.ts';
 import { audio } from './audio.ts';
 import { feelConfig, ms } from './feel.config.ts';
 import { Pressable } from './Pressable.tsx';
+import { RESIZE_EDGES, resizeRect, type ResizeEdge } from './resizeRect.ts';
 import { useDrag } from './useDrag.ts';
 import styles from './Window95.module.css';
 
@@ -35,6 +43,8 @@ export interface Window95Props {
   onClosed: () => void;
   /** Called when a drag (and its inertia) ends, with the final position. */
   onMove: (x: number, y: number) => void;
+  /** Called when a resize by an edge or a corner ends, with the final box. */
+  onResize: (rect: Rect) => void;
   children: ReactNode;
 }
 
@@ -94,6 +104,7 @@ export function Window95({
   onClose,
   onClosed,
   onMove,
+  onResize,
   children,
 }: Window95Props) {
   const reducedMotion = useSettings((state) => state.reducedMotion);
@@ -108,6 +119,52 @@ export function Window95({
   const dragStart = useRef({ x: 0, y: 0 });
   const dragging = useRef(false);
   const mounted = useRef(false);
+  // While resizing, the box lives here; it is committed with onResize on release.
+  const [liveRect, setLiveRect] = useState<Rect | null>(null);
+  const liveRef = useRef<Rect | null>(null);
+  const resizeStart = useRef<Rect>(rect);
+  const size = liveRect ?? rect;
+
+  const resize = {
+    start: () => {
+      dragging.current = true;
+      valuesRef.current.x.stop();
+      valuesRef.current.y.stop();
+      resizeStart.current = {
+        x: valuesRef.current.x.get(),
+        y: valuesRef.current.y.get(),
+        width: size.width,
+        height: size.height,
+      };
+    },
+    move: (edge: ResizeEdge, dx: number, dy: number) => {
+      const start = resizeStart.current;
+      // The desktop, stretched to include a window already partly off screen.
+      const left = Math.min(DESKTOP_AREA.x, start.x);
+      const top = Math.min(DESKTOP_AREA.y, start.y);
+      const bounds = {
+        x: left,
+        y: top,
+        width: Math.max(DESKTOP_AREA.x + DESKTOP_AREA.width, start.x + start.width) - left,
+        height: Math.max(DESKTOP_AREA.y + DESKTOP_AREA.height, start.y + start.height) - top,
+      };
+      const next = resizeRect(start, edge, dx, dy, {
+        bounds,
+        minWidth: WINDOW_MIN_WIDTH,
+        minHeight: WINDOW_MIN_HEIGHT,
+      });
+      liveRef.current = next;
+      setLiveRect(next);
+      valuesRef.current.x.set(next.x);
+      valuesRef.current.y.set(next.y);
+    },
+    end: () => {
+      dragging.current = false;
+      if (liveRef.current) onResize(liveRef.current);
+      liveRef.current = null;
+      setLiveRect(null);
+    },
+  };
   const notifyClosed = useEffectEvent(() => {
     onClosed();
   });
@@ -224,8 +281,8 @@ export function Window95({
       aria-label={title}
       aria-hidden={phase !== 'open'}
       style={{
-        width: rect.width,
-        height: rect.height,
+        width: size.width,
+        height: size.height,
         zIndex,
         x: values.x,
         y: values.y,
@@ -257,6 +314,35 @@ export function Window95({
         </Pressable>
       </header>
       <div className={styles.body}>{children}</div>
+      <Glyph name="grip" className={styles.grip} />
+      {RESIZE_EDGES.map((edge) => (
+        <ResizeHandle
+          key={edge}
+          edge={edge}
+          onStart={resize.start}
+          onMove={resize.move}
+          onEnd={resize.end}
+        />
+      ))}
     </motion.section>
   );
+}
+
+interface ResizeHandleProps {
+  edge: ResizeEdge;
+  onStart: () => void;
+  onMove: (edge: ResizeEdge, dx: number, dy: number) => void;
+  onEnd: () => void;
+}
+
+/** Invisible strip along an edge (or square on a corner) that resizes the window. */
+function ResizeHandle({ edge, onStart, onMove, onEnd }: ResizeHandleProps) {
+  const drag = useDrag({
+    onStart,
+    onMove: (dx, dy) => {
+      onMove(edge, dx, dy);
+    },
+    onEnd,
+  });
+  return <div className={cx(styles.handle, styles[edge])} {...drag} />;
 }
