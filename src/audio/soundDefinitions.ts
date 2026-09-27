@@ -17,6 +17,22 @@ export const soundDefinitions = {
   'ui.release': { category: 'ui', variants: ['ui-release-1', 'ui-release-2'] },
   'ui.deny': { category: 'ui', variants: ['ui-deny-1', 'ui-deny-2'] },
   'ui.confirm': { category: 'ui', variants: ['ui-confirm-1'] },
+  'os.power': { category: 'ui', variants: ['os-power-1'] },
+  'os.spinup': { category: 'ambience', variants: ['os-spinup-1'] },
+  'os.hdd': { category: 'ambience', variants: ['os-hdd-1', 'os-hdd-2', 'os-hdd-3'] },
+  'bios.beep': { category: 'ui', variants: ['bios-beep-1'] },
+  'window.open': { category: 'ui', variants: ['window-open-1'] },
+  'window.close': { category: 'ui', variants: ['window-close-1'] },
+  'window.minimize': { category: 'ui', variants: ['window-minimize-1'] },
+  'window.restore': { category: 'ui', variants: ['window-restore-1'] },
+  'menu.open': { category: 'ui', variants: ['menu-open-1'] },
+  'drag.pick': { category: 'ui', variants: ['drag-pick-1'] },
+  'drag.drop': { category: 'ui', variants: ['drag-drop-1'] },
+  'key.press': { category: 'ui', variants: ['key-1', 'key-2', 'key-3', 'key-4'] },
+  'phone.ring': { category: 'phone', variants: ['phone-ring-1'] },
+  'phone.pickup': { category: 'phone', variants: ['phone-pickup-1'] },
+  'phone.hangup': { category: 'phone', variants: ['phone-hangup-1'] },
+  'phone.hold': { category: 'phone', variants: ['phone-hold-1'] },
 } as const satisfies Record<string, SoundDefinition>;
 
 export type SoundId = keyof typeof soundDefinitions;

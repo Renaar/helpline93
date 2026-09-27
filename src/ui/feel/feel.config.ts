@@ -23,9 +23,29 @@ export const feelConfig = {
       'ui.release': 0.06,
       'ui.deny': 0.3,
       'ui.confirm': 0.22,
+      'os.power': 0.35,
+      'os.spinup': 0.18,
+      'os.hdd': 0.16,
+      'bios.beep': 0.12,
+      'window.open': 0.12,
+      'window.close': 0.1,
+      'window.minimize': 0.1,
+      'window.restore': 0.1,
+      'menu.open': 0.08,
+      'drag.pick': 0.08,
+      'drag.drop': 0.1,
+      'key.press': 0.12,
+      'phone.ring': 0.22,
+      'phone.pickup': 0.3,
+      'phone.hangup': 0.3,
+      'phone.hold': 0.2,
     } satisfies Record<SoundId, number>,
     /** Minimum gap between two plays of the same sound, to avoid stacking on fast hovers. */
     minGapMs: 30,
+    /** Procedural PC hum, started at power-on (GDD 8.5). Barely audible. */
+    humVolume: 0.05,
+    humFadeInMs: 1500,
+    humFadeOutMs: 400,
   },
 
   hover: {
@@ -58,6 +78,56 @@ export const feelConfig = {
     holdMs: 900,
   },
 
+  window: {
+    /** Staged period latency (GDD 5.1): hourglass + disk scratch before a window appears. */
+    openLatencyMs: { min: 260, max: 650 },
+    /** Window unfolding from its icon / folding into the taskbar. */
+    openSpring: { stiffness: 380, damping: 32, mass: 0.9 },
+    minimizeSpring: { stiffness: 520, damping: 42, mass: 0.8 },
+    /** Automatic re-arrangement (incoming call layout). */
+    moveSpring: { stiffness: 300, damping: 34, mass: 1 },
+    closeMs: 130,
+  },
+
+  drag: {
+    /** Light inertia when a dragged window is released (GDD 5.1 "poids et matière"). */
+    inertiaPower: 0.12,
+    inertiaTimeConstantMs: 90,
+  },
+
+  desktop: {
+    /** Two presses closer than this open a desktop icon. */
+    doubleClickMs: 420,
+  },
+
+  menu: {
+    spring: { stiffness: 700, damping: 40, mass: 0.7 },
+  },
+
+  typing: {
+    /** TypedText rhythm: base speed and random irregularity (0 = metronome). */
+    charsPerSecond: 70,
+    jitter: 0.6,
+    caretBlinkMs: 530,
+  },
+
+  boot: {
+    /** Pause between two BIOS lines (random in range). */
+    lineDelayMs: { min: 90, max: 320 },
+    memoryCountMs: 1300,
+    /** Pause on the last BIOS line before the login screen. */
+    endHoldMs: 700,
+    loginFadeMs: 400,
+    desktopFadeMs: 600,
+    shutdownFadeMs: 500,
+  },
+
+  phone: {
+    /** A ring every… while a line is ringing. */
+    ringIntervalMs: 3400,
+    toastSpring: { stiffness: 420, damping: 30, mass: 0.9 },
+  },
+
   debug: {
     /** Delay of the engine round-trip demo in the sandbox. */
     pingDelayMs: 1500,
@@ -73,6 +143,8 @@ export function feelCssVariables(config: FeelConfig = feelConfig): Record<string
     '--feel-hover-out': `${config.hover.fadeOutMs}ms`,
     '--feel-lamp-on': `${config.lamp.onMs}ms`,
     '--feel-lamp-off': `${config.lamp.offMs}ms`,
+    '--feel-caret-blink': `${config.typing.caretBlinkMs}ms`,
+    '--feel-boot-fade': `${config.boot.loginFadeMs}ms`,
   };
 }
 

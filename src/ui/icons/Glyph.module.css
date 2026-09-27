@@ -1,0 +1,5 @@
+.glyph {
+  width: var(--glyph-size);
+  height: var(--glyph-size);
+  fill: currentColor;
+}

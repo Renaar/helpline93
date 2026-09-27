@@ -27,12 +27,12 @@ export interface EngineOptions {
 export interface Engine {
   readonly events: EventBus<EngineEventMap>;
   readonly rng: Rng;
-  getState(): Readonly<GameState>;
-  dispatch(action: EngineAction): void;
+  getState: () => Readonly<GameState>;
+  dispatch: (action: EngineAction) => void;
   /** Advances time-based state and emits due events. Call it every frame. */
-  update(): void;
+  update: () => void;
   /** Called after every state change (for UI bindings such as useSyncExternalStore). */
-  subscribe(listener: () => void): () => void;
+  subscribe: (listener: () => void) => () => void;
 }
 
 const DEFAULT_SEED = 1993;
