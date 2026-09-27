@@ -1,0 +1,31 @@
+.lamp {
+  position: relative;
+  display: inline-block;
+  width: var(--lamp-size);
+  height: var(--lamp-size);
+  border-radius: 50%;
+  background: var(--color-panel-sunken);
+  box-shadow: var(--bevel-sunken);
+}
+
+.lamp::after {
+  content: '';
+  position: absolute;
+  inset: var(--space-1);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--feel-lamp-off) ease-out;
+}
+
+.amber::after {
+  background: var(--color-amber);
+}
+
+.alert::after {
+  background: var(--color-alert);
+}
+
+.lamp[data-lit]::after {
+  opacity: 1;
+  transition-duration: var(--feel-lamp-on);
+}

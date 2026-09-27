@@ -1,0 +1,51 @@
+/* Base reset with zero specificity (:where), so styles of derived components always win. */
+:where(.pressable) {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  outline: none;
+  cursor: var(--cursor-hand);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover highlight: a layer that fades in/out (opacity only, GDD 10.5). */
+.pressable::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-hover-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--feel-hover-out) ease-out;
+}
+
+.pressable:hover:not([aria-disabled='true'])::after {
+  opacity: 1;
+  transition-duration: var(--feel-hover-in);
+}
+
+.pressable[data-pressed]::after {
+  background: var(--color-press-overlay);
+  opacity: 1;
+  transition: none;
+}
+
+.pressable[aria-disabled='true'] {
+  cursor: var(--cursor-denied);
+}
+
+.pressable:focus-visible {
+  box-shadow: var(--focus-halo);
+}
