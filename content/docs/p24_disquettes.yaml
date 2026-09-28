@@ -1,0 +1,54 @@
+id: p.24
+tab: Périphériques
+title: Disquettes et lecteur A
+keywords:
+  [
+    disquette,
+    disquettes,
+    lecteur,
+    'A:',
+    formaté,
+    format,
+    HD,
+    DD,
+    '1,44',
+    '720',
+    SETUP,
+    pile,
+    date,
+    '1980',
+  ]
+revision: { night: 1 }
+body: |
+  ## 24-A — « Disque non formaté »
+  Le lecteur ne reconnaît pas la disquette. Dans la plupart des cas, **les données sont intactes**.
+
+  > Ne faites **jamais** formater une disquette qui contient des données : la commande FORMAT efface tout, sans retour possible.
+
+  ## 24-B — Disquettes HD et DD
+  | Disquette | Inscription | Lecteur nécessaire |
+  | Double densité | DD — 720 Ko | 720 Ko ou 1,44 Mo |
+  | Haute densité | HD — 1,44 Mo | 1,44 Mo uniquement |
+
+  Une disquette HD lue par un lecteur réglé en 720 Ko affiche « Disque non formaté ».
+
+  ## 24-C — Type de lecteur dans le SETUP
+  Le type du lecteur A est enregistré dans le SETUP du BIOS (touche **Suppr** pendant le test de la mémoire). Sur les HX-386 et HX-486, il doit être réglé sur **1.44M**.
+
+  Si l'horloge de l'ordinateur revient au **1er janvier 1980**, la pile de la carte mère est usée : le SETUP perd ses réglages à chaque arrêt. Corrigez le réglage, puis proposez le remplacement de la pile. Code **R-03**.
+
+questions:
+  - id: q.floppy.hd
+    text: La disquette porte-t-elle l'inscription HD ?
+  - id: q.floppy.clock
+    text: Votre ordinateur affiche-t-il la bonne date ?
+
+instructions:
+  - id: i.floppy.format
+    text: 'Tapez FORMAT A: puis validez.'
+  - id: i.setup.enter
+    text: Redémarrez et appuyez sur Suppr pendant le test de la mémoire.
+  - id: i.setup.drive_a
+    text: Dans le SETUP, réglez « Drive A » sur {type}, puis enregistrez.
+    params:
+      type: { type: choice, options: [360K, 1.2M, 720K, 1.44M] }

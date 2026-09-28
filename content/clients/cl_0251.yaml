@@ -1,0 +1,11 @@
+id: cl.0251
+name: Dr Elena Ortega
+company: Cabinet dentaire Ortega
+city: San Aurelio — Old Mission
+since: '1991'
+equipment:
+  - serial: HX-486-0251
+    model: Heltron HX-486
+    purchased: 1991
+    warranty: expirée
+history: []

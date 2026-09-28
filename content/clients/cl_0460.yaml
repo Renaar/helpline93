@@ -1,0 +1,11 @@
+id: cl.0460
+name: Sam Whitaker
+company: Whitaker Auto
+city: San Aurelio — Harbor Heights
+since: '1991'
+equipment:
+  - serial: HX-286-0460
+    model: Heltron HX-286
+    purchased: 1991
+    warranty: expirée
+history: []

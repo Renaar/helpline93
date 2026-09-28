@@ -1,8 +1,21 @@
-# Page provisoire (J1) : sert à tester la Visionneuse. Contenu définitif : J3.
 id: p.20
 tab: Périphériques
 title: Imprimantes matricielles
-keywords: [imprimante, papier, bourrage, ruban, matricielle, impression]
+keywords:
+  [
+    imprimante,
+    papier,
+    bourrage,
+    ruban,
+    matricielle,
+    impression,
+    caractères,
+    signes,
+    commutateur,
+    SW1,
+    autotest,
+    LX-80,
+  ]
 revision: { night: 1 }
 body: |
   ## 20-A — Bourrage papier
@@ -13,6 +26,38 @@ body: |
   ## 20-B — Impression pâle ou effacée
   Le ruban encreur est usé. Remplacement par la référence **RB-80** (code **R-22**).
 
-  | Symptôme | Cause probable | Procédure |
-  | Lignes manquantes | Tête encrassée | 20-C |
-  | Caractères étranges | Câble mal serré | 20-D |
+  ## 20-C — Caractères étranges
+  L'imprimante fonctionne mais imprime des signes sans rapport avec le texte (carrés, accents, symboles).
+
+  | Étape | Vérification | Si oui |
+  | 1 | Le câble est-il bien vissé ? | Passer à l'étape 2 |
+  | 2 | L'autotest (LF enfoncé à l'allumage) est-il net ? | La liaison est en cause : étape 3 |
+  | 3 | Vitesse de transmission (bloc SW1) | Régler selon 20-D |
+
+  ## 20-D — Bloc de commutateurs SW1 (LX-80)
+  Les huit commutateurs se trouvent sous le capot, à gauche du chariot. Réglage usine :
+
+  | Commutateur | Rôle | Position usine |
+  | SW1-1 à SW1-4 | Jeu de caractères | OFF |
+  | SW1-5 | Vitesse 9600 bauds | **ON** |
+  | SW1-6 | Parité | OFF |
+  | SW1-7 et SW1-8 | Longueur de page | OFF |
+
+  > Un nettoyage au pinceau suffit à déplacer un commutateur. Réglage corrigé : code **R-03**.
+
+questions:
+  - id: q.printer.first_line
+    text: Les signes étranges apparaissent-ils dès la première ligne ?
+  - id: q.printer.switches
+    text: Avez-vous touché aux petits interrupteurs sous le capot ?
+
+instructions:
+  - id: i.printer.cable
+    text: Vérifiez que le câble de l'imprimante est bien vissé des deux côtés.
+  - id: i.printer.selftest
+    text: Éteignez l'imprimante, puis rallumez-la en maintenant le bouton LF enfoncé.
+  - id: i.printer.dip
+    text: Placez le commutateur SW1-{switch} sur {position}.
+    params:
+      switch: { type: choice, options: [1, 2, 3, 4, 5, 6, 7, 8] }
+      position: { type: choice, options: [ON, OFF] }

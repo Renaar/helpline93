@@ -1,0 +1,20 @@
+id: c.doris_kowalski
+name: Doris Kowalski
+phone: '7075550177'
+mood_start: 2 # patiente, chaleureuse : l'appel « tutoriel » de la nuit
+typing_speed: 0.8
+fallback:
+  irrelevant:
+    - Oh, je ne sais pas, mon petit. Je vends des fleurs, moi.
+    - Je ne suis pas sûre de comprendre, mais je vous fais confiance.
+  repeat:
+    - Vous me l'avez déjà demandé, mais ce n'est pas grave.
+  hold:
+    - Je vous attends, je range mes seaux en attendant.
+  manage:
+    g.calm:
+      - Oh, je ne suis pas inquiète. C'est gentil de le dire.
+    g.reformulate:
+      - C'est exactement ça.
+    g.wait:
+      - Prenez votre temps, je prépare un bouquet en attendant.

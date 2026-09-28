@@ -1,0 +1,92 @@
+# Premier contact avec le réseau (GDD 3.1, acte I) : trop calme, trop précis, cite une procédure
+# absente du manuel. Le joueur choisit le code : R-14 (obéir, sans le savoir) ou un autre.
+id: m.n01_04
+title: Procédure 7-B
+night: 1
+caller: c.conrad_adler
+client: cl.0007
+type: libre
+network: true
+
+captures:
+  cap.proc7b: { label: « Procédure 7-B », field: reference, keywords: [7-B] }
+  cap.psu:
+    { label: Sifflement de l'alimentation, field: symptom, keywords: [alimentation, sifflement] }
+  cap.serial: { label: N° série HX-486-0007, field: serial, keywords: [HX-486-0007] }
+  cap.time: { label: Depuis 23 h 50 précisément, field: symptom, keywords: [alimentation] }
+  cap.code: { label: « Notez R-14 », field: reference, keywords: [R-14] }
+
+opening:
+  - Bonsoir, opérateur.
+  - J'appelle pour la [[procédure 7-B|cap.proc7b]]. Mon unité siffle.
+
+local_questions:
+  - id: q.m04.seven_b
+    text: De quelle procédure 7-B parlez-vous ?
+
+responses:
+  q.base.describe:
+    - say:
+        - Un sifflement aigu, continu, dans l'[[alimentation|cap.psu]].
+        - Rien d'autre. Tout le reste fonctionne.
+      then: { unlock: [q.m04.seven_b] }
+
+  q.base.serial:
+    - say:
+        - '[[HX-486-0007|cap.serial]]. Vous avez ma fiche.'
+      then: { unlock: [q.m04.seven_b] }
+
+  q.base.model:
+    - say:
+        - Le même modèle que votre poste, opérateur.
+
+  q.base.since:
+    - say:
+        - Depuis [[23 h 50|cap.time]]. Précisément.
+      then: { unlock: [q.m04.seven_b] }
+
+  q.base.tried:
+    - say:
+        - Rien. On ne touche à rien avant la procédure.
+
+  q.m04.seven_b:
+    - say:
+        - Celle que Marc appliquait. Sans poser de questions.
+        - Page sept, paragraphe B. Vous l'avez sous les yeux.
+      then: { unlock: [p.40] }
+
+  q.psu.smell:
+    - say:
+        - Aucune odeur. Tout est propre, chez nous.
+
+  q.psu.fan:
+    - say:
+        - Il tourne. Ce n'est pas le ventilateur.
+
+  i.base.restart:
+    - say:
+        - Non. La procédure ne prévoit pas de redémarrage.
+
+  i.psu.shutdown:
+    - say:
+        - C'est fait depuis 23 h 50. Continuez.
+
+  i.psu.replace:
+    - say:
+        - Parfait. C'est exactement ça.
+        - Notez [[R-14|cap.code]] sur le ticket. C'est important.
+        - { text: Marc le savait. Bonne nuit, opérateur., pause: 2 }
+      then: { set_flags: [f.m04.dictated], end_call: resolved }
+
+  g.wait:
+    - say:
+        - Prenez votre temps. Nous avons toute la nuit.
+        - L'alimentation. Page quarante. Je vous aide, cette fois.
+      then: { unlock: [p.40] }
+
+closure:
+  codes:
+    R-14:
+      then: { set_flags: [f.n01.r14_sent] }
+    default:
+      then: { set_flags: [f.n01.r14_refused], vars: { suspicion: +1 } }

@@ -1,0 +1,22 @@
+id: cl.0077
+name: Doris Kowalski
+company: Fleurs Kowalski
+city: San Aurelio — Old Mission
+address: 42 Alvarado Street
+phone: '7075550177'
+since: '1990'
+equipment:
+  - serial: HX-386-0077
+    model: Heltron HX-386
+    purchased: septembre 1990
+    warranty: expirée
+  - serial: LX-80-2291
+    model: Imprimante Heltron LX-80
+    purchased: septembre 1990
+    warranty: expirée
+history:
+  - date: 02/11/1990
+    text: Installation du logiciel d'étiquettes. Résolu (R-01).
+  - date: 19/05/1992
+    text: Ruban encreur remplacé (R-22).
+notes: Cliente fidèle et très aimable. Appelle souvent le soir, après la fermeture de la boutique.

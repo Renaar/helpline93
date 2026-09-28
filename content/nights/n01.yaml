@@ -1,0 +1,14 @@
+# Nuit 1 — « Premier service » (GDD 3.1, acte I). Premier jet, à retoucher par Loïc.
+id: n.01
+title: Premier service
+start: '22:00'
+end: '06:00'
+emails_at_boot: [e.n01.kessler_accueil]
+calls:
+  - { mission: m.n01_01, at: '22:20' } # Doris Kowalski : imprimante (appel « tutoriel »)
+  - { mission: m.n01_02, after_previous: 12 } # Kevin Tran : disquette
+  - { mission: m.n01_03, after_previous: 15 } # Bernard Fleury : trois bips
+  - { mission: m.n01_04, after_previous: 25 } # Conrad Adler : procédure 7-B (réseau)
+events:
+  - { at: '23:30', type: email, id: e.n01.si_compte_marc } # peut tomber en plein appel
+  - { at: '04:10', type: email, id: e.n01.inconnu }

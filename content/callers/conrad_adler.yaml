@@ -1,0 +1,19 @@
+# Appelant du réseau : aucun marqueur technique visible, seule l'écriture le trahit (GDD 7.11).
+id: c.conrad_adler
+name: Conrad Adler
+phone: '7075550107'
+mood_start: 2 # trop calme
+typing_speed: 1.5 # trop précis, trop rapide
+fallback:
+  irrelevant:
+    - Ce n'est pas la procédure.
+    - Nous perdons du temps, opérateur.
+  repeat:
+    - Je l'ai déjà dit. Je ne répète pas.
+  hold:
+    - J'attends. Comme toujours.
+  manage:
+    g.calm:
+      - Je suis parfaitement calme. Vous, peut-être pas.
+    g.reformulate:
+      - Exactement.

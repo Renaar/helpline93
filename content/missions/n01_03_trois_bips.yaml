@@ -72,6 +72,7 @@ responses: # clé = id de question / instruction / option GÉRER ; première ent
         - C'est fait. Je rallume ?
         - { text: …, pause: 5 } # suspense
         - IL DÉMARRE ! Merci, vraiment !
+        - Vous remercierez Marc de ma part, s'il revient. C'est lui qui m'avait aidé, la dernière fois.
       then: { set_flags: [f.m03.fixed], end_call: resolved }
     - when: { param: { slot: 3 } }
       say:

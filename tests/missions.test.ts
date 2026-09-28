@@ -129,3 +129,112 @@ describe('Trois bips (m.n01_03)', () => {
     expect(engine.getState().vars.reputation).toBe(-1);
   });
 });
+
+type Action = Parameters<ReturnType<typeof createEngine>['dispatch']>[0];
+
+/** Plays actions on the current call, letting the caller finish typing after each one. */
+function play(missionId: string, actions: ((callId: string) => Action)[]) {
+  const ctx = call(missionId);
+  for (const action of actions) {
+    ctx.engine.dispatch(action(CALL));
+    ctx.settle();
+  }
+  return ctx;
+}
+
+const ask = (questionId: string) => (callId: string) =>
+  ({ type: 'ASK', callId, questionId }) as const;
+const instruct = (instructionId: string, params?: Record<string, string>) => (callId: string) =>
+  ({ type: 'INSTRUCT', callId, instructionId, ...(params ? { params } : {}) }) as const;
+const consult = (pageId: string) => () => ({ type: 'CONSULT_PAGE', pageId }) as const;
+const manage = (manageId: string) => (callId: string) =>
+  ({ type: 'MANAGE', callId, manageId }) as const;
+
+describe('Night 1 missions', () => {
+  it('Signes bizarres: self-test, then SW1-5 on ON', () => {
+    const { dialogue, engine } = play('m.n01_01', [
+      ask('q.base.tried'),
+      consult('p.20'),
+      instruct('i.printer.selftest'),
+      instruct('i.printer.dip', { switch: '6', position: 'ON' }),
+      instruct('i.printer.dip', { switch: '5', position: 'OFF' }),
+      instruct('i.printer.dip', { switch: '5', position: 'ON' }),
+    ]);
+    expect(dialogue().outcome).toBe('resolved');
+    engine.dispatch({ type: 'CLOSE_TICKET', ticketId: 'ticket-1', code: 'R-03' });
+    expect(engine.getState().vars.reputation).toBe(1);
+  });
+
+  it('Disque non formaté: SETUP then 1.44M; formatting erases the thesis', () => {
+    const fixed = play('m.n01_02', [
+      consult('p.24'),
+      ask('q.floppy.clock'),
+      instruct('i.setup.drive_a', { type: '1.44M' }),
+      instruct('i.setup.enter'),
+      instruct('i.setup.drive_a', { type: '720K' }),
+      instruct('i.setup.drive_a', { type: '1.44M' }),
+    ]);
+    expect(fixed.dialogue().outcome).toBe('resolved');
+
+    const erased = play('m.n01_02', [consult('p.24'), instruct('i.floppy.format')]);
+    expect(erased.dialogue().outcome).toBe('hangup');
+    expect(erased.engine.getState().flags).toContain('f.m02.thesis_erased');
+  });
+
+  it('Procédure 7-B: page 40 unlocked by the caller, R-14 dictated; another code raises suspicion', () => {
+    const obeyed = play('m.n01_04', [
+      ask('q.base.describe'),
+      ask('q.m04.seven_b'),
+      instruct('i.psu.replace'),
+    ]);
+    expect(obeyed.dialogue().outcome).toBe('resolved');
+    obeyed.engine.dispatch({ type: 'CLOSE_TICKET', ticketId: 'ticket-1', code: 'R-14' });
+    expect(obeyed.engine.getState().flags).toContain('f.n01.r14_sent');
+    expect(obeyed.engine.getState().vars.suspicion).toBe(0);
+
+    const refused = play('m.n01_04', [manage('g.wait'), instruct('i.psu.replace')]);
+    refused.engine.dispatch({ type: 'CLOSE_TICKET', ticketId: 'ticket-1', code: 'R-18' });
+    expect(refused.engine.getState().vars.suspicion).toBe(1);
+  });
+});
+
+describe('Night 1 from boot to report', () => {
+  it('rings the four calls in order, delivers three e-mails, ends with a report', () => {
+    const clock = new ManualClock();
+    const engine = createEngine({ clock, content });
+    const tick = (ms: number) => {
+      clock.advance(ms);
+      engine.update();
+    };
+    const skip = () => {
+      engine.dispatch({ type: 'SKIP_TO_NEXT_EVENT', durationMs: 1000 });
+      tick(1000);
+      tick(1);
+    };
+    engine.dispatch({ type: 'START_SHIFT', operatorName: 'Test' });
+    engine.dispatch({ type: 'START_NIGHT', nightId: 'n.01' });
+    const missions: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      skip();
+      const ringing = engine.getState().phone.lines.find((l) => l.status === 'ringing');
+      missions.push(ringing?.call?.missionId ?? '');
+      engine.dispatch({ type: 'ANSWER_CALL', line: ringing?.id ?? 1 });
+      tick(2 * 60_000);
+      engine.dispatch({ type: 'HANG_UP', line: ringing?.id ?? 1 });
+      for (const ticket of engine.getState().tickets) {
+        if (ticket.status === 'awaiting_closure') {
+          engine.dispatch({ type: 'CLOSE_TICKET', ticketId: ticket.id, code: 'R-18' });
+        }
+      }
+    }
+    expect(missions).toEqual(['m.n01_01', 'm.n01_02', 'm.n01_03', 'm.n01_04']);
+    for (let i = 0; i < 5 && engine.getState().night?.status === 'running'; i++) skip();
+    expect(engine.getState().inbox.map((e) => e.id)).toEqual([
+      'e.n01.kessler_accueil',
+      'e.n01.si_compte_marc',
+      'e.n01.inconnu',
+    ]);
+    expect(engine.getState().night?.status).toBe('ended');
+    expect(engine.getState().report).toMatchObject({ callsAnswered: 4, ticketsClosed: 4 });
+  });
+});

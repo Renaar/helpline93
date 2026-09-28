@@ -1,0 +1,11 @@
+id: cl.0319
+name: Bibliothèque municipale
+company: Ville de San Aurelio
+city: San Aurelio — Bayview
+since: '1991'
+equipment:
+  - serial: HX-386-0319
+    model: Heltron HX-386
+    purchased: 1991
+    warranty: expirée
+history: []

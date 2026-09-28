@@ -1,0 +1,103 @@
+id: m.n01_02
+title: Disque non formaté
+night: 1
+caller: c.kevin_tran
+client: cl.0588
+type: libre
+network: false
+
+captures:
+  cap.not_formatted: { label: « Disque non formaté », field: error, keywords: [non formaté] }
+  cap.thesis:
+    { label: Mémoire de fin d'études sur la disquette, field: reference, keywords: [disquette] }
+  cap.serial: { label: N° série HX-386-0588, field: serial, keywords: [HX-386-0588] }
+  cap.hd: { label: 'Disquette HD 1,44 Mo', field: symptom, keywords: [HD] }
+  cap.lab: { label: Écrite sur un ordinateur de la fac, field: symptom, keywords: [disquette] }
+  cap.clock: { label: Date revenue au 1er janvier 1980, field: symptom, keywords: ['1980'] }
+
+opening:
+  - Allô ? Oui, pardon, c'est urgent. Enfin, pour moi.
+  - Ma disquette affiche « [[Disque non formaté|cap.not_formatted]] ».
+  - Il y a tout mon [[mémoire de fin d'études|cap.thesis]] dessus. Je le rends demain à 9 h.
+
+local_questions: []
+
+responses:
+  q.base.describe:
+    - say:
+        - 'Je mets la disquette dans le lecteur A, je tape DIR, et il me répond « Disque non formaté ».'
+        - Il me propose même de la formater. J'ai failli dire oui.
+
+  q.base.serial:
+    - say:
+        - Euh… derrière, sur l'étiquette… [[HX-386-0588|cap.serial]].
+
+  q.base.model:
+    - say:
+        - Un HX-386SX. D'occasion, mais il marchait très bien jusqu'ici.
+
+  q.base.since:
+    - say:
+        - Ce soir. J'ai écrit toute la journée [[au labo de la fac|cap.lab]], sur leurs ordinateurs neufs.
+        - Et chez moi, plus rien.
+
+  q.base.tried:
+    - say:
+        - Je l'ai remise trois fois. Et j'ai tapé sur le lecteur. Doucement.
+        - Enfin, un peu.
+
+  q.floppy.hd:
+    - say:
+        - Oui, [[HD, 1,44 Mo|cap.hd]]. Celles qu'on achète à la fac.
+
+  q.floppy.clock:
+    - say:
+        - Attendez, je tape DATE…
+        - Il dit [[mardi 1er janvier 1980|cap.clock]]. C'est grave ?
+      then: { set_flags: [f.m02.clock_seen] }
+
+  i.base.restart:
+    - say:
+        - Redémarré. Toujours « Disque non formaté ».
+        - Et il a oublié l'heure, en plus.
+
+  i.floppy.format:
+    - say:
+        - Il me demande de confirmer… je tape O.
+        - { text: « Formatage terminé ». Bon., pause: 4 }
+        - Attendez. Il n'y a plus rien sur la disquette.
+        - Mon mémoire. OÙ EST MON MÉMOIRE ?
+      then: { set_flags: [f.m02.thesis_erased], mood: -2, end_call: hangup }
+
+  i.setup.enter:
+    - say:
+        - Je redémarre… Suppr, Suppr, Suppr…
+        - Ça y est, un écran bleu avec plein de lignes. « CMOS SETUP ».
+      then: { set_flags: [f.m02.setup_open] }
+
+  i.setup.drive_a:
+    - when: { flags_none: [f.m02.setup_open] }
+      say:
+        - Le SETUP ? Je suis dedans, là ? Je vois juste mon écran habituel.
+    - when: { param: { type: 1.44M } }
+      say:
+        - Il était sur 720K ! Je mets 1.44M, j'enregistre, je redémarre…
+        - { text: …, pause: 4 }
+        - ÇA MARCHE. Tous mes fichiers sont là. Tous !
+        - Je vous dois une bière. Plusieurs.
+      then: { set_flags: [f.m02.fixed], mood: 2, end_call: resolved }
+    - when: { param: { type: 720K } }
+      say:
+        - C'est déjà sur 720K, justement.
+    - say:
+        - Je change, j'enregistre, je redémarre…
+        - Toujours « Disque non formaté ». Et en plus le lecteur fait un bruit bizarre.
+      then: { mood: -1 }
+
+closure:
+  codes:
+    R-03:
+      when: { flags_all: [f.m02.fixed] }
+      then: { vars: { reputation: +1 } }
+    default:
+      then: { vars: { reputation: -1 } }

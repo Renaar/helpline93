@@ -303,6 +303,9 @@ export type Email = z.infer<typeof emailSchema>;
 
 // ── Client records (GDD 4.4) ──────────────────────────────────────────────────
 
+/** Free text that writers may type as a bare number in YAML (years: `since: 1991`). */
+const freeText = z.union([z.string().min(1), z.number()]).transform(String);
+
 export const clientSchema = z
   .object({
     id: clientId,
@@ -312,15 +315,15 @@ export const clientSchema = z
     address: z.string().optional(),
     phone: tenDigits.optional(),
     /** Customer since (free text, e.g. "1991"). */
-    since: z.string().optional(),
+    since: freeText.optional(),
     equipment: z
       .array(
         z
           .object({
             serial: z.string().min(1),
             model: z.string().min(1),
-            purchased: z.string().optional(),
-            warranty: z.string().optional(),
+            purchased: freeText.optional(),
+            warranty: freeText.optional(),
           })
           .strict(),
       )

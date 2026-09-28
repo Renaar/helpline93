@@ -1,0 +1,94 @@
+id: m.n01_01
+title: Signes bizarres
+night: 1
+caller: c.doris_kowalski
+client: cl.0077
+type: libre
+network: false
+
+captures:
+  cap.garbage:
+    { label: Signes illisibles à l'impression, field: symptom, keywords: [caractères étranges] }
+  cap.printer: { label: Imprimante LX-80, field: product, keywords: [LX-80] }
+  cap.serial: { label: N° série HX-386-0077, field: serial, keywords: [HX-386-0077] }
+  cap.brush: { label: Nettoyée au pinceau sous le capot, field: symptom, keywords: [commutateur] }
+  cap.selftest: { label: Autotest net, field: symptom, keywords: [autotest] }
+
+opening:
+  - Bonsoir ! Oh, quel soulagement d'entendre quelqu'un.
+  - Mon imprimante sort des [[signes bizarres|cap.garbage]] au lieu de mes étiquettes. Des petits carrés, des accents partout.
+
+local_questions: []
+
+responses:
+  q.base.describe:
+    - say:
+        - C'est une [[imprimante LX-80|cap.printer]], branchée sur mon ordinateur de la boutique.
+        - Elle avance le papier, elle fait son petit bruit… mais ce qu'elle écrit ne veut rien dire.
+
+  q.base.serial:
+    - say:
+        - Sur l'ordinateur, c'est écrit [[HX-386-0077|cap.serial]].
+
+  q.base.model:
+    - say:
+        - L'ordinateur, c'est un Heltron HX-386. L'imprimante, une LX-80, de chez vous aussi.
+
+  q.base.since:
+    - say:
+        - Depuis ce matin. Hier soir, tout marchait.
+
+  q.base.tried:
+    - say:
+        - Hier, j'ai nettoyé l'imprimante avec [[un petit pinceau|cap.brush]], sous le capot.
+        - Il y avait du pollen partout, vous pensez. Avec les lys…
+
+  q.printer.first_line:
+    - say:
+        - Oui, dès le début. Et toujours les mêmes signes, on dirait.
+
+  q.printer.switches:
+    - say:
+        - Les petits interrupteurs blancs ? Euh… peut-être, avec le pinceau.
+        - Je n'ai pas fait exprès, hein.
+
+  i.base.restart:
+    - say:
+        - J'ai tout éteint, j'ai compté jusqu'à dix, j'ai rallumé.
+        - Toujours des petits carrés.
+
+  i.printer.cable:
+    - say:
+        - Je regarde derrière…
+        - Il est bien vissé. Je l'ai même revissé, pour être sûre.
+
+  i.printer.selftest:
+    - say:
+        - Voilà, j'appuie et j'allume…
+        - { text: Oh ! Elle imprime toute seule !, pause: 2 }
+        - Des lettres, des chiffres… tout est [[bien net|cap.selftest]], cette fois.
+      then: { set_flags: [f.m01.selftest] }
+
+  i.printer.dip:
+    - when: { param: { switch: 5, position: 'ON' } }
+      say:
+        - Le numéro 5… il était en bas. Je le remonte. Voilà.
+        - J'essaie une étiquette ?
+        - { text: …, pause: 3 }
+        - « Roses rouges — 4,50 $ ». Elle est parfaite ! Vous êtes un ange.
+      then: { set_flags: [f.m01.fixed], end_call: resolved }
+    - when: { param: { position: 'OFF' } }
+      say:
+        - Il était déjà en bas, celui-là. Je le laisse comme ça ?
+    - say:
+        - Je l'ai changé… j'essaie…
+        - Oh là, c'est encore pire. Je le remets comme avant, d'accord ?
+      then: { mood: -1 }
+
+closure:
+  codes:
+    R-03:
+      when: { flags_all: [f.m01.fixed] }
+      then: { vars: { reputation: +1 } }
+    default:
+      then: { vars: { reputation: -1 } }

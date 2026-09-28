@@ -1,0 +1,21 @@
+# Fiche incohérente (indice) : aucune date d'achat, aucune garantie, des appels toujours à la même
+# heure, des codes R-14 à répétition, et une consigne étrange dans les remarques.
+id: cl.0007
+name: Conrad Adler
+company: Adler & Fils — Import-Export
+city: San Aurelio — Docks
+address: Quai 7, entrepôt B
+since: '1987'
+equipment:
+  - serial: HX-486-0007
+    model: Heltron HX-486
+    purchased: —
+    warranty: —
+history:
+  - date: 11/03/1993
+    text: 23 h 50. Sifflement alimentation. Échange standard (R-14). Opérateur — M.
+  - date: 02/07/1993
+    text: 23 h 50. Sifflement alimentation. Échange standard (R-14). Opérateur — M.
+  - date: 29/10/1993
+    text: 23 h 50. Appel sans suite (R-18). Opérateur — M.
+notes: Ne pas facturer. Voir M. Kessler.

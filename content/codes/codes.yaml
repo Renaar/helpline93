@@ -1,4 +1,4 @@
-# Codes de résolution (GDD 7.8). `label` = sens officiel, affiché dans HelpDesk.
+# Codes de résolution (GDD 7.8). `label` = sens officiel, affiché dans HelpDesk et à la page 5.
 # Le sens caché (`hidden`) arrivera avec les actes II et III.
 id: codes
 codes:
@@ -12,3 +12,4 @@ codes:
   - { id: R-12, label: Hors garantie — orienté vers le service payant }
   - { id: R-14, label: Remplacement de l'alimentation }
   - { id: R-18, label: Appel sans suite }
+  - { id: R-22, label: Remplacement du ruban encreur }

@@ -1,0 +1,11 @@
+id: cl.0133
+name: Motel Seabreeze
+company: Motel Seabreeze
+city: San Aurelio — Ocean Drive
+since: '1991'
+equipment:
+  - serial: HX-286-0133
+    model: Heltron HX-286
+    purchased: 1991
+    warranty: expirée
+history: []

@@ -1,8 +1,7 @@
-# Page provisoire (J1) : sert à tester la Visionneuse. Contenu définitif : J3.
 id: p.01
 tab: Généralités
 title: Accueil et prise d'appel
-keywords: [accueil, appel, ticket, procédure]
+keywords: [accueil, appel, ticket, procédure, client, base clients]
 revision: { night: 1 }
 body: |
   ## 1-A — Décrocher
@@ -11,9 +10,12 @@ body: |
   ## 1-B — Identifier le client
   - Demandez le **numéro de série** inscrit à l'arrière de l'appareil.
   - Notez le **modèle** et la date d'achat si le client les connaît.
-  - Vérifiez la fiche dans la Base Clients.
+  - Vérifiez la fiche dans la **Base Clients** (recherche par nom, numéro de série ou ville).
 
-  ## 1-C — Clore le ticket
-  Chaque appel se termine par un **code de résolution**. Choisissez le code qui correspond à l'intervention réalisée, jamais un autre.
+  ## 1-C — Écouter avant d'agir
+  Laissez le client décrire la panne. Notez les symptômes exacts : un mot mal compris coûte un déplacement de technicien.
+
+  ## 1-D — Clore le ticket
+  Chaque appel se termine par un **code de résolution** (voir page 5). Choisissez le code qui correspond à l'intervention réalisée, jamais un autre.
 
   > Service de nuit : suivez les procédures à la lettre. Toute initiative doit être signalée au chef de service.

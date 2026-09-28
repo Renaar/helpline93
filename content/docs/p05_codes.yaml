@@ -1,0 +1,26 @@
+id: p.05
+tab: Généralités
+title: Codes de résolution
+keywords: [code, codes, résolution, clôture, ticket, R-]
+revision: { night: 1 }
+body: |
+  ## 5-A — Principe
+  Tout ticket est clos avec **un seul** code. Le code décrit ce qui a été fait, pas ce que le client souhaitait.
+
+  | Code | Intervention |
+  | R-01 | Résolu par téléphone — conseil d'utilisation |
+  | R-02 | Résolu — redémarrage ou réinitialisation |
+  | R-03 | Réglage de la configuration |
+  | R-05 | Pilote ou logiciel réinstallé |
+  | R-07 | Mémoire vive retirée ou remplacée |
+  | R-09 | Retour atelier |
+  | R-11 | Périphérique défectueux |
+  | R-12 | Hors garantie — orienté vers le service payant |
+  | R-14 | Remplacement de l'alimentation |
+  | R-18 | Appel sans suite |
+  | R-22 | Remplacement du ruban encreur |
+
+  ## 5-B — En cas de doute
+  Préférez **R-18** à un code inexact. Les codes sont transmis chaque matin aux ateliers et aux livreurs : une erreur déclenche un déplacement inutile.
+
+  > Les codes non listés ci-dessus ne doivent jamais être utilisés.

@@ -1,0 +1,31 @@
+id: p.40
+tab: Unité centrale
+title: Alimentation électrique
+keywords: [alimentation, sifflement, siffle, ventilateur, odeur, brûlé, courant, R-14]
+revision: { night: 1 }
+body: |
+  ## 40-A — Sifflement de l'alimentation
+  Un sifflement aigu et continu signale un condensateur fatigué. Sans danger immédiat, mais l'alimentation doit être échangée.
+
+  ## 40-B — Odeur de brûlé
+  Faites **immédiatement** éteindre et débrancher l'ordinateur. Ne le laissez pas rallumer.
+
+  ## 40-C — Échange standard
+  Un technicien passe échanger l'alimentation au domicile du client, sous 48 heures ouvrées. Code **R-14**.
+
+  | Symptôme | Action | Code |
+  | Sifflement | Échange standard | R-14 |
+  | Odeur de brûlé | Arrêt, puis retour atelier | R-09 |
+  | Ventilateur arrêté | Échange standard | R-14 |
+
+questions:
+  - id: q.psu.smell
+    text: Sentez-vous une odeur de brûlé ?
+  - id: q.psu.fan
+    text: Le ventilateur de l'alimentation tourne-t-il ?
+
+instructions:
+  - id: i.psu.shutdown
+    text: Éteignez l'ordinateur et débranchez le cordon d'alimentation.
+  - id: i.psu.replace
+    text: Un technicien passera échanger votre alimentation sous 48 heures.
