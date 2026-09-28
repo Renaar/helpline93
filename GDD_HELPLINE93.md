@@ -1,6 +1,6 @@
 # HELPLINE93 — Game Design Document
 
-> Version 1.7 — widget d'appel, disposition chat / manuel / Carnet, densité 85 % (retour J2) ; 1.6 : palette ambre / gris (J2) ; 1.5 : glossaire, effet VHS du saut dans le temps, règle d’usage de « Nightline » (J1)
+> Version 1.8 — format des nuits, e-mails et fiches clients (J3) ; 1.7 : widget d'appel, disposition chat / manuel / Carnet, densité 85 % (retour J2) ; 1.6 : palette ambre / gris (J2) ; 1.5 : glossaire, effet VHS du saut dans le temps, règle d’usage de « Nightline » (J1)
 > Destinataire final : Claude Code (implémentation de l'interface et des systèmes)
 
 ---
@@ -656,6 +656,7 @@ Le fichier `codes/` associe à chaque code son **sens officiel** (affiché dans 
 
 ```yaml
 id: n.01
+title: Premier service               # affiché dans le rapport et au choix de la nuit
 start: "22:00"
 end: "06:00"
 emails_at_boot: [e.n01.kessler_accueil]
@@ -668,6 +669,12 @@ events:
   - { at: "03:33", type: screen_freeze }
   - { at: "04:10", type: email, id: e.n01.inconnu }
 ```
+
+**Fin de nuit :** quand tous les appels ont eu lieu, le prochain événement est la fin du service (`end`). On ne peut y sauter qu'une fois **tous les tickets clôturés**. Le rapport s'affiche, la partie est sauvegardée (variables, flags, confiance, notes du Carnet) et la nuit suivante devient accessible à l'ouverture de session.
+
+**E-mail** (`content/emails/`) : `id`, `from` (vide = expéditeur inconnu), `address` (facultatif), `subject`, `body` (markdown léger, comme les pages du manuel). Envoyé au démarrage (`emails_at_boot`), à une heure (`events`) ou par un effet de mission (`email: { id, delay }`).
+
+**Fiche client** (`content/clients/`) : `id`, `name`, `company`, `city`, `address`, `phone`, `since`, `equipment` (numéro de série, modèle, achat, garantie), `history` (date, texte), `notes`. Une fiche incohérente est un indice (2.1).
 
 ### 7.10 Outils de validation (à livrer avec le moteur)
 

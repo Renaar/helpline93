@@ -2,7 +2,51 @@
 
 ## Jalon en cours
 
-**J3 — Nuit 1 jouable (MVP)** : pas encore démarré. Sur la branche `j3`, les réglages demandés au retour de J2 sont faits et **à tester par Loïc** (voir « Retour de Loïc sur J2 »).
+**J3 — Nuit 1 jouable (MVP)** : premier jet livré sur la branche `j3`, **à tester par Loïc**. Fusion dans `main` seulement après « J3 validé ». Contrôle prévu (GDD 9.3) : playtest par 2 à 3 personnes extérieures.
+
+## J3 — Nuit 1 jouable (premier jet)
+
+### Fait
+
+- [x] **Planificateur de nuit** (moteur, testé) : appels à heure fixe (`at`) ou N minutes de jeu après la fin du précédent (`after_previous`), appels conditionnels (`when`), e-mails au démarrage et à heure fixe, fin du service à 06:00. Le saut vers la fin du service n'est possible qu'une fois **tous les tickets clôturés**.
+- [x] **Messagerie** : boîte de réception, lecture, pastille des non-lus, icône qui clignote doucement dans la zone de notification, petit carillon à l'arrivée d'un e-mail (qui peut tomber en plein appel).
+- [x] **Base Clients** : recherche par nom, société, ville, numéro de série ou modèle (accents et majuscules ignorés), fiche détaillée (matériel, historique des contacts, remarques). Une info capturée de type numéro de série, nom ou lieu ouvre la Base Clients ; les autres ouvrent le manuel (chat et Carnet).
+- [x] **Rapport de fin de service** à 06:00 : appels pris, tickets clôturés, pannes résolues, durée moyenne, journal d'activité. Bouton « Fermer la session ».
+- [x] **Sauvegarde automatique** en fin de nuit (navigateur) : nom de l'opérateur, variables, flags, confiance, notes libres du Carnet. À l'ouverture de session, le nom est prérempli et on peut choisir parmi les nuits atteintes (dès qu'il y aura une nuit 2).
+- [x] **Contenu, premier jet de la nuit 1** (selon le synopsis validé) :
+  - 22:20 **Doris Kowalski**, fleuriste : imprimante LX-80 qui imprime des signes (p. 20, commutateur SW1-5 sur ON). Appel « tutoriel ».
+  - ~22:40 **Kevin Tran**, étudiant : « Disque non formaté » (p. 24, SETUP, lecteur 1.44M). Piège : FORMAT A: efface son mémoire, il raccroche.
+  - ~23:00 **Bernard Fleury** : trois bips (inchangé, + une ligne sur Marc).
+  - ~23:30 **Conrad Adler** : procédure 7-B, sifflement d'alimentation, fiche client incohérente (appels à 23 h 50, R-14 à répétition, « Ne pas facturer. Voir M. Kessler. »). Il dicte R-14 ; un autre code fait monter la suspicion.
+  - E-mails : Kessler (accueil, règles, départ de Marc), service informatique à 23:30 (compte de Marc désactivé, notes archivées), inconnu à 04:10 (« Marc aussi notait tout. »).
+  - Manuel : 7 pages (p. 1 accueil, p. 5 codes de résolution, p. 12 bips, p. 20 imprimantes, p. 24 disquettes, p. 31 cavaliers, p. 40 alimentation). 11 codes. 8 fiches clients.
+- [x] `content:check` vérifie aussi les nuits, e-mails et fiches (références, e-mails jamais envoyés, missions hors de toute nuit). GDD 7.9 complété (v1.8), `content/README.md` aussi.
+- [x] Tests : 187 (dont chaque mission de la nuit jouée avec ses mauvaises réponses, et la nuit entière de 22:00 au rapport).
+
+### Comment tester
+
+1. `npm run dev`, ouvrir `http://localhost:5173/` et jouer normalement : **Allumer le poste**, taper son nom.
+2. Lire l'e-mail de Kessler (icône enveloppe dans la zone de notification, ou Messagerie).
+3. Ouvrir le Téléphone, **Attendre le prochain appel** : Doris appelle à 22:20. Enchaîner les 4 appels (le bouton sert aussi entre les appels).
+4. Essayer la Base Clients : capturer un numéro de série, puis recliquer dessus. Pour Adler : regarder la fiche HX-486-0007.
+5. Après le dernier appel et la dernière clôture : attendre jusqu'à 04:10 (e-mail), puis 06:00 : rapport, **Fermer la session**, rallumer : le nom est prérempli.
+6. Pour rejouer depuis zéro : effacer les données du site dans le navigateur (ou fenêtre privée).
+7. Raccourcis : `?boot=skip` (nuit 1 directement), `?mission=m.n01_04` (un appel seul, sans nuit).
+
+### Décisions prises (à valider)
+
+1. **Fin de service** : elle attend que tous les tickets soient clôturés (sinon le saut vers 06:00 est bloqué).
+2. **Rapport** puis **Fermer la session** : le poste redémarre (écran « Allumer le poste »), la sauvegarde est faite juste avant.
+3. **Recherche par capture** : numéro de série, nom, lieu → Base Clients ; le reste → manuel.
+4. Les **notes libres du Carnet** passent d'une nuit à l'autre ; les indices capturés, non (ils sont propres à la nuit).
+5. Champs de fiche client écrits comme des nombres (`since: 1991`) acceptés tels quels.
+
+### Questions ouvertes
+
+- Le premier jet des dialogues te convient-il (ton de Doris, stress de Kevin, froideur d'Adler) ? Tout est à retoucher librement dans `content/`.
+- Faut-il qu'un e-mail arrivé pendant un appel se signale plus fort (son plus présent) ?
+
+---
 
 ## Jalons terminés
 

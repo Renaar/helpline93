@@ -18,6 +18,14 @@ content/
 
 Validation : `npm run content:check` — syntaxe YAML, schémas, identifiants uniques, références cassées, balises de capture, paramètres des instructions, codes de résolution. Les avertissements (capture jamais balisée, question locale jamais débloquée…) n'empêchent pas de jouer.
 
+## Où écrire quoi
+
+- `nights/n01.yaml` : le déroulé de la nuit (appels à heure fixe ou `after_previous`, e-mails au démarrage et à heure fixe).
+- `missions/` : un fichier par appel ; `callers/` : les personnalités (répliques de repli).
+- `docs/` : les pages du manuel, avec leurs questions (`questions`) et étapes (`instructions`).
+- `emails/`, `clients/`, `codes/` : e-mails, fiches de la Base Clients, codes de résolution.
+- Tester une mission seule : `?mission=m.n01_02`. Toute la nuit : partir de l'écran « Allumer le poste », ou `?boot=skip`.
+
 ## Pièges d'écriture YAML
 
 - Une réplique qui **commence** par une balise de capture doit être entre guillemets : `- '[[HX-486-0412|cap.serial]].'` (sinon YAML croit lire une liste).
