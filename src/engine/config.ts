@@ -21,15 +21,15 @@ export const OPERATOR_NAME_MAX_LENGTH = 24;
  */
 export const TYPING = {
   /** The caller reads the operator's message before starting to type. */
-  replyDelayMs: 900,
+  replyDelayMs: 750,
   /** Before the first message of a call. */
-  openingDelayMs: 1200,
+  openingDelayMs: 1000,
   /** Between two messages of the same reply. */
-  messageGapMs: 500,
-  baseMs: 500,
-  perCharacterMs: 30,
-  minMs: 700,
-  maxMs: 3600,
+  messageGapMs: 400,
+  baseMs: 400,
+  perCharacterMs: 23,
+  minMs: 600,
+  maxMs: 2800,
   /** By mood, from -2 (panicked: short, hurried bursts) to +2 (relaxed). */
   moodFactor: { '-2': 0.7, '-1': 0.85, '0': 1, '1': 1.05, '2': 1.15 },
   /** Silence after the last message before the line goes dead (end_call). */

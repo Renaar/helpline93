@@ -19,6 +19,7 @@ function call(id: string): Call {
     missionId: null,
     ringingSince: 1320,
     answeredAt: null,
+    answeredAtMs: null,
   };
 }
 

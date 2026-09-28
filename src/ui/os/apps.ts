@@ -25,50 +25,55 @@ export const appInfo: Record<AppId, AppInfo> = {
   phone: {
     icon: 'phone',
     title: 'apps.phone.title',
-    defaultRect: { x: 1110, y: 56, width: 780, height: 600 },
+    defaultRect: { x: 944, y: 48, width: 663, height: 510 },
   },
   chat: {
     icon: 'chat',
     title: 'apps.chat.title',
-    defaultRect: { x: 190, y: 56, width: 760, height: 640 },
+    defaultRect: { x: 162, y: 48, width: 646, height: 544 },
   },
   viewer: {
     icon: 'viewer',
     title: 'apps.viewer.title',
-    defaultRect: { x: 520, y: 40, width: 1080, height: 900 },
+    defaultRect: { x: 442, y: 34, width: 918, height: 765 },
   },
   helpdesk: {
     icon: 'helpdesk',
     title: 'apps.helpdesk.title',
-    defaultRect: { x: 190, y: 620, width: 760, height: 380 },
+    defaultRect: { x: 162, y: 527, width: 646, height: 323 },
   },
   notebook: {
     icon: 'notebook',
     title: 'apps.notebook.title',
-    defaultRect: { x: 420, y: 120, width: 700, height: 640 },
+    defaultRect: { x: 357, y: 102, width: 595, height: 544 },
   },
   mail: {
     icon: 'mail',
     title: 'apps.mail.title',
-    defaultRect: { x: 330, y: 90, width: 940, height: 640 },
+    defaultRect: { x: 280, y: 76, width: 799, height: 544 },
   },
   clients: {
     icon: 'clients',
     title: 'apps.clients.title',
-    defaultRect: { x: 280, y: 140, width: 1000, height: 640 },
+    defaultRect: { x: 238, y: 119, width: 850, height: 544 },
   },
 };
 
 /**
- * Default arrangement when a call is answered (GDD 5.4): chat on the left, viewer on the
- * right, ticket reduced at the bottom. The phone keeps a compact place bottom right.
+ * Arrangement when a call is answered (GDD 5.4, revised after J2): chat on the left, manual in
+ * the middle, Notebook on the right (captures land there). The call itself sits in the taskbar
+ * widget; the ticket waits for the end of the call. Desktop area: 1920 × 1036.
  */
 export const callLayout: Partial<Record<AppId, Rect>> = {
-  chat: { x: 24, y: 24, width: 900, height: 600 },
-  helpdesk: { x: 24, y: 648, width: 900, height: 372 },
-  viewer: { x: 948, y: 24, width: 948, height: 600 },
-  phone: { x: 948, y: 648, width: 948, height: 372 },
+  chat: { x: 16, y: 16, width: 700, height: 1004 },
+  viewer: { x: 728, y: 16, width: 780, height: 1004 },
+  notebook: { x: 1520, y: 16, width: 384, height: 1004 },
 };
 
 /** Applications opened automatically when a call is answered. */
-export const callApps: AppId[] = ['phone', 'chat', 'helpdesk', 'viewer'];
+export const callApps: AppId[] = ['chat', 'viewer', 'notebook'];
+
+/** The ticket opens as a recap once the call is over, to pick the resolution code. */
+export const recapLayout: Partial<Record<AppId, Rect>> = {
+  helpdesk: { x: 728, y: 96, width: 780, height: 760 },
+};

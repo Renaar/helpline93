@@ -1,6 +1,6 @@
 # HELPLINE93 — Game Design Document
 
-> Version 1.6 — palette ambre / gris (J2) ; 1.5 : glossaire, effet VHS du saut dans le temps, règle d’usage de « Nightline » (J1)
+> Version 1.7 — widget d'appel, disposition chat / manuel / Carnet, densité 85 % (retour J2) ; 1.6 : palette ambre / gris (J2) ; 1.5 : glossaire, effet VHS du saut dans le temps, règle d’usage de « Nightline » (J1)
 > Destinataire final : Claude Code (implémentation de l'interface et des systèmes)
 
 ---
@@ -329,8 +329,9 @@ Plus : écran « Allumer le poste », séquence de boot BIOS, bureau avec icône
 
 1. Son de sonnerie + icône Téléphone qui clignote dans la zone de notification.
 2. Petite fenêtre « Appel entrant — Ligne 2 » qui glisse depuis le coin de l'écran (numéro, heure).
-3. Le joueur clique **Décrocher** : l'app Téléphone passe la ligne en « En cours », le Chat Opérateur et un nouveau ticket HelpDesk s'ouvrent et se placent automatiquement.
-4. Disposition par défaut pensée pour un appel : Chat à gauche, Visionneuse à droite, ticket réduit en bas. Le joueur peut tout réorganiser.
+3. Le joueur clique **Décrocher** : la fenêtre Téléphone laisse place à un **widget d'appel dans la barre des tâches** (ligne, numéro, durée, boutons Attente / Reprendre et Raccrocher). Un ticket est ouvert en coulisse ; ses champs se remplissent avec les captures.
+4. Disposition par défaut pensée pour un appel : **Chat à gauche, Visionneuse au centre, Carnet à droite** (les infos capturées y arrivent). Le joueur peut tout réorganiser.
+5. À la fin de l'appel, le **ticket HelpDesk s'ouvre en récapitulatif** pour choisir le code de résolution et le clôturer.
 
 ### 5.5 Appels urgents : mise en scène
 
@@ -749,6 +750,8 @@ Tous les réglages (durées, courbes de ressort, volumes) sont dans **un seul fi
 ### 8.4 Rendu de l'écran
 
 **Résolution logique :** HelplineOS est dessiné en **1920 × 1080 (16:9)**, puis mis à l'échelle pour remplir la fenêtre du navigateur (bandes de la couleur du fond du bureau si le format diffère). Pas de cadre de moniteur, pas de décor : l'OS est tout l'écran.
+
+**Densité (retour J2) :** tailles de texte, espacements, barres et fenêtres réduits à 85 % des valeurs du J1 (texte courant 16 px, barre de titre 30 px, barre des tâches 44 px), pour que 4 ou 5 fenêtres ouvertes restent aérées. Les icônes pixel gardent leurs tailles de grille (32 / 48 / 64 px) pour rester nettes.
 
 **Lisibilité :** à cette résolution, des éléments Win95 à leur taille d'origine seraient minuscules. Les tailles de base sont donc **agrandies** (texte courant ≈ 18-20 px logiques, barres de titre ≈ 36 px, icônes 48 px) pour rester lisibles quand l'écran est réduit (ex. portable 1366 × 768 → facteur ≈ 0,71). Toutes ces tailles sont des variables du thème.
 

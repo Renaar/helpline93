@@ -143,6 +143,9 @@ export const feelConfig = {
     /** A ring every… while a line is ringing. */
     ringIntervalMs: 3400,
     toastSpring: { stiffness: 420, damping: 30, mass: 0.9 },
+    /** The taskbar call widget appears / leaves with this spring; its timer ticks every second. */
+    widgetSpring: { stiffness: 520, damping: 34, mass: 0.8 },
+    widgetTickMs: 1000,
   },
 
   clock: {

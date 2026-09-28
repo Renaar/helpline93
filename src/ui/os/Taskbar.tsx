@@ -1,4 +1,5 @@
 import { Pressable } from '../feel/Pressable.tsx';
+import { CallWidget } from './CallWidget.tsx';
 import { PixelIcon } from '../icons/PixelIcon.tsx';
 import { t } from '../strings/i18n.ts';
 import { useShell } from './shellStore.ts';
@@ -31,6 +32,7 @@ export function Taskbar() {
           <TaskbarButton key={app} app={app} />
         ))}
       </div>
+      <CallWidget />
       <Tray />
     </footer>
   );

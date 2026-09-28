@@ -2,7 +2,7 @@
 
 ## Jalon en cours
 
-**J3 — Nuit 1 jouable (MVP)** : pas encore démarré. Avant lui, deux réglages demandés au retour de J2 (vitesse de frappe, échelle de l'interface), sur la branche `j3`.
+**J3 — Nuit 1 jouable (MVP)** : pas encore démarré. Sur la branche `j3`, les réglages demandés au retour de J2 sont faits et **à tester par Loïc** (voir « Retour de Loïc sur J2 »).
 
 ## Jalons terminés
 
@@ -20,8 +20,21 @@ Validé, **ne plus toucher** : recherche dans la doc qui débloque les lignes de
 
 À ajuster :
 
-- [ ] Vitesse de frappe du chat légèrement trop lente : l'augmenter un peu.
-- [ ] Échelle générale de l'interface trop grande : réduire fenêtres, police et espacements pour que le bureau respire avec 4-5 fenêtres ouvertes.
+- [x] **Frappe du chat ~25 % plus rapide** (`TYPING` dans `src/engine/config.ts` : 23 ms par caractère au lieu de 30, délais de réponse et entre messages raccourcis). Les pauses de suspense écrites dans les missions ne changent pas.
+- [x] **Échelle générale à 85 %** (choix de Loïc) : textes, espacements, boutons, barres (titre 30 px, tâches 44 px), tailles des fenêtres. Les icônes pixel gardent leurs tailles pour rester nettes.
+- [x] **Nouvelle mise en scène de l'appel** (proposée par Loïc) :
+  - au décroché, la fenêtre Téléphone laisse place à un **widget dans la barre des tâches** : voyant, ligne, numéro, durée de l'appel, **Attente / Reprendre** et **Raccrocher** ;
+  - disposition automatique : **Chat à gauche, Visionneuse au centre, Carnet à droite** (les captures y volent) ;
+  - le ticket se remplit en coulisse ; **à la fin de l'appel, HelpDesk s'ouvre en récapitulatif** pour choisir le code et clôturer.
+  - GDD 5.4 et 8.4 mis à jour (v1.7).
+
+#### Comment tester
+
+1. `npm run dev`, puis `http://localhost:5173/?mission=m.n01_03` (F9 masque le débogage).
+2. Décrocher : Chat, Visionneuse et Carnet se rangent ; le widget d'appel apparaît en bas à droite, avec la durée qui tourne.
+3. Capturer « 3 bips » : l'info vole vers le Carnet. Mettre en attente puis reprendre depuis le widget.
+4. Résoudre l'appel (p. 12, ouvrir le boîtier, barrette 2) : à la fin, le ticket s'ouvre au centre avec les codes ; choisir R-07, clôturer.
+5. Vérifier que tout est plus compact mais lisible (menu Démarrer, Visionneuse, onglets).
 
 Pour plus tard : l'humeur de l'appelant est une bonne base pour des répliques alternatives (itération future sur le contenu narratif, rien à changer pour l'instant).
 

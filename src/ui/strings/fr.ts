@@ -11,6 +11,8 @@ export const fr = {
   format: {
     /** US phone numbers (the setting stays American, GDD 1.4). */
     phoneNumber: '({area}) {exchange}-{line}',
+    /** Call duration shown in the taskbar call widget. */
+    duration: '{minutes}:{seconds}',
   },
 
   boot: {
@@ -70,6 +72,7 @@ export const fr = {
       resume: 'Reprendre',
       hangUp: 'Raccrocher',
       waitNext: 'Attendre le prochain appel',
+      widget: 'Appel en cours, ligne {line}',
       history: 'Historique des appels',
       historyEmpty: 'Aucun appel pour l’instant.',
       columns: {

@@ -13,6 +13,8 @@ export interface Call {
   /** Shift minute at which the phone started ringing. */
   ringingSince: number;
   answeredAt: number | null;
+  /** Game clock time (ms) of the answer: the taskbar call widget shows the call duration. */
+  answeredAtMs: number | null;
 }
 
 export type LineStatus = 'idle' | 'ringing' | 'active' | 'held';
@@ -78,6 +80,7 @@ export function answerLine(
   phone: PhoneState,
   id: LineId,
   minute: number,
+  nowMs = 0,
 ): { phone: PhoneState; held: LineId | null } | null {
   const line = findLine(phone, id);
   if (line?.status !== 'ringing' || !line.call) return null;
@@ -87,7 +90,7 @@ export function answerLine(
     phone: withLine(result.phone, id, (l) => ({
       ...l,
       status: 'active',
-      call: { ...call, answeredAt: minute },
+      call: { ...call, answeredAt: minute, answeredAtMs: nowMs },
     })),
     held: result.held,
   };

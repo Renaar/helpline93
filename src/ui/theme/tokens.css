@@ -46,25 +46,29 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
+  /*
+   * Sizes: the J2 values scaled to 85 % (feedback: more room for several windows). Pixel icons
+   * keep their 32-pixel grid sizes so they stay crisp.
+   */
   /* Text sizes (logical px, at 1920 × 1080) */
-  --text-xs: 14px;
-  --text-sm: 16px;
-  --text-md: 19px;
-  --text-lg: 22px;
-  --text-xl: 28px;
-  --text-xxl: 40px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 19px;
+  --text-xl: 24px;
+  --text-xxl: 34px;
   --line-height-tight: 1.2;
   --line-height-body: 1.45;
 
   /* Spacing */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
+  --space-1: 3px;
+  --space-2: 7px;
+  --space-3: 10px;
+  --space-4: 14px;
+  --space-5: 20px;
+  --space-6: 27px;
+  --space-7: 41px;
+  --space-8: 54px;
 
   /* Reliefs (GDD 6.1: thin and crisp, corners 2 px max) */
   --bevel-width: 1px;
@@ -84,51 +88,51 @@
   --opacity-muted: 0.55;
 
   /* Component sizes */
-  --titlebar-height: 36px;
-  --taskbar-height: 52px;
-  --titlebar-control-width: 32px;
-  --titlebar-control-height: 26px;
+  --titlebar-height: 30px;
+  --taskbar-height: 44px;
+  --titlebar-control-width: 27px;
+  --titlebar-control-height: 22px;
   --icon-titlebar: 24px;
-  --resize-handle: 8px;
-  --resize-corner: 18px;
-  --button-height: 40px;
-  --button-min-width: 128px;
-  --glyph-size: 16px;
+  --resize-handle: 7px;
+  --resize-corner: 15px;
+  --button-height: 34px;
+  --button-min-width: 109px;
+  --glyph-size: 14px;
   --icon-sm: 32px;
   --icon-md: 48px;
   --icon-lg: 64px;
-  --icon-tile-width: 112px;
+  --icon-tile-width: 95px;
   --swatch-size: 72px;
-  --lamp-size: 18px;
+  --lamp-size: 15px;
   --sandbox-column: 880px;
-  --taskbar-button-height: 40px;
-  --taskbar-task-width: 220px;
-  --tray-icon-size: 36px;
-  --start-menu-width: 360px;
-  --start-menu-brand-width: 40px;
-  --menu-item-height: 48px;
-  --toast-width: 420px;
-  --desktop-icon-width: 120px;
-  --tab-height: 36px;
-  --badge-size: 8px;
+  --taskbar-button-height: 34px;
+  --taskbar-task-width: 187px;
+  --tray-icon-size: 31px;
+  --start-menu-width: 306px;
+  --start-menu-brand-width: 34px;
+  --menu-item-height: 41px;
+  --toast-width: 357px;
+  --desktop-icon-width: 102px;
+  --tab-height: 31px;
+  --badge-size: 7px;
   --chat-reply-height: 46%;
-  --chat-choice-min-width: 44px;
-  --chat-param-width: 160px;
-  --phone-line-height: 56px;
-  --phone-line-name-width: 96px;
-  --phone-status-width: 150px;
-  --phone-button-width: 112px;
-  --empty-hint-width: 420px;
-  --field-min-width: 220px;
-  --flight-chip-width: 520px;
+  --chat-choice-min-width: 37px;
+  --chat-param-width: 136px;
+  --phone-line-height: 48px;
+  --phone-line-name-width: 82px;
+  --phone-status-width: 128px;
+  --phone-button-width: 95px;
+  --empty-hint-width: 357px;
+  --field-min-width: 187px;
+  --flight-chip-width: 442px;
   --debug-state-width: 520px;
   --debug-label-width: 150px;
-  --doc-page-width: 600px;
-  --doc-page-padding: 40px;
-  --doc-font-size: 16px;
-  --viewer-sidebar-width: 300px;
-  --viewer-label-width: 112px;
-  --login-width: 640px;
+  --doc-page-width: 510px;
+  --doc-page-padding: 34px;
+  --doc-font-size: 14px;
+  --viewer-sidebar-width: 255px;
+  --viewer-label-width: 95px;
+  --login-width: 544px;
   --sandbox-window-area: 300px;
   --vhs-band-thin: 6px;
   --vhs-band-wide: 44px;

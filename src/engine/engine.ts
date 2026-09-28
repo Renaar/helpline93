@@ -35,6 +35,8 @@ export interface Engine {
   readonly events: EventBus<EngineEventMap>;
   readonly rng: Rng;
   readonly content: ContentBundle;
+  /** Current game clock time (ms), e.g. to show how long a call has lasted. */
+  now: () => number;
   /** Option index and helpers of the dialogue system (read-only use by the UI). */
   readonly dialogue: Pick<DialogueSystem, 'index'>;
   getState: () => Readonly<GameState>;
@@ -115,6 +117,7 @@ export function createEngine({
       missionId: mission ? mission.id : null,
       ringingSince: state.shift.minute,
       answeredAt: null,
+      answeredAtMs: null,
     };
     const next = ringLine(state.phone, line, call);
     if (!next) return false;
@@ -183,7 +186,7 @@ export function createEngine({
         return;
       }
       case 'ANSWER_CALL': {
-        const result = answerLine(state.phone, action.line, minute);
+        const result = answerLine(state.phone, action.line, minute, clock.now());
         if (!result) return;
         setPhone(result.phone);
         if (result.held !== null) dialogues.onHold(callIdOn(result.held));
@@ -295,6 +298,7 @@ export function createEngine({
     events,
     rng,
     content,
+    now: () => clock.now(),
     dialogue: { index: dialogues.index },
     getState: () => state,
     dispatch,

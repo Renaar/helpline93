@@ -2,12 +2,13 @@ import { useEffect } from 'react';
 import { audio } from '../feel/audio.ts';
 import { feelConfig } from '../feel/feel.config.ts';
 import { useEngineEvent, useEngineState } from '../engine/hooks.ts';
-import { callApps, callLayout } from './apps.ts';
+import { callApps, callLayout, recapLayout } from './apps.ts';
 import { useWindows } from './windowStore.ts';
 
 /**
  * Stages phone events (no visuals of its own): the ringing loop, handset sounds, and the
- * automatic window layout when a call is answered (GDD 5.4).
+ * automatic window layouts (GDD 5.4): chat + manual + Notebook when a call is answered (the
+ * Phone window gives way to the taskbar call widget), the ticket as a recap when it ends.
  */
 export function CallStaging() {
   const ringing = useEngineState((state) => state.phone).lines.some((l) => l.status === 'ringing');
@@ -24,7 +25,14 @@ export function CallStaging() {
   }, [ringing]);
 
   useEngineEvent('call.answered', () => {
-    useWindows.getState().arrange(callLayout, callApps);
+    const windows = useWindows.getState();
+    windows.close('phone');
+    windows.arrange(callLayout, callApps);
+  });
+  useEngineEvent('dialogue.ended', () => {
+    const windows = useWindows.getState();
+    windows.arrange(recapLayout, ['helpdesk']);
+    if (windows.windows.some((w) => w.app === 'helpdesk')) windows.focus('helpdesk');
   });
   useEngineEvent('call.held', () => {
     audio.play('phone.hold');
