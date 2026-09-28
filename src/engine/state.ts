@@ -1,4 +1,5 @@
 import type { Clue, Dialogue, QueuedEmail, Ticket } from './dialogue/types.ts';
+import type { NightState, ReceivedEmail, ShiftReport } from './night/types.ts';
 import { createPhoneState, type PhoneState } from './phone.ts';
 import type { ScheduledCall } from './schedule.ts';
 import { createShiftState, type ShiftState } from './shift.ts';
@@ -39,7 +40,14 @@ export interface GameState {
   clues: Clue[];
   /** Manual pages consulted during the night. */
   consultedPages: string[];
+  /** E-mails planned for later (content effects, night events), not delivered yet. */
   emails: QueuedEmail[];
+  /** Delivered e-mails, oldest first (GDD 4.5). */
+  inbox: ReceivedEmail[];
+  /** The night being played (null: isolated mission or debug). */
+  night: NightState | null;
+  /** End-of-shift report, once the night is over. */
+  report: ShiftReport | null;
 }
 
 export function createInitialState(seed: number, shiftStartMinute: number): GameState {
@@ -60,5 +68,8 @@ export function createInitialState(seed: number, shiftStartMinute: number): Game
     clues: [],
     consultedPages: [],
     emails: [],
+    inbox: [],
+    night: null,
+    report: null,
   };
 }

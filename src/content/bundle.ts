@@ -3,6 +3,9 @@ import type { z } from 'zod';
 import {
   baseOptionsSchema,
   callerSchema,
+  clientSchema,
+  emailSchema,
+  nightSchema,
   codesSchema,
   docPageSchema,
   manualSchema,
@@ -10,6 +13,9 @@ import {
   pageNumber,
   type BaseOptions,
   type Caller,
+  type Client,
+  type Email,
+  type Night,
   type ContentBundle,
   type DocPage,
   type Manual,
@@ -56,6 +62,9 @@ export function buildBundle(files: Record<string, string>): BuildResult {
   const pages: DocPage[] = [];
   const callers: Record<string, Caller> = {};
   const missions: Record<string, Mission> = {};
+  const emails: Record<string, Email> = {};
+  const clients: Record<string, Client> = {};
+  const nights: Night[] = [];
   const fileOf = new Map<string, string>();
 
   function parse<T>(file: string, schema: z.ZodType<T>, data: unknown): T | null {
@@ -95,10 +104,19 @@ export function buildBundle(files: Record<string, string>): BuildResult {
     } else if (folder === 'missions') {
       const mission = parse(file, missionSchema, data);
       if (mission) missions[mission.id] = mission;
+    } else if (folder === 'emails') {
+      const email = parse(file, emailSchema, data);
+      if (email) emails[email.id] = email;
+    } else if (folder === 'clients') {
+      const client = parse(file, clientSchema, data);
+      if (client) clients[client.id] = client;
+    } else if (folder === 'nights') {
+      const night = parse(file, nightSchema, data);
+      if (night) nights.push(night);
     } else if (folder === 'codes') {
       codes = parse(file, codesSchema, data)?.codes ?? codes;
     }
-    // nights/, clients/, emails/, files/: schemas arrive with J3+ (ids are already checked).
+    // files/: schemas arrive after the MVP (ids are already checked).
   }
 
   if (!manual) error('docs/manual.yaml', 'the manual header is missing');
@@ -107,7 +125,18 @@ export function buildBundle(files: Record<string, string>): BuildResult {
   if (!manual || !base || !codes) return { bundle: null, issues };
 
   pages.sort((a, b) => pageNumber(a) - pageNumber(b));
-  const bundle: ContentBundle = { manual, pages, base, callers, missions, codes };
+  nights.sort((a, b) => a.id.localeCompare(b.id));
+  const bundle: ContentBundle = {
+    manual,
+    pages,
+    base,
+    callers,
+    missions,
+    codes,
+    emails,
+    clients,
+    nights,
+  };
   issues.push(...crossCheck(bundle, (id) => fileOf.get(id) ?? '?'));
   const ok = !issues.some((issue) => issue.level === 'error');
   return { bundle: ok ? bundle : null, issues };

@@ -5,6 +5,7 @@ import { OPERATOR_NAME_MAX_LENGTH, SHIFT_START, type LineId } from './config.ts'
 import { randomDebugNumber } from './debugCalls.ts';
 import { EMPTY_CONTENT } from './emptyContent.ts';
 import { createDialogueSystem, type DialogueSystem } from './dialogue/system.ts';
+import { createNightSystem } from './night/system.ts';
 import { EventBus } from './eventBus.ts';
 import type { EngineEvent, EngineEventMap, EventWithoutTime } from './events.ts';
 import {
@@ -85,7 +86,28 @@ export function createEngine({
     if (!result) return;
     setPhone(result.phone);
     emitNow({ type: 'call.ended', payload: { record: result.record } });
+    nights.onCallEnded(result.record.missionId, result.record.endedAt);
   }
+
+  function scheduleCall(atMinute: number, type: CallType, missionId: string | null): void {
+    callCounter += 1;
+    const call = { id: `call-${callCounter}`, atMinute, type, missionId };
+    setState({ ...state, upcomingCalls: [...state.upcomingCalls, call] });
+    emitNow({
+      type: 'call.scheduled',
+      payload: { callId: call.id, atMinute: call.atMinute, callType: call.type },
+    });
+  }
+
+  const nights = createNightSystem({
+    content,
+    getState: () => state,
+    setState,
+    emit: emitNow,
+    scheduleCall: (missionId, atMinute, callType) => {
+      scheduleCall(atMinute, callType, missionId);
+    },
+  });
 
   const dialogues: DialogueSystem = createDialogueSystem({
     clock,
@@ -156,21 +178,21 @@ export function createEngine({
         return;
       }
       case 'SCHEDULE_CALL': {
-        callCounter += 1;
         const mission = action.missionId ? content.missions[action.missionId] : undefined;
-        const call = {
-          id: `call-${callCounter}`,
-          atMinute: action.atMinute,
-          type: action.callType ?? mission?.type ?? 'libre',
-          missionId: mission?.id ?? null,
-        };
-        setState({ ...state, upcomingCalls: [...state.upcomingCalls, call] });
-        emitNow({
-          type: 'call.scheduled',
-          payload: { callId: call.id, atMinute: call.atMinute, callType: call.type },
-        });
+        scheduleCall(
+          action.atMinute,
+          action.callType ?? mission?.type ?? 'libre',
+          mission?.id ?? null,
+        );
         return;
       }
+      case 'START_NIGHT':
+        if (state.shift.startedAt === null) return;
+        nights.start(action.nightId, action.carry);
+        return;
+      case 'READ_EMAIL':
+        nights.readEmail(action.emailId);
+        return;
       case 'SKIP_TO_NEXT_EVENT': {
         const target = nextEventMinute(state);
         if (!canSkip(state) || target === null) return;
@@ -284,6 +306,7 @@ export function createEngine({
 
   function update(): void {
     updateShiftClock();
+    nights.update();
     ringDueCalls();
     dialogues.update(clock.now());
     for (const { item } of scheduler.popDue(clock.now())) events.emit(item);

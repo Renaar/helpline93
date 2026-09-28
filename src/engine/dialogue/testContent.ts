@@ -106,4 +106,48 @@ closure:
     default:
       then: { vars: { reputation: -1 } }
 `,
+  'missions/m2.yaml': `
+id: m.n01_02
+title: Second
+night: 1
+caller: c.bob
+type: libre
+opening: [Rebonsoir.]
+responses:
+  q.base.serial:
+    - say: [Non.]
+      then: { end_call: resolved, set_flags: [f.t.second] }
+closure:
+  codes:
+    default: {}
+`,
+  'missions/m3.yaml': `
+id: m.n01_04
+title: Conditionnel
+night: 1
+caller: c.bob
+type: urgent
+opening: [Encore moi.]
+closure:
+  codes:
+    default: {}
+`,
+  'emails/boot.yaml': 'id: e.t.boot\nfrom: M. Kessler\nsubject: Bienvenue\nbody: Bonjour.',
+  'emails/late.yaml': 'id: e.t.late\nfrom: ""\nsubject: Sans objet\nbody: Tard.',
+  'emails/test.yaml': 'id: e.test\nfrom: Test\nsubject: Test\nbody: Test.',
+  'clients/c.yaml':
+    'id: cl.0001\nname: Bob\ncity: San Aurelio\nequipment: [{ serial: HX-1, model: HX-486 }]',
+  'nights/n01.yaml': `
+id: n.01
+title: Test
+start: '22:00'
+end: '06:00'
+emails_at_boot: [e.t.boot]
+calls:
+  - { mission: m.n01_01, at: '22:20' }
+  - { mission: m.n01_02, after_previous: 15 }
+  - { mission: m.n01_04, after_previous: 5, when: { flags_all: [f.t.never] } }
+events:
+  - { at: '04:10', type: email, id: e.t.late }
+`,
 });

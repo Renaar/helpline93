@@ -1,4 +1,5 @@
 import type { LineId } from './config.ts';
+import type { CarryOver } from './night/types.ts';
 import type { CallType } from './phone.ts';
 
 /**
@@ -31,5 +32,8 @@ export type EngineAction =
   | { type: 'CAPTURE'; callId: string; captureId: string }
   /** Closes a ticket whose call has ended, with a resolution code (GDD 4.3). */
   | { type: 'CLOSE_TICKET'; ticketId: string; code: string }
+  /** Starts a night of the content (after login), with what the previous night handed over. */
+  | { type: 'START_NIGHT'; nightId: string; carry?: CarryOver }
+  | { type: 'READ_EMAIL'; emailId: string }
   /** Debug round-trip used by the sandbox: the engine answers with `debug.pong` after a delay. */
   | { type: 'DEBUG_PING'; delayMs: number };

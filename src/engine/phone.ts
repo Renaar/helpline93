@@ -27,6 +27,7 @@ export interface Line {
 
 export interface CallRecord {
   callId: string;
+  missionId: string | null;
   line: LineId;
   number: string;
   type: CallType;
@@ -125,6 +126,7 @@ export function hangUpLine(
   const { call } = line;
   const record: CallRecord = {
     callId: call.id,
+    missionId: call.missionId,
     line: id,
     number: call.number,
     type: call.type,

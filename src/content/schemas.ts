@@ -20,6 +20,11 @@ export const clientId = prefixed('cl.', 'cl.0412');
 export const pageId = z.string().regex(/^p\.\d{2,3}$/, 'page ids look like p.12');
 export const missionId = z.string().regex(/^m\.n\d{2}_\d{2}$/, 'mission ids look like m.n01_03');
 export const codeId = z.string().regex(/^R-\d{2}$/, 'resolution codes look like R-07');
+export const emailId = prefixed('e.', 'e.n01.kessler_accueil');
+export const nightId = z.string().regex(/^n\.\d{2}$/, 'night ids look like n.01');
+/** "22:20", "03:33": a time of the shift (after midnight = the next morning). */
+export const clockTime = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'times look like "22:20"');
+const tenDigits = z.string().regex(/^\d{10}$/, 'ten digits, e.g. 7075550142');
 
 export const VAR_NAMES = ['reputation', 'suspicion', 'awareness'] as const;
 export type VarName = (typeof VAR_NAMES)[number];
@@ -280,6 +285,95 @@ export const codesSchema = z
   .strict();
 export type ResolutionCode = z.infer<typeof codesSchema>['codes'][number];
 
+// ── E-mails (GDD 4.5) ─────────────────────────────────────────────────────────
+
+export const emailSchema = z
+  .object({
+    id: emailId,
+    /** Sender as displayed ("M. Kessler"). Empty = no sender shown. */
+    from: z.string(),
+    /** Sender address, if any ("kessler@heltron.corp"). */
+    address: z.string().optional(),
+    subject: z.string().min(1),
+    /** Light markdown, like manual pages. */
+    body: z.string().min(1),
+  })
+  .strict();
+export type Email = z.infer<typeof emailSchema>;
+
+// ── Client records (GDD 4.4) ──────────────────────────────────────────────────
+
+export const clientSchema = z
+  .object({
+    id: clientId,
+    name: z.string().min(1),
+    company: z.string().optional(),
+    city: z.string().min(1),
+    address: z.string().optional(),
+    phone: tenDigits.optional(),
+    /** Customer since (free text, e.g. "1991"). */
+    since: z.string().optional(),
+    equipment: z
+      .array(
+        z
+          .object({
+            serial: z.string().min(1),
+            model: z.string().min(1),
+            purchased: z.string().optional(),
+            warranty: z.string().optional(),
+          })
+          .strict(),
+      )
+      .default([]),
+    /** Past contacts with the hotline, oldest first. */
+    history: z
+      .array(z.object({ date: z.string().min(1), text: z.string().min(1) }).strict())
+      .default([]),
+    notes: z.string().optional(),
+  })
+  .strict();
+export type Client = z.infer<typeof clientSchema>;
+
+// ── Nights (GDD 7.9) ──────────────────────────────────────────────────────────
+
+export const nightCallSchema = z
+  .object({
+    mission: missionId,
+    /** Fixed time of the shift… */
+    at: clockTime.optional(),
+    /** …or game minutes after the previous call of the night has ended. */
+    after_previous: z.number().int().min(0).optional(),
+    /** The call only happens if this holds when it is due to be planned. */
+    when: conditionSchema.optional(),
+  })
+  .strict()
+  .refine((call) => (call.at === undefined) !== (call.after_previous === undefined), {
+    message: 'give either "at" or "after_previous"',
+  });
+export type NightCall = z.infer<typeof nightCallSchema>;
+
+export const nightEventSchema = z
+  .object({
+    at: clockTime,
+    /** Only e-mails for the MVP; scripted events (GDD 4.9) come later. */
+    type: z.literal('email'),
+    id: emailId,
+  })
+  .strict();
+
+export const nightSchema = z
+  .object({
+    id: nightId,
+    title: z.string().min(1),
+    start: clockTime,
+    end: clockTime,
+    emails_at_boot: z.array(emailId).default([]),
+    calls: z.array(nightCallSchema).min(1),
+    events: z.array(nightEventSchema).default([]),
+  })
+  .strict();
+export type Night = z.infer<typeof nightSchema>;
+
 /** Every validated content file, as loaded by the game and by content:check. */
 export interface ContentBundle {
   manual: Manual;
@@ -289,6 +383,10 @@ export interface ContentBundle {
   callers: Record<string, Caller>;
   missions: Record<string, Mission>;
   codes: ResolutionCode[];
+  emails: Record<string, Email>;
+  clients: Record<string, Client>;
+  /** Sorted by night number. */
+  nights: Night[];
 }
 
 /** "p.12" → 12 */

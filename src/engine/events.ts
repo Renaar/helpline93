@@ -53,6 +53,10 @@ export interface EngineEventMap {
   'ticket.opened': { ticketId: string };
   'ticket.closed': { ticketId: string; code: string };
   'email.queued': { emailId: string; atMinute: number };
+  'email.received': { emailId: string };
+  'night.started': { nightId: string };
+  /** The shift is over: the report is in the state (GDD 2.2). */
+  'night.ended': { nightId: string };
   'debug.pong': { requestId: number; requestedAt: number };
 }
 

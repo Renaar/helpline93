@@ -8,4 +8,7 @@ export const EMPTY_CONTENT: ContentBundle = {
   callers: {},
   missions: {},
   codes: [],
+  emails: {},
+  clients: {},
+  nights: [],
 };

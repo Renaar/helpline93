@@ -66,11 +66,19 @@ export function crossCheck(bundle: ContentBundle, fileOf: (id: string) => string
 
   const flagsSet = new Set<string>();
   const flagsRead: { flag: string; file: string }[] = [];
+  const emailsSent = new Set<string>();
   for (const mission of Object.values(bundle.missions)) {
     const check = checkMission(mission, bundle, index, pageIds, codeIds, fileOf(mission.id));
     issues.push(...check.issues);
     for (const flag of check.flagsSet) flagsSet.add(flag);
     flagsRead.push(...check.flagsRead);
+    for (const id of check.emailsSent) emailsSent.add(id);
+  }
+  issues.push(...checkNights(bundle, fileOf, emailsSent, flagsRead));
+  for (const id of Object.keys(bundle.emails)) {
+    if (!emailsSent.has(id)) {
+      issues.push({ level: 'warning', file: fileOf(id), message: `e-mail ${id} is never sent` });
+    }
   }
   for (const { flag, file } of flagsRead) {
     if (!flagsSet.has(flag)) {
@@ -99,6 +107,10 @@ function checkMission(
   let resolvable = false as boolean; // set inside checkEffect()
 
   if (!(mission.caller in bundle.callers)) error(`unknown caller ${mission.caller}`);
+  if (mission.client !== undefined && !(mission.client in bundle.clients)) {
+    error(`unknown client ${mission.client}`);
+  }
+  const emailsSent = new Set<string>();
 
   function checkMessages(where: string, messages: Message[]) {
     for (const message of messages) {
@@ -152,6 +164,10 @@ function checkMission(
       else error(`${where}: ${id} is not a local question of this mission`);
     }
     if (then.end_call === 'resolved') resolvable = true;
+    if (then.email) {
+      emailsSent.add(then.email.id);
+      if (!(then.email.id in bundle.emails)) error(`${where}: unknown e-mail ${then.email.id}`);
+    }
   }
 
   checkMessages('opening', mission.opening);
@@ -186,5 +202,51 @@ function checkMission(
     if (!unlocked.has(id)) warn(`local question ${id} is never unlocked`);
   }
   if (!resolvable) warn('no response ends the call as "resolved"');
-  return { issues, flagsSet, flagsRead };
+  return { issues, flagsSet, flagsRead, emailsSent };
+}
+
+/** Nights (GDD 7.9): missions and e-mails exist, the first call has a fixed time. */
+function checkNights(
+  bundle: ContentBundle,
+  fileOf: (id: string) => string,
+  emailsSent: Set<string>,
+  flagsRead: { flag: string; file: string }[],
+): ContentIssue[] {
+  const issues: ContentIssue[] = [];
+  const scheduled = new Set<string>();
+  for (const night of bundle.nights) {
+    const file = fileOf(night.id);
+    const error = (message: string) => issues.push({ level: 'error', file, message });
+    const email = (where: string, id: string) => {
+      emailsSent.add(id);
+      if (!(id in bundle.emails)) error(`${where}: unknown e-mail ${id}`);
+    };
+    night.emails_at_boot.forEach((id) => {
+      email('emails_at_boot', id);
+    });
+    night.events.forEach((event, i) => {
+      email(`events[${i}]`, event.id);
+    });
+    night.calls.forEach((call, i) => {
+      if (!(call.mission in bundle.missions)) error(`calls[${i}]: unknown mission ${call.mission}`);
+      if (scheduled.has(call.mission)) error(`calls[${i}]: ${call.mission} is planned twice`);
+      scheduled.add(call.mission);
+      for (const flag of [...(call.when?.flags_all ?? []), ...(call.when?.flags_none ?? [])]) {
+        flagsRead.push({ flag, file });
+      }
+    });
+    if (night.calls[0]?.at === undefined) error('calls[0]: the first call needs a fixed "at" time');
+  }
+  if (bundle.nights.length > 0) {
+    for (const id of Object.keys(bundle.missions)) {
+      if (!scheduled.has(id)) {
+        issues.push({
+          level: 'warning',
+          file: fileOf(id),
+          message: `mission ${id} is in no night`,
+        });
+      }
+    }
+  }
+  return issues;
 }

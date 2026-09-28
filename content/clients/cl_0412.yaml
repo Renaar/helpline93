@@ -1,0 +1,15 @@
+id: cl.0412
+name: Bernard Fleury
+city: San Aurelio — Harbor Heights
+address: 1187 Cypress Lane
+phone: '7075550142'
+since: '1992'
+equipment:
+  - serial: HX-486-0412
+    model: Heltron HX-486 (4 Mo de mémoire vive)
+    purchased: mars 1992
+    warranty: jusqu'en mars 1994
+history:
+  - date: 14/04/1992
+    text: Aide à l'installation de l'imprimante. Résolu (R-01).
+notes: Client patient. Utilise l'ordinateur pour la comptabilité de son association de quartier.
