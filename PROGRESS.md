@@ -4,6 +4,78 @@
 
 **J3 — Nuit 1 jouable (MVP)** : pas encore démarré. Avant lui, deux réglages demandés au retour de J2 (vitesse de frappe, échelle de l'interface), sur la branche `j3`.
 
+## Jalons terminés
+
+| Jalon                             | État                                                                  | Fusion dans `main`     | Tag                              |
+| --------------------------------- | --------------------------------------------------------------------- | ---------------------- | -------------------------------- |
+| **J0 — Fondations**               | ✅ terminé, validé par Loïc, fusionné                                 | merge commit `2ae1fbb` | `j0-valide`                      |
+| **J1 — Interface HelplineOS**     | ✅ terminé, validé par Loïc (effet VHS compris), fusionné             | merge commit `7e02b48` | `j1-valide`                      |
+| **J2 — Système de communication** | ✅ terminé, validé par Loïc (palette ambre / gris comprise), fusionné | merge commit `e2a5378` | `j2-valide` (à pousser par Loïc) |
+
+Branches d'origine conservées : `claude/loving-johnson-w3ytfi` (J0), `claude/j1-interface-helplineos` (J1), `j2` (J2).
+
+### Retour de Loïc sur J2
+
+Validé, **ne plus toucher** : recherche dans la doc qui débloque les lignes de dialogue (fausses pistes comprises) ; choix multiples dans INSTRUIRE ; auto-organisation des fenêtres au décroché ; redimensionnement des fenêtres ; palette ambre / gris.
+
+À ajuster :
+
+- [ ] Vitesse de frappe du chat légèrement trop lente : l'augmenter un peu.
+- [ ] Échelle générale de l'interface trop grande : réduire fenêtres, police et espacements pour que le bureau respire avec 4-5 fenêtres ouvertes.
+
+Pour plus tard : l'humeur de l'appelant est une bonne base pour des répliques alternatives (itération future sur le contenu narratif, rien à changer pour l'instant).
+
+---
+
+## J2 — Système de communication (livraison validée)
+
+### Fait
+
+- [x] **Nouvelle palette ambre / gris** (demandée par Loïc), à la place de cuivre / pétrole : valeurs dans `src/ui/theme/palette.ts` (variables et curseurs regénérés), aucun composant modifié. Choix de Loïc sur les deux couples qui échouaient :
+  - fonds qui portent du texte (sélection, barre de titre active, feutre, tampons) : **ambre assombri calculé** `#7B521D` (60 % ambre profond + 40 % fond), 5,44:1 ;
+  - alerte éclaircie de `#B4432E` à **`#C8533B`** (3,11:1 sur les fenêtres).
+  - Reliefs adaptés : `#4A4036` (clair) et `#14110E` (sombre). Nouveau rôle **Succès** `#6E7F4A`. GDD 6.2 (v1.6) et `CLAUDE.md` mis à jour.
+- [x] **Format du contenu** : schémas Zod complets (pages, questions et instructions, appelants, missions, conditions `when`, effets `then`, codes de résolution). Un seul chargeur (`src/content/bundle.ts`) sert au jeu et à `content:check`.
+- [x] **`npm run content:check`** vérifie aussi : références cassées (appelant, question, instruction, page, capture, code), balises de capture mal formées ou inconnues, paramètres des instructions (`{slot}` ↔ `params`), valeurs impossibles dans `param`. Avertissements (sans bloquer) : capture jamais balisée, question locale jamais débloquée, instruction sans réponse par défaut en dernier (GDD 7.11), pas de règle `default` à la clôture, flag testé mais jamais posé, mission qui ne peut pas finir en `resolved`.
+- [x] **Moteur de dialogue** (pur, testé) : première réponse dont le `when` est vrai ; répliques de repli (« hors sujet », « déjà dit », réaction aux options GÉRER) ; humeur de −2 à +2 ; rythme de frappe (longueur du message × vitesse de l'appelant × humeur, pauses de suspense, indicateur « l'appelant écrit… ») ; fin d'appel par l'appelant (`end_call`) ; mise en attente ; raccrochage par l'opérateur.
+- [x] **Chat Opérateur** : transcription, trois verbes en onglets (**Demander / Instruire / Gérer**), options groupées par origine (base, puis pages dans l'ordre de consultation), pastille sur un onglet qui reçoit du nouveau, options « Déjà dit », refus (son + tremblement) tant que l'appelant répond.
+- [x] **La doc débloque les options** : une page restée ~1 s à l'écran dans la Visionneuse compte comme consultée. Ses questions et étapes (affichées en bas de la page : « Checklist de diagnostic », « Étapes d'intervention ») s'envolent vers le chat, avec un petit carillon, puis brillent un instant.
+- [x] **Instructions paramétrées** : la ligne s'ouvre en place (« Retirez la barrette en position [1] [2] [3] [4] »), Envoyer seulement quand la valeur est valide. Mauvaise valeur = autre réponse, jamais de blocage.
+- [x] **`<Capturable>`** (kit feel) : soulignement discret au survol, trait de feutre + son au clic, l'info s'envole vers le ticket et le Carnet (petit son de stylo). Second clic : recherche du mot-clé dans la Visionneuse. Dans le Carnet, cliquer un indice fait la même recherche.
+- [x] **HelpDesk** : ticket ouvert automatiquement au décroché (n° 1041, 1042…), champs remplis par les captures, clôture par code **après** la fin de l'appel (liste des codes, tampon « CLOS · R-07 »), onglet Historique.
+- [x] **Mode debug `?mission=m.n01_03`** : passe le démarrage, fait sonner la mission, panneau d'état ouvert (humeur, flags, variables, captures, questions, instructions, pages, ticket). Boutons « Appel : <mission> » dans le panneau de débogage.
+- [x] **Contenu** : mission « Trois bips » (appelant Bernard Fleury), pages p.12 (bips BIOS, la bonne piste) et p.31 (cavaliers, la fausse piste), questions de base, options GÉRER, 10 codes de résolution.
+- [x] 6 nouveaux sons (message reçu, envoi, feutre, option débloquée, tampon, stylo), tous doux et sous le niveau des sons ponctuels existants.
+- [x] **Correction d'un défaut de J1** : cliquer une fenêtre pour la mettre au premier plan remettait ses listes à zéro (la Visionneuse remontait en haut du manuel). Seul l'empilement change désormais.
+- [x] Tests : 168 (dont chaque condition `when`, chaque effet `then`, et « Trois bips » joué de bout en bout avec ses mauvaises réponses).
+
+### Comment tester
+
+1. `npm run dev`, puis ouvrir `http://localhost:5173/?mission=m.n01_03` (la touche **F9** masque le panneau de débogage).
+2. **Décrocher** : les fenêtres se rangent (chat, visionneuse, ticket, téléphone). Bernard Fleury écrit.
+3. Cliquer **« 3 bips »** dans son message : trait de feutre, l'info vole vers le ticket (champ Symptômes).
+4. Dans la Visionneuse, ouvrir **p. 12 Codes sonores BIOS** et attendre une seconde : les nouvelles questions / étapes s'envolent vers le chat.
+5. Demander **« Les bips sont-ils longs ou courts ? »**, capturer « courts ».
+6. Instruire **« Retirez la barrette… »** _avant_ d'ouvrir le boîtier (il proteste), puis **« Ouvrez le boîtier »**, puis la barrette **2** : suspense, « IL DÉMARRE ! », l'appelant raccroche.
+7. Dans HelpDesk : choisir **R-07**, **Clore le ticket** : tampon.
+8. Mauvaises réponses à essayer (aucune ne bloque) : p. 31 et ses cavaliers (JP5 surtout), redémarrer deux fois, barrettes 1, 3 ou 4, questions répétées, GÉRER, mise en attente puis reprise, raccrocher en plein appel puis clôturer avec un autre code.
+9. `?sandbox` : nouvelle section **Capturable** et les 6 nouveaux sons.
+
+### Décisions prises (validées avec J2)
+
+1. **Options GÉRER** : identifiants `g.` (absent du tableau GDD 7.4) et liste dans `content/docs/base.yaml` (calmer : humeur +1 la première fois ; récapituler ; faire patienter). Chaque appelant peut avoir sa réaction (`fallback.manage`).
+2. **Numéro de l'appelant** : champ `phone` (facultatif) dans la fiche appelant, affiché à l'arrivée de l'appel.
+3. **Une page compte comme consultée** après ~1 s à l'écran (réglage `viewer.consultDwellMs`). Les pages lues avant l'appel ne comptent pas : il faut les (re)garder pendant l'appel.
+4. **Un échange à la fois** : on ne peut pas répondre tant que l'appelant écrit (évite le « clic-tout »).
+5. **Clôture du ticket seulement après la fin de l'appel**.
+6. **Contenu lu au lancement** (YAML validé au démarrage) au lieu d'un bundle JSON préparé au build (GDD 7.2) : même résultat pour le joueur, plus simple tant que le contenu est petit. À revoir en J8 (publication).
+7. Glisser-déposer d'une capture vers la recherche : remplacé pour l'instant par le clic (un second clic cherche).
+
+### Questions tranchées
+
+- Rythme de frappe : un peu trop lent (réglage à faire, voir « À ajuster »).
+- Humeur : répliques alternatives écrites par le rédacteur (`when: { mood: … }`), dans une itération future du contenu.
+
 ---
 
 ## J1 — Révision 3 (retours de Loïc)
