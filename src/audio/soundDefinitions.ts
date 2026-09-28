@@ -51,6 +51,7 @@ export const soundDefinitions = {
   'option.unlock': { category: 'ui', variants: ['option-unlock-1'] },
   'ticket.stamp': { category: 'ui', variants: ['ticket-stamp-1'] },
   'pen.write': { category: 'ui', variants: ['pen-write-1'] },
+  'mail.receive': { category: 'ui', variants: ['mail-receive-1'] },
 } as const satisfies Record<string, SoundDefinition>;
 
 export type SoundId = keyof typeof soundDefinitions;

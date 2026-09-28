@@ -118,3 +118,25 @@
   justify-content: flex-end;
   padding: 0 var(--space-5) var(--space-5);
 }
+
+.nights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.nightsHint {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}
+
+.nightChoice {
+  justify-content: flex-start;
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+}
+
+.nightChoice[aria-pressed='true'] {
+  background: var(--color-selection);
+}

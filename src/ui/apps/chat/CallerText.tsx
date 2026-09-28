@@ -4,7 +4,7 @@ import { useEngineState } from '../../engine/hooks.ts';
 import { engine } from '../../engine/runtime.ts';
 import { Capturable } from '../../feel/Capturable.tsx';
 import { toStageRect, useStageGeometry } from '../../theme/stageScale.ts';
-import { searchManual } from '../viewer/searchManual.ts';
+import { searchKeyword } from '../searchKeyword.ts';
 import { useChat } from './chatStore.ts';
 
 /** A caller message, with its key pieces of information capturable (GDD 4.2.3). */
@@ -35,7 +35,7 @@ export function CallerText({ text, dialogue }: { text: string; dialogue: Dialogu
               });
             }}
             onSearch={() => {
-              searchManual(capture?.keywords[0] ?? segment.text);
+              searchKeyword(capture?.field ?? 'symptom', capture?.keywords[0] ?? segment.text);
             }}
           >
             {segment.text}

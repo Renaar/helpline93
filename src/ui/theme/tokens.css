@@ -133,6 +133,7 @@
   --viewer-sidebar-width: 255px;
   --viewer-label-width: 95px;
   --login-width: 544px;
+  --report-width: 620px;
   --sandbox-window-area: 300px;
   --vhs-band-thin: 6px;
   --vhs-band-wide: 44px;
@@ -140,6 +141,7 @@
   --vhs-indicator-size: 72px;
   --z-vhs: 1500;
   --z-flight: 1200;
+  --z-report: 1400;
 
   /* Stacking (windows use 1…n) */
   --z-toast: 900;

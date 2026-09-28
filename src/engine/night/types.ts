@@ -1,3 +1,4 @@
+import type { DialogueOutcome } from '../dialogue/types.ts';
 import type { NarrativeVars } from '../state.ts';
 
 /** The night being played (GDD 7.9). */
@@ -33,7 +34,12 @@ export interface ShiftReport {
   /** Average duration of answered calls, in game minutes (null without any call). */
   averageCallMinutes: number | null;
   /** One line per ticket, in order. */
-  log: { ticketNumber: number; openedAt: number; code: string | null; outcome: string | null }[];
+  log: {
+    ticketNumber: number;
+    openedAt: number;
+    code: string | null;
+    outcome: DialogueOutcome | null;
+  }[];
 }
 
 /** What a night hands over to the next one (GDD 4.8), saved at the end of each night. */

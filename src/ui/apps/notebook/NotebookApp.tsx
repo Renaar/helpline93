@@ -9,7 +9,7 @@ import styles from '../apps.module.css';
 import { formatClock } from '../../strings/format.ts';
 import { EmptyState } from '../EmptyState.tsx';
 import { fieldLabel } from '../helpdesk/fieldLabels.ts';
-import { searchManual } from '../viewer/searchManual.ts';
+import { searchesClients, searchKeyword } from '../searchKeyword.ts';
 import { useNotebook } from './notebookStore.ts';
 import notebookStyles from './NotebookApp.module.css';
 
@@ -21,9 +21,13 @@ function ClueRow({ clue }: { clue: Clue }) {
     <Pressable
       className={notebookStyles.clue}
       pressEffect="none"
-      label={t('apps.notebook.clueSearch', { keyword })}
+      label={
+        searchesClients(clue.field)
+          ? t('apps.notebook.clueClients', { keyword })
+          : t('apps.notebook.clueSearch', { keyword })
+      }
       onPress={() => {
-        searchManual(keyword);
+        searchKeyword(clue.field, keyword);
       }}
     >
       <span className={notebookStyles.clueLabel}>{clue.label}</span>

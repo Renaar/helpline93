@@ -7,13 +7,21 @@ import { Button95 } from '../feel/Button95.tsx';
 import { TextField } from '../feel/TextField.tsx';
 import { useFeedback } from '../feel/useFeedback.ts';
 import { PixelIcon } from '../icons/PixelIcon.tsx';
+import { Pressable } from '../feel/Pressable.tsx';
+import { nightNumber, playableNights, startNight } from '../session/nights.ts';
+import { loadedSave } from '../session/saveGame.ts';
 import { t } from '../strings/i18n.ts';
 import styles from './Boot.module.css';
 import { useBoot } from './bootStore.ts';
 
-/** Login: the player types the operator's name (GDD 3.3), which starts the shift. */
+/**
+ * Login: the player types the operator's name (GDD 3.3), which starts the shift. With a save,
+ * any night already reached can be started again (GDD 4.8).
+ */
 export function LoginScreen() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(() => loadedSave()?.operatorName ?? '');
+  const nights = playableNights();
+  const [nightId, setNightId] = useState(() => nights.at(-1)?.id ?? '');
   const { motionStyle, deny } = useFeedback();
 
   const submit = () => {
@@ -23,6 +31,7 @@ export function LoginScreen() {
     }
     audio.play('os.hdd');
     engine.dispatch({ type: 'START_SHIFT', operatorName: name });
+    if (nightId !== '') startNight(nightId);
     useBoot.getState().setPhase('desktop');
   };
 
@@ -51,6 +60,24 @@ export function LoginScreen() {
               onChange={setName}
               onSubmit={submit}
             />
+            {nights.length > 1 && (
+              <div className={styles.nights} role="radiogroup" aria-label={t('boot.login.night')}>
+                <p className={styles.nightsHint}>{t('boot.login.resumeHint')}</p>
+                {nights.map((night) => (
+                  <Pressable
+                    key={night.id}
+                    className={styles.nightChoice}
+                    pressEffect="none"
+                    toggled={night.id === nightId}
+                    onPress={() => {
+                      setNightId(night.id);
+                    }}
+                  >
+                    {t('boot.login.nightLabel', { number: nightNumber(night), title: night.title })}
+                  </Pressable>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <footer className={styles.dialogActions}>

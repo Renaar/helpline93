@@ -8,6 +8,8 @@ import { CallStaging } from './CallStaging.tsx';
 import { ClockDirector } from './ClockDirector.tsx';
 import { DebugPanel } from './DebugPanel.tsx';
 import { DialogueStaging } from './DialogueStaging.tsx';
+import { NightStaging } from './NightStaging.tsx';
+import { ShiftReportDialog } from './ShiftReportDialog.tsx';
 import styles from './Desktop.module.css';
 import { DesktopIcons } from './DesktopIcons.tsx';
 import { FastForwardOverlay } from './FastForwardOverlay.tsx';
@@ -65,6 +67,8 @@ export function Desktop() {
       <FastForwardOverlay />
       <CallStaging />
       <DialogueStaging />
+      <NightStaging />
+      <ShiftReportDialog />
       <ClockDirector />
       {debug && <DebugPanel />}
     </motion.main>

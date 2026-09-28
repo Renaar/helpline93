@@ -37,6 +37,7 @@ const labels: Record<SoundId, UiStringKey> = {
   'option.unlock': 'sandbox.sounds.optionUnlock',
   'ticket.stamp': 'sandbox.sounds.ticketStamp',
   'pen.write': 'sandbox.sounds.penWrite',
+  'mail.receive': 'sandbox.sounds.mailReceive',
 };
 
 const percent = (fraction: number) => formatNumber(fraction * 100);

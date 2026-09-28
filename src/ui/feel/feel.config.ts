@@ -51,6 +51,7 @@ export const feelConfig = {
       'option.unlock': 0.12,
       'ticket.stamp': 0.26,
       'pen.write': 0.1,
+      'mail.receive': 0.14,
     } satisfies Record<SoundId, number>,
     /** Minimum gap between two plays of the same sound, to avoid stacking on fast hovers. */
     minGapMs: 30,

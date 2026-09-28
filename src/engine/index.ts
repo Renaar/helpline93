@@ -36,3 +36,4 @@ export type {
 } from './dialogue/types.ts';
 export { carryOver, nextNightId } from './night/system.ts';
 export type { CarryOver, NightState, ReceivedEmail, ShiftReport } from './night/types.ts';
+export { parseSave, saveAfterNight, SAVE_VERSION, type SaveGame } from './save.ts';

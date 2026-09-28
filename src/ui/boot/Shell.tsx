@@ -10,6 +10,7 @@ import { BiosScreen } from './BiosScreen.tsx';
 import styles from './Boot.module.css';
 import { useBoot, type BootPhase } from './bootStore.ts';
 import { LoginScreen } from './LoginScreen.tsx';
+import { playableNights, startNight } from '../session/nights.ts';
 import { PowerScreen } from './PowerScreen.tsx';
 
 const fades: Record<BootPhase, number> = {
@@ -26,9 +27,13 @@ export function Shell() {
 
   useEffect(() => {
     if (phase === 'off') audio.stopHum();
-    // `?boot=skip` lands on the desktop without a login: use the default name.
+    // `?boot=skip` lands on the desktop without a login: default name, first night.
+    // `?mission=<id>` plays one mission in isolation: no night.
     if (phase === 'desktop' && engine.getState().shift.startedAt === null) {
       engine.dispatch({ type: 'START_SHIFT', operatorName: t('boot.defaultOperator') });
+      const isolated = new URLSearchParams(window.location.search).has('mission');
+      const first = playableNights()[0];
+      if (!isolated && first) startNight(first.id);
       audio.startHum();
     }
   }, [phase]);

@@ -1,0 +1,101 @@
+/* The end-of-shift report: a system dialog over the dimmed desktop. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-report);
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-desktop) 75%, transparent);
+}
+
+.dialog {
+  width: var(--report-width);
+  padding: var(--bevel-width);
+  border-radius: var(--radius-sm);
+  background: var(--color-panel);
+  box-shadow: var(--outline-default), var(--bevel-raised), var(--shadow-window);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  height: var(--titlebar-height);
+  padding: 0 var(--space-3);
+  background: var(--gradient-titlebar-active);
+}
+
+.title h1 {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+
+.night {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  font-size: var(--text-md);
+}
+
+.stats dt {
+  color: var(--color-text-dim);
+}
+
+.stats dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.section {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.log {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-condensed);
+  font-size: var(--text-sm);
+}
+
+.log th,
+.log td {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: var(--bevel-width) solid var(--color-separator);
+  text-align: left;
+}
+
+.log th {
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-dim);
+}
+
+.saved {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-highlight);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--space-5) var(--space-5);
+}

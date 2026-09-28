@@ -11,6 +11,7 @@ export function Tray() {
   const phone = useEngineState((state) => state.phone);
   const minute = useEngineState((state) => state.shift.minute);
   const skipping = useEngineState((state) => state.shift.fastForward !== null);
+  const unread = useEngineState((state) => state.inbox.filter((e) => !e.read).length);
   const ringing = phone.lines.find((line) => line.status === 'ringing');
   const urgent = ringing?.call?.type === 'urgent';
 
@@ -28,6 +29,17 @@ export function Tray() {
           data-blink={ringing ? (urgent ? 'fast' : 'slow') : undefined}
         >
           <PixelIcon name={ringing ? 'incoming-call' : 'phone'} size="sm" />
+        </span>
+      </Pressable>
+      <Pressable
+        className={styles.trayIcon}
+        label={unread > 0 ? t('os.tray.mailUnread', { count: unread }) : t('os.tray.mail')}
+        onPress={() => {
+          useWindows.getState().open('mail');
+        }}
+      >
+        <span className={styles.blink} data-blink={unread > 0 ? 'slow' : undefined}>
+          <PixelIcon name={unread > 0 ? 'mail-unread' : 'mail'} size="sm" />
         </span>
       </Pressable>
       <time

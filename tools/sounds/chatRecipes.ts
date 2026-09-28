@@ -47,6 +47,16 @@ function marker(seed: number, length: number, squeak: number): Recipe {
 }
 
 export const chatRecipes: Record<string, Recipe> = {
+  // New e-mail (J3): a soft, low two-note chime, distinct from the chat.
+  'mail-receive-1': {
+    seed: 709,
+    render: () => {
+      const s = buffer(0.5);
+      addTone(s, 784, 784, 0.55, 0.07, { wave: 'triangle', attack: 0.006 });
+      addTone(s, 523, 523, 0.6, 0.12, { start: 0.12, wave: 'triangle', attack: 0.006 });
+      return normalize(fade(s, 0.006, 0.12), 0.32);
+    },
+  },
   'chat-receive-1': receive(701, 587, 698),
   'chat-receive-2': receive(702, 554, 659),
   // The operator sends a line: a soft key-down thock.
