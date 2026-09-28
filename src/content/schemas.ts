@@ -1,27 +1,295 @@
 import { z } from 'zod';
 
 /**
- * Content schemas (GDD 7). J1 keeps only what the Viewer needs; questions, instructions and
- * the other content types are added in J2.
+ * Content schemas (GDD 7): the source of truth for every YAML file in content/.
+ * Identifiers carry their type as a prefix and are unique across all content (GDD 7.4).
  */
-export const manualSchema = z.object({
-  id: z.literal('manual'),
-  title: z.string().min(1),
-  publisher: z.string().min(1),
-  service: z.string().min(1),
-});
 
-export const docPageSchema = z.object({
-  id: z.string().regex(/^p\.\d{2,3}$/, 'page ids look like p.12'),
-  tab: z.string().min(1),
-  title: z.string().min(1),
-  keywords: z.array(z.string().min(1)).default([]),
-  revision: z.object({ night: z.number().int().min(1) }),
-  body: z.string().min(1),
-});
+const idPattern = (prefix: string) => new RegExp(`^${prefix.replace('.', '\\.')}[a-z0-9_.]+$`);
+const prefixed = (prefix: string, example: string) =>
+  z.string().regex(idPattern(prefix), `ids look like ${example}`);
+
+export const questionId = prefixed('q.', 'q.bios.bip_type');
+export const instructionId = prefixed('i.', 'i.ram.remove_slot');
+/** GÉRER options (calm down, ask to wait…): not in GDD 7.4 yet, prefix `g.` (J2 decision). */
+export const manageId = prefixed('g.', 'g.calm');
+export const captureId = prefixed('cap.', 'cap.bips');
+export const flagId = prefixed('f.', 'f.m03.fixed');
+export const callerId = prefixed('c.', 'c.bernard_fleury');
+export const clientId = prefixed('cl.', 'cl.0412');
+export const pageId = z.string().regex(/^p\.\d{2,3}$/, 'page ids look like p.12');
+export const missionId = z.string().regex(/^m\.n\d{2}_\d{2}$/, 'mission ids look like m.n01_03');
+export const codeId = z.string().regex(/^R-\d{2}$/, 'resolution codes look like R-07');
+
+export const VAR_NAMES = ['reputation', 'suspicion', 'awareness'] as const;
+export type VarName = (typeof VAR_NAMES)[number];
+
+export const MOOD_MIN = -2;
+export const MOOD_MAX = 2;
+
+// ── Messages ────────────────────────────────────────────────────────────────
+
+/** A caller message: plain text, or text with a silence before it and/or a forced typing time. */
+export const messageSchema = z.union([
+  z.string().min(1),
+  z.object({
+    text: z.string().min(1),
+    /** Silence before the caller starts typing, in seconds (suspense). */
+    pause: z.number().min(0).optional(),
+    /** Typing time in seconds, instead of the automatic one. */
+    typing: z.number().min(0).optional(),
+  }),
+]);
+export type Message = z.infer<typeof messageSchema>;
+
+// ── Conditions and effects (GDD 7.7) ──────────────────────────────────────────
+
+/** "<=0", ">=3", "=1", "2"… compared with a number. */
+export const comparisonSchema = z.union([
+  z.number(),
+  z.string().regex(/^(<=|>=|<|>|==|=)?\s*-?\d+$/, 'comparisons look like "<=0" or ">=3"'),
+]);
+
+const paramValue = z.union([z.string(), z.number()]);
+
+export const conditionSchema = z
+  .object({
+    flags_all: z.array(flagId).optional(),
+    flags_none: z.array(flagId).optional(),
+    captured: z.array(captureId).optional(),
+    asked: z.array(questionId).optional(),
+    done: z.array(instructionId).optional(),
+    param: z.record(z.string(), paramValue).optional(),
+    mood: comparisonSchema.optional(),
+    vars: z.partialRecord(z.enum(VAR_NAMES), comparisonSchema).optional(),
+  })
+  .strict();
+export type Condition = z.infer<typeof conditionSchema>;
+
+/** Variable change: a number is added ("+1", "-2"); "=0" sets the value. */
+export const varChangeSchema = z.union([
+  z.number(),
+  z.string().regex(/^=\s*-?\d+$/, 'use +1 / -2 to add, or "=0" to set'),
+]);
+
+export const END_OUTCOMES = ['resolved', 'failed', 'hangup'] as const;
+export type EndOutcome = (typeof END_OUTCOMES)[number];
+
+export const effectSchema = z
+  .object({
+    set_flags: z.array(flagId).optional(),
+    clear_flags: z.array(flagId).optional(),
+    vars: z.partialRecord(z.enum(VAR_NAMES), varChangeSchema).optional(),
+    mood: z.number().int().optional(),
+    /** Local questions of the mission, or doc pages (as if consulted). */
+    unlock: z.array(z.union([questionId, pageId])).optional(),
+    /** E-mail sent now or later (game minutes). Delivered by the Mail app in J3. */
+    email: z.object({ id: z.string().min(1), delay: z.number().min(0).optional() }).optional(),
+    end_call: z.enum(END_OUTCOMES).optional(),
+    /** Reserved for the urgent-call gauge (GDD 4.10): accepted, ignored for now. */
+    pressure: z.number().optional(),
+  })
+  .strict();
+export type Effect = z.infer<typeof effectSchema>;
+
+// ── Documentation (GDD 7.5) ───────────────────────────────────────────────────
+
+export const paramSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('choice'), options: z.array(paramValue).min(1) }),
+  z.object({ type: z.literal('number'), min: z.number().optional(), max: z.number().optional() }),
+  z.object({
+    type: z.literal('text'),
+    /** Regular expression the value must match (optional). */
+    pattern: z.string().optional(),
+    max_length: z.number().int().positive().optional(),
+  }),
+  /** Imposed format: # = digit, A = letter, anything else literal (e.g. "R-##"). */
+  z.object({ type: z.literal('code'), format: z.string().min(1) }),
+]);
+export type Param = z.infer<typeof paramSchema>;
+
+export const questionSchema = z.object({ id: questionId, text: z.string().min(1) }).strict();
+export type Question = z.infer<typeof questionSchema>;
+
+export const instructionSchema = z
+  .object({
+    id: instructionId,
+    /** Text with {param} placeholders. */
+    text: z.string().min(1),
+    params: z.record(z.string().regex(/^[a-z_][a-z0-9_]*$/), paramSchema).optional(),
+  })
+  .strict();
+export type Instruction = z.infer<typeof instructionSchema>;
+
+export const manageOptionSchema = z
+  .object({
+    id: manageId,
+    text: z.string().min(1),
+    /** Default effect when the mission does not override it (e.g. calming: mood +1). */
+    then: effectSchema.optional(),
+  })
+  .strict();
+export type ManageOption = z.infer<typeof manageOptionSchema>;
+
+export const manualSchema = z
+  .object({
+    id: z.literal('manual'),
+    title: z.string().min(1),
+    publisher: z.string().min(1),
+    service: z.string().min(1),
+  })
+  .strict();
+
+export const docPageSchema = z
+  .object({
+    id: pageId,
+    tab: z.string().min(1),
+    title: z.string().min(1),
+    keywords: z.array(z.string().min(1)).default([]),
+    revision: z.object({ night: z.number().int().min(1) }),
+    body: z.string().min(1),
+    /** Added to ASK when the page is consulted during a call (GDD 4.2.2). */
+    questions: z.array(questionSchema).default([]),
+    /** Added to INSTRUCT when the page is consulted during a call. */
+    instructions: z.array(instructionSchema).default([]),
+  })
+  .strict();
+
+/** content/docs/base.yaml: options always available during a call (GDD 4.2.1). */
+export const baseOptionsSchema = z
+  .object({
+    id: z.literal('base'),
+    questions: z.array(questionSchema).default([]),
+    instructions: z.array(instructionSchema).default([]),
+    manage: z.array(manageOptionSchema).default([]),
+  })
+  .strict();
 
 export type Manual = z.infer<typeof manualSchema>;
 export type DocPage = z.infer<typeof docPageSchema>;
+export type BaseOptions = z.infer<typeof baseOptionsSchema>;
+
+// ── Callers (GDD 7.6) ─────────────────────────────────────────────────────────
+
+const lines = z.array(messageSchema).min(1);
+
+export const callerSchema = z
+  .object({
+    id: callerId,
+    name: z.string().min(1),
+    /** Ten digits, US style (shown on the incoming-call window). A fictional one if omitted. */
+    phone: z
+      .string()
+      .regex(/^\d{10}$/, 'ten digits, e.g. 2135550142')
+      .optional(),
+    mood_start: z.number().int().min(MOOD_MIN).max(MOOD_MAX),
+    typing_speed: z.number().positive(),
+    fallback: z
+      .object({
+        irrelevant: lines,
+        repeat: lines,
+        hold: lines,
+        /** Reactions to GÉRER options, by option id. */
+        manage: z.record(manageId, lines).optional(),
+      })
+      .strict(),
+  })
+  .strict();
+export type Caller = z.infer<typeof callerSchema>;
+
+// ── Missions (GDD 7.7) ────────────────────────────────────────────────────────
+
+export const CAPTURE_FIELDS = [
+  'symptom',
+  'serial',
+  'model',
+  'name',
+  'place',
+  'reference',
+  'error',
+  'product',
+] as const;
+export type CaptureField = (typeof CAPTURE_FIELDS)[number];
+
+export const captureSchema = z
+  .object({
+    label: z.string().min(1),
+    field: z.enum(CAPTURE_FIELDS),
+    keywords: z.array(z.string().min(1)).default([]),
+  })
+  .strict();
+export type Capture = z.infer<typeof captureSchema>;
+
+export const responseSchema = z
+  .object({
+    when: conditionSchema.optional(),
+    say: z.array(messageSchema).default([]),
+    then: effectSchema.optional(),
+  })
+  .strict();
+export type Response = z.infer<typeof responseSchema>;
+
+export const closureRuleSchema = z
+  .object({ when: conditionSchema.optional(), then: effectSchema.optional() })
+  .strict();
+
+export const missionSchema = z
+  .object({
+    id: missionId,
+    title: z.string().min(1),
+    night: z.number().int().min(1),
+    caller: callerId,
+    client: clientId.optional(),
+    type: z.enum(['libre', 'urgent']),
+    network: z.boolean().default(false),
+    captures: z.record(captureId, captureSchema).default({}),
+    opening: z.array(messageSchema).min(1),
+    local_questions: z.array(questionSchema).default([]),
+    /** Key = question / instruction / GÉRER option id; the first entry whose `when` holds plays. */
+    responses: z
+      .record(z.union([questionId, instructionId, manageId]), z.array(responseSchema).min(1))
+      .default({}),
+    closure: z
+      .object({
+        codes: z.record(z.union([codeId, z.literal('default')]), closureRuleSchema),
+      })
+      .strict(),
+  })
+  .strict();
+export type Mission = z.infer<typeof missionSchema>;
+
+// ── Resolution codes (GDD 7.8) ────────────────────────────────────────────────
+
+export const codesSchema = z
+  .object({
+    id: z.literal('codes'),
+    codes: z
+      .array(
+        z
+          .object({
+            id: codeId,
+            /** Official meaning, shown in HelpDesk. */
+            label: z.string().min(1),
+            /** Hidden meaning, revealed progressively in the Notebook (J6). */
+            hidden: z.string().optional(),
+          })
+          .strict(),
+      )
+      .min(1),
+  })
+  .strict();
+export type ResolutionCode = z.infer<typeof codesSchema>['codes'][number];
+
+/** Every validated content file, as loaded by the game and by content:check. */
+export interface ContentBundle {
+  manual: Manual;
+  /** Sorted by page number. */
+  pages: DocPage[];
+  base: BaseOptions;
+  callers: Record<string, Caller>;
+  missions: Record<string, Mission>;
+  codes: ResolutionCode[];
+}
 
 /** "p.12" → 12 */
 export function pageNumber(page: Pick<DocPage, 'id'>): number {

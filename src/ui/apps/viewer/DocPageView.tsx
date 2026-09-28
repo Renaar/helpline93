@@ -1,6 +1,7 @@
 import type { Ref } from 'react';
 import { pageNumber, type DocPage, type Manual } from '../../../content/schemas.ts';
 import { t } from '../../strings/i18n.ts';
+import { withBlanks } from '../chat/optionText.ts';
 import styles from './DocPage.module.css';
 import { parseBlocks } from './markdownLight.ts';
 import { RichText } from './RichText.tsx';
@@ -91,6 +92,30 @@ export function DocPageView({ page, manual, query, ref }: DocPageViewProps) {
             );
         }
       })}
+      {page.questions.length > 0 && (
+        <section className={styles.options}>
+          <h2 className={styles.h2}>{t('apps.viewer.checklist')}</h2>
+          <ul className={styles.checklist}>
+            {page.questions.map((question) => (
+              <li key={question.id} data-option-id={question.id}>
+                <RichText text={question.text} query={highlight} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {page.instructions.length > 0 && (
+        <section className={styles.options}>
+          <h2 className={styles.h2}>{t('apps.viewer.steps')}</h2>
+          <ol className={styles.steps}>
+            {page.instructions.map((instruction) => (
+              <li key={instruction.id} data-option-id={instruction.id}>
+                <RichText text={withBlanks(instruction.text)} query={highlight} />
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
       <footer className={styles.footer}>
         {t('apps.viewer.pageNumber', { number: pageNumber(page) })}
       </footer>

@@ -1,0 +1,106 @@
+id: m.n01_03
+title: Trois bips
+night: 1
+caller: c.bernard_fleury
+client: cl.0412
+type: libre
+network: false
+
+captures: # infos cliquables dans les répliques
+  cap.bips: { label: 3 bips au démarrage, field: symptom, keywords: [bips, bios] }
+  cap.black_screen: { label: Écran noir, field: symptom, keywords: [écran noir] }
+  cap.serial: { label: N° série HX-486-0412, field: serial, keywords: [HX-486-0412] }
+  cap.model: { label: Heltron HX-486, field: product, keywords: [hx-486] }
+  cap.short: { label: Bips courts, field: symptom, keywords: [bips courts, mémoire] }
+
+opening:
+  - Bonsoir… j'espère que je ne dérange pas si tard.
+  - Mon ordinateur fait [[3 bips|cap.bips]] au démarrage et l'écran reste noir.
+
+local_questions: []
+
+responses: # clé = id de question / instruction / option GÉRER ; première entrée valide = jouée
+  q.base.describe:
+    - say:
+        - Je l'allume, il fait trois bips, et puis plus rien.
+        - L'écran reste [[tout noir|cap.black_screen]]. Même pas le logo.
+
+  q.base.serial:
+    - say:
+        - Attendez, c'est écrit derrière…
+        - '[[HX-486-0412|cap.serial]].'
+
+  q.base.model:
+    - say:
+        - C'est un [[Heltron HX-486|cap.model]]. Acheté l'an dernier.
+
+  q.base.since:
+    - say:
+        - Depuis ce soir. Hier encore, il marchait très bien.
+
+  q.base.tried:
+    - say:
+        - Je l'ai éteint et rallumé deux ou trois fois. Toujours pareil.
+
+  q.bios.bip_type:
+    - say:
+        - Courts. Trois bips [[courts|cap.short]], comme un réveil.
+
+  q.bios.bip_count:
+    - say:
+        - Trois. J'ai compté plusieurs fois.
+
+  i.base.restart:
+    - say:
+        - Bon… j'éteins. J'attends.
+        - { text: Je rallume…, pause: 3 }
+        - Toujours trois bips. Rien à l'écran.
+      then: { mood: -1 }
+
+  i.case.open:
+    - say:
+        - Voilà, c'est ouvert. Il y a de la poussière partout…
+      then: { set_flags: [f.m03.case_open] }
+
+  i.ram.remove_slot:
+    - when: { flags_none: [f.m03.case_open] }
+      say:
+        - Retirer quoi ? Le boîtier est encore fermé…
+      then: { mood: -1 }
+    - when: { param: { slot: 2 } }
+      say:
+        - C'est fait. Je rallume ?
+        - { text: …, pause: 5 } # suspense
+        - IL DÉMARRE ! Merci, vraiment !
+      then: { set_flags: [f.m03.fixed], end_call: resolved }
+    - when: { param: { slot: 3 } }
+      say:
+        - Il n'y a rien en position 3. L'emplacement est vide.
+    - when: { param: { slot: 4 } }
+      say:
+        - La position 4 est vide, il n'y a pas de barrette.
+    - say:
+        - Je l'ai retirée… toujours trois bips.
+      then: { mood: -1 }
+
+  i.jumper.set:
+    - when: { flags_none: [f.m03.case_open] }
+      say:
+        - Il faut ouvrir le boîtier pour ça, non ?
+    - when: { param: { jumper: 5 } }
+      say:
+        - JP5 ? Il y a une étiquette « ne pas toucher » juste à côté…
+        - Je préfère ne pas y toucher.
+      then: { mood: -1 }
+    - say:
+        - C'est fait. Je rallume…
+        - Toujours trois bips.
+      then: { mood: -1 }
+
+closure: # codes de résolution au moment de clore le ticket
+  codes:
+    R-07:
+      when: { flags_all: [f.m03.fixed] }
+      then: { vars: { reputation: +1 } }
+    default:
+      then: { vars: { reputation: -1 } }

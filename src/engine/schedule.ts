@@ -6,6 +6,7 @@ export interface ScheduledCall {
   id: string;
   atMinute: number;
   type: CallType;
+  missionId: string | null;
 }
 
 /** First planned event still to come (calls only for now; e-mails and scripted events: J3). */

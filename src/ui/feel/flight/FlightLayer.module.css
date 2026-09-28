@@ -1,0 +1,30 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-flight);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Positioned by its centre-left point; Motion drives x / y / scale / opacity only. */
+.chip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: var(--flight-chip-width);
+  padding: var(--space-1) var(--space-3);
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--color-panel);
+  box-shadow: var(--bevel-raised), var(--shadow-soft);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  translate: -50% -50%;
+}
+
+.chip[data-variant='capture'] {
+  background: var(--color-capture-mark);
+  font-family: var(--font-mono);
+}

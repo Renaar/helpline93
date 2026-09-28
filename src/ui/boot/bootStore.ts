@@ -8,10 +8,11 @@ export interface BootState {
   setPhase: (phase: BootPhase) => void;
 }
 
-/** `?boot=skip` goes straight to the desktop (development convenience). */
+/** `?boot=skip` and `?mission=<id>` go straight to the desktop (development convenience). */
 function initialPhase(): BootPhase {
   if (typeof window === 'undefined') return 'off';
-  return new URLSearchParams(window.location.search).get('boot') === 'skip' ? 'desktop' : 'off';
+  const params = new URLSearchParams(window.location.search);
+  return params.get('boot') === 'skip' || params.has('mission') ? 'desktop' : 'off';
 }
 
 export const useBoot = create<BootState>()((set) => ({

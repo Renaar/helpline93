@@ -18,7 +18,7 @@
   justify-content: center;
   width: var(--start-menu-brand-width);
   padding-bottom: var(--space-3);
-  background: linear-gradient(0deg, var(--color-accent-deep), var(--color-accent));
+  background: linear-gradient(0deg, var(--color-accent-shade), var(--color-accent));
 }
 
 .brandText {

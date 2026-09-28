@@ -2,7 +2,7 @@
 
 ## Le projet en bref
 Jeu web narratif (thriller, 1993, San Aurelio, ville fictive de la côte Ouest américaine). Le joueur est opérateur de nuit d'une hotline informatique et joue **uniquement** à travers **HelplineOS**, un système d'exploitation fictif en plein écran (1920 × 1080 logiques).
-Style **néo-rétro** : structure d'un OS de 1993, finition d'une interface moderne (section 6). Palette cuivre / pétrole (sombres pétrole profonds, texte crème, accents cuivrés ; section 6.2). Polices IBM Plex (auto-hébergées). Icônes originales sur grille pixel, en SVG. Pas d'effet CRT, pas de décor autour de l'OS.
+Style **néo-rétro** : structure d'un OS de 1993, finition d'une interface moderne (section 6). Palette ambre / gris (gris chauds très sombres, texte crème, accents ambrés ; section 6.2). Polices IBM Plex (auto-hébergées). Icônes originales sur grille pixel, en SVG. Pas d'effet CRT, pas de décor autour de l'OS.
 
 **Source de vérité : `GDD_HELPLINE93.md`.** Le lire en entier au début de chaque jalon. Section 10 = règles détaillées.
 

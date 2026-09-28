@@ -71,4 +71,4 @@ export const callLayout: Partial<Record<AppId, Rect>> = {
 };
 
 /** Applications opened automatically when a call is answered. */
-export const callApps: AppId[] = ['phone', 'chat', 'helpdesk'];
+export const callApps: AppId[] = ['phone', 'chat', 'helpdesk', 'viewer'];

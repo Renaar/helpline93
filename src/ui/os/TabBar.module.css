@@ -21,3 +21,11 @@
   color: var(--color-text);
   font-weight: var(--font-weight-semibold);
 }
+
+.badge {
+  width: var(--badge-size);
+  height: var(--badge-size);
+  margin-left: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-highlight);
+}

@@ -9,6 +9,8 @@ const page = (id: string, title: string, body: string, keywords: string[] = []):
   body,
   keywords,
   revision: { night: 1 },
+  questions: [],
+  instructions: [],
 });
 
 describe('fold', () => {

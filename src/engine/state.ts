@@ -1,3 +1,4 @@
+import type { Clue, Dialogue, QueuedEmail, Ticket } from './dialogue/types.ts';
 import { createPhoneState, type PhoneState } from './phone.ts';
 import type { ScheduledCall } from './schedule.ts';
 import { createShiftState, type ShiftState } from './shift.ts';
@@ -30,6 +31,15 @@ export interface GameState {
   /** trust_<npc>, keyed by caller id. */
   trust: Record<string, number>;
   flags: string[];
+  /** Conversations of the night, by call id (GDD 4.2). */
+  dialogues: Record<string, Dialogue>;
+  /** HelpDesk tickets, oldest first (GDD 4.3). */
+  tickets: Ticket[];
+  /** Notebook clues, oldest first (GDD 4.7). */
+  clues: Clue[];
+  /** Manual pages consulted during the night. */
+  consultedPages: string[];
+  emails: QueuedEmail[];
 }
 
 export function createInitialState(seed: number, shiftStartMinute: number): GameState {
@@ -45,5 +55,10 @@ export function createInitialState(seed: number, shiftStartMinute: number): Game
     vars: { reputation: 0, suspicion: 0, awareness: 0 },
     trust: {},
     flags: [],
+    dialogues: {},
+    tickets: [],
+    clues: [],
+    consultedPages: [],
+    emails: [],
   };
 }

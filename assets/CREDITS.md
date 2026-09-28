@@ -10,9 +10,9 @@ Chaque asset du jeu est listé ici avec sa licence (GDD 8.8 et 9.4). Aucune lice
 
 ## Sons (provisoires)
 
-| Asset                                                                    | Fichiers              | Auteur                                                                                                                                                 | Licence                                     |
-| ------------------------------------------------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
-| Interface, HelplineOS (démarrage, fenêtres, clavier, pages) et téléphone | `assets/sounds/*.wav` | Synthétisés par `tools/generate-placeholder-sounds.ts` (création originale du projet) ; ronronnement du PC synthétisé en direct (`src/audio/pcHum.ts`) | Propriété du projet — aucune licence tierce |
+| Asset                                                                                            | Fichiers              | Auteur                                                                                                                                                 | Licence                                     |
+| ------------------------------------------------------------------------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
+| Interface, HelplineOS (démarrage, fenêtres, clavier, pages), téléphone, chat, capture et tickets | `assets/sounds/*.wav` | Synthétisés par `tools/generate-placeholder-sounds.ts` (création originale du projet) ; ronronnement du PC synthétisé en direct (`src/audio/pcHum.ts`) | Propriété du projet — aucune licence tierce |
 
 ## Images
 

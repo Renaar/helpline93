@@ -1,7 +1,7 @@
 import type { AppId } from '../os/apps.ts';
-import { ChatApp } from './ChatApp.tsx';
+import { ChatApp } from './chat/ChatApp.tsx';
 import { ClientsApp } from './ClientsApp.tsx';
-import { HelpDeskApp } from './HelpDeskApp.tsx';
+import { HelpDeskApp } from './helpdesk/HelpDeskApp.tsx';
 import { MailApp } from './MailApp.tsx';
 import { NotebookApp } from './notebook/NotebookApp.tsx';
 import { PhoneApp } from './phone/PhoneApp.tsx';

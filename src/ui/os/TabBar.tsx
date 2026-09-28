@@ -2,7 +2,8 @@ import { Pressable } from '../feel/Pressable.tsx';
 import styles from './TabBar.module.css';
 
 export interface TabBarProps<T extends string> {
-  tabs: readonly { id: T; label: string }[];
+  /** `badge`: something new in this tab (a small copper dot). */
+  tabs: readonly { id: T; label: string; badge?: boolean }[];
   selected: T;
   onSelect: (id: T) => void;
 }
@@ -22,6 +23,7 @@ export function TabBar<T extends string>({ tabs, selected, onSelect }: TabBarPro
           }}
         >
           {tab.label}
+          {tab.badge === true && <span className={styles.badge} aria-hidden="true" />}
         </Pressable>
       ))}
     </div>

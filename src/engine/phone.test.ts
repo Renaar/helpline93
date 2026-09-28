@@ -12,7 +12,14 @@ import {
 } from './phone.ts';
 
 function call(id: string): Call {
-  return { id, number: '2135550142', type: 'libre', ringingSince: 1320, answeredAt: null };
+  return {
+    id,
+    number: '2135550142',
+    type: 'libre',
+    missionId: null,
+    ringingSince: 1320,
+    answeredAt: null,
+  };
 }
 
 function ring(phone: PhoneState, line: 1 | 2 | 3, id: string): PhoneState {
