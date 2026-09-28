@@ -10,6 +10,10 @@
 
 ### Fait
 
+- [x] **Nouvelle palette ambre / gris** (demandée par Loïc), à la place de cuivre / pétrole : valeurs dans `src/ui/theme/palette.ts` (variables et curseurs regénérés), aucun composant modifié. Choix de Loïc sur les deux couples qui échouaient :
+  - fonds qui portent du texte (sélection, barre de titre active, feutre, tampons) : **ambre assombri calculé** `#7B521D` (60 % ambre profond + 40 % fond), 5,44:1 ;
+  - alerte éclaircie de `#B4432E` à **`#C8533B`** (3,11:1 sur les fenêtres).
+  - Reliefs adaptés : `#4A4036` (clair) et `#14110E` (sombre). Nouveau rôle **Succès** `#6E7F4A`. GDD 6.2 (v1.6) et `CLAUDE.md` mis à jour.
 - [x] **Format du contenu** : schémas Zod complets (pages, questions et instructions, appelants, missions, conditions `when`, effets `then`, codes de résolution). Un seul chargeur (`src/content/bundle.ts`) sert au jeu et à `content:check`.
 - [x] **`npm run content:check`** vérifie aussi : références cassées (appelant, question, instruction, page, capture, code), balises de capture mal formées ou inconnues, paramètres des instructions (`{slot}` ↔ `params`), valeurs impossibles dans `param`. Avertissements (sans bloquer) : capture jamais balisée, question locale jamais débloquée, instruction sans réponse par défaut en dernier (GDD 7.11), pas de règle `default` à la clôture, flag testé mais jamais posé, mission qui ne peut pas finir en `resolved`.
 - [x] **Moteur de dialogue** (pur, testé) : première réponse dont le `when` est vrai ; répliques de repli (« hors sujet », « déjà dit », réaction aux options GÉRER) ; humeur de −2 à +2 ; rythme de frappe (longueur du message × vitesse de l'appelant × humeur, pauses de suspense, indicateur « l'appelant écrit… ») ; fin d'appel par l'appelant (`end_call`) ; mise en attente ; raccrochage par l'opérateur.

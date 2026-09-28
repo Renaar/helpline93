@@ -13,24 +13,28 @@
   --color-panel: var(--color-surface);
   --color-panel-sunken: var(--color-desktop);
   --color-text-on-accent: var(--color-text);
-  --color-selection: var(--color-accent-deep);
+  --color-selection: var(--color-accent-shade);
   --color-hover-overlay: color-mix(in srgb, var(--color-highlight) 7%, transparent);
   --color-press-overlay: color-mix(in srgb, var(--color-bevel-dark) 18%, transparent);
   /* Text sits on the left, on the deep accent (contrast), fading to the vivid accent. */
-  /* Printed documents (Viewer): cream paper, petrol ink, copper stamps. */
+  /* Printed documents (Viewer): cream paper, dark warm ink, amber stamps. */
   --color-paper: var(--color-text);
   --color-ink: var(--color-bevel-dark);
   --color-ink-soft: color-mix(in srgb, var(--color-bevel-dark) 65%, var(--color-text));
-  --color-stamp: var(--color-accent-deep);
+  --color-stamp: var(--color-accent-shade);
   --color-mark: color-mix(in srgb, var(--color-highlight) 55%, transparent);
-  /* Felt marker on screen text (chat): deep copper, cream text stays readable (≥ 4.5:1). */
-  --color-capture-mark: var(--color-accent-deep);
+  /* Felt marker on screen text (chat): shaded amber, cream text stays readable (≥ 4.5:1). */
+  --color-capture-mark: var(--color-accent-shade);
   --color-fresh-glow: color-mix(in srgb, var(--color-highlight) 22%, transparent);
   /* VHS fast-forward effect (time jump only) */
   --color-vhs-band: color-mix(in srgb, var(--color-text) 14%, transparent);
   --color-vhs-band-dark: color-mix(in srgb, var(--color-bevel-dark) 40%, transparent);
   --color-vhs-veil: var(--color-text);
-  --gradient-titlebar-active: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent));
+  --gradient-titlebar-active: linear-gradient(
+    90deg,
+    var(--color-accent-shade),
+    var(--color-accent)
+  );
 
   /* Fonts (GDD 6.3) */
   --font-sans: 'IBM Plex Sans', sans-serif;
